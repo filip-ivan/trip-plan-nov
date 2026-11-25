@@ -76,6 +76,11 @@
     .card .alts, .card .card-foot { color: var(--muted); font-size: 0.78rem; }
     .card .alts a, .card .card-foot a { font-weight: 600; }
     .card .live { color: #8a4b00; }
+    .card .chooser-label { margin: 6px 0 2px; font-size: 0.78rem; color: var(--muted); }
+    .card .choice { margin: 0 0 3px; font-size: 0.82rem; line-height: 1.3; }
+    .card .choice a.book { font-weight: 600; white-space: nowrap; }
+    .card .choice .over { color: var(--alert); }
+    .card .choice .under, .card .choice .tag { font-weight: 600; }
     .opt-details {
       background: var(--paper);
       border: 1px solid var(--line);
@@ -85,6 +90,7 @@
       box-shadow: var(--shadow);
     }
     details.opt-details:not([open]) { display: none; }
+    .detail-note { margin: 8px 0 10px; font-size: 0.88rem; line-height: 1.35; color: var(--muted); }
     .day-block { margin: 10px 0 14px; }
     .day-block h3 { margin: 0 0 6px; font-size: 1.02rem; }
     .day-block ul { margin: 0; padding: 0; list-style: none; }
@@ -238,7 +244,7 @@
 <body>
     <div class="wrap">
     <header class="hero compact-hero">
-      <p class="page-head">Ways home · leave 11:30 AM Wed · family of four · under $2,000 · rates as of 8:24–9:40 AM PT Nov 25</p>
+      <p class="page-head">Ways home · leave 11:30 AM Wed · family of four · under $2,000 · tonight’s hotels live ~11:53 AM PT; other lodging as of 8:24–9:40 AM PT Nov 25</p>
     </header>
     <div class="cards option-cards" id="option-cards"></div>
     <div id="option-details"></div>
@@ -253,9 +259,50 @@
   <script>
     const SHORT_OPTIONS = [
       {
+        id: "griffithsb",
+        name: "Griffith, then Santa Barbara",
+        pick: true,
+        drive: "About 530 mi. Wednesday is 126 mi; leaving 11:30 AM, plan 3–4.5 hours in Thanksgiving-eve traffic, arriving about 2:30–4:00 PM, or 4:30 if the noon crunch is heavy. The Sun Rose is about 20–35 min from Griffith Observatory; plan 30–45 min around 4:00 PM. Downtown hotels are a bit farther. If you arrive after 4:00, go straight to Griffith with bags in the car, then check in. Thursday to Santa Barbara is about two hours; leave after noon or use 126/150 via Ojai to skip 101 at Rincon. Friday home is 307 mi; plan 5.5–6.5 hours.",
+        museum: "Griffith Observatory at sunset on Wednesday (open noon to 10:00 PM, sunset 4:46 PM, closed Thanksgiving).",
+        evening: "If you stay at The Sun Rose: Dialog Café on site (open until 9:00 PM) then Harriet’s rooftop next door (Monday–Thursday 5:00 PM to close). If you stay downtown: San Laurel (dinner about 5:00–10:00 PM) and Death & Co (Wednesday 6:00 PM to 1:00 AM; short ride). The Knock on Thanksgiving in Santa Barbara (open Thanksgiving, book 5:00 PM).",
+        worry: "The Sun Rose is about $300–$650 over the $2,000 cap, JW Marriott is about $100–$450 over, and Conrad is well over. Proper stays under if food is modest, but there are no 2-bed rooms — the girls share a queen. All Wednesday rates are non-refundable. Friday is still a 5.5–6.5 hour drive.",
+        rec: "Proper is the only Wednesday hotel that keeps the trip under $2,000 if food stays modest (1 Queen + 1 King, girls share a queen). The Sun Rose is the top pick for quality and a walkable Sunset night, but it is about $300–$650 over budget.",
+        total: "Proper under $2,000 if food is modest · others over",
+        altTotal: "Checked live on Expedia ~11:53 AM PT Nov 25; all Wednesday rates non-refundable. The Sun Rose, two Sunset Queen Queen rooms, $1,115 all-in (4 left), trip about $2,300–$2,650, about $300–$650 over. Conrad, two Deluxe 2 Double rooms, $1,370 all-in (4 left), trip about $2,530–$2,920, well over. JW Marriott L.A. LIVE, two 2 Queen rooms, $905 all-in (5 left), trip about $2,070–$2,460, about $100–$450 over. Proper, 1 Queen + 1 King, $790–$830 all-in (girls share a queen), trip about $1,950–$2,000 if food is modest. Thursday La Cabane is $523.",
+        costLines: [
+          ["Lodging (The Sun Rose, top pick, over budget)", "Wednesday, checked live on Expedia ~11:53 AM PT Nov 25, non-refundable: Sunset Queen Queen, 334 sq ft, $468 per room including taxes and fees, 4 left, plus destination fee $52.52 per room and valet $75. Two rooms about $1,115 all-in. Thursday: La Cabane $523. Lodging about $1,638. Trip about $2,300–$2,650, about $300–$650 over."],
+          ["Lodging (Proper, best under budget)", "Wednesday, live ~11:53 AM PT, non-refundable: no 2-bed rooms. Deluxe 1 Queen $361 plus Deluxe 1 King $400 (4 left), plus valet $70.40, about $790–$830 all-in; the girls share a queen. Thursday La Cabane $523. Lodging about $1,313–$1,353. Trip about $1,950–$2,000 if food stays modest."],
+          ["Lodging (JW and Conrad)", "JW Marriott L.A. LIVE, live ~11:53 AM PT, non-refundable: 2 Queen $359 per room including taxes and fees, 5 left, plus destination fee $58 per room due at the hotel and valet $71.50. Two rooms about $905 all-in. Trip about $2,070–$2,460, about $100–$450 over. Conrad Deluxe 2 Double, 355 sq ft, $606 per room, 4 left, plus destination fee $43.32 per room and valet about $70. Two rooms about $1,370 all-in. Trip about $2,530–$2,920, well over."],
+          ["Food for 4", "About $550–$900, including Sherman’s, Dialog or San Laurel, Harriet’s or Death & Co, The Copper (not The Prado’s $340–$390 feast), The Knock, and a Friday lunch in Solvang or at Casa de Fruta, with tax and tip."],
+          ["Activities", "Griffith is free; official parking is $10 a space per hour, about $20–$40, or use a rideshare from the hotel."],
+          ["Driving", "About 530 mi plus the Griffith out-and-back, Supercharging about $70–$90."],
+          ["Parking", "Lodging parking is in the lodging estimate. Griffith parking is in activities."]
+        ]
+      },
+      {
+        id: "sciencesb",
+        name: "Science Center, then Santa Barbara",
+        pick: false,
+        drive: "About 535 mi. Wednesday is about 130 mi to Exposition Park; leaving 11:30 AM, plan 3–4.5 hours, arriving about 2:30–4:00 PM, or 4:30 if traffic is heavy. The Science Center closes at 5:00 PM and is closed Thanksgiving, so go straight there if you will arrive after 3:00, with bags in the car. Downtown hotels are about 10–15 min from the museum. Thursday to Santa Barbara is about two hours; leave after noon or use 126/150 via Ojai. Friday home is 307 mi; plan 5.5–6.5 hours.",
+        museum: "California Science Center on Wednesday (Samuel Oschin Air and Space Center with Endeavour; open 10:00 AM to 5:00 PM, closed Thanksgiving). Timed reservation required, $4 per person. As of 8:59 AM PT today the building was at capacity through 1:45 PM — reserve an afternoon slot now. Shuttle Launch Tower tickets are sold out today. This is the one museum on this route — no Griffith.",
+        evening: "San Laurel at the Conrad for dinner (listed open daily, dinner about 5:00–10:00 PM) and Death & Co in the Arts District (Wednesday 6:00 PM to 1:00 AM; short ride, not a late walk). Redbird is a Historic Core backup (listed open Wednesday about 5:00–10:00 PM). The Knock on Thanksgiving in Santa Barbara.",
+        worry: "Wednesday is tight: if you arrive after about 3:30 the museum visit is short, and if you arrive after 5:00 Wednesday’s highlight is the evening. Conrad is well over the $2,000 cap, JW is about $100–$450 over, and Proper stays under if food is modest, with the girls sharing a queen. All Wednesday rates are non-refundable.",
+        rec: "The kid-wow Wednesday if traffic behaves and you can still get an afternoon Endeavour reservation: Science Center, then a downtown night, then Santa Barbara on Thursday. Book Proper to stay under $2,000 if food is modest. Skip this if you are running late; Griffith stays open until 10:00 PM.",
+        total: "Proper under $2,000 if food is modest · Conrad and JW over",
+        altTotal: "Checked live on Expedia ~11:53 AM PT Nov 25; all Wednesday rates non-refundable. Conrad, two Deluxe 2 Double rooms, $1,370 all-in (4 left), trip about $2,530–$2,920, well over. JW Marriott L.A. LIVE, two 2 Queen rooms, $905 all-in (5 left), trip about $2,070–$2,460, about $100–$450 over. Proper, 1 Queen + 1 King, $790–$830 all-in (girls share a queen), trip about $1,950–$2,000 if food is modest. Thursday La Cabane is $523.",
+        costLines: [
+          ["Lodging (Conrad)", "Wednesday, checked live on Expedia ~11:53 AM PT Nov 25, non-refundable: Deluxe 2 Double, 355 sq ft, $606 per room including taxes and fees, 4 left, plus destination fee $43.32 per room and valet about $70. Two rooms about $1,370 all-in. Thursday: La Cabane $523. Trip about $2,530–$2,920, well over."],
+          ["Lodging (Proper, best under budget; JW over)", "Proper, live ~11:53 AM PT, non-refundable: no 2-bed rooms. Deluxe 1 Queen $361 plus Deluxe 1 King $400 (4 left), plus valet $70.40, about $790–$830 all-in; the girls share a queen. Trip about $1,950–$2,000 if food stays modest. JW Marriott L.A. LIVE: 2 Queen $359 per room, 5 left, plus destination fee $58 per room and valet $71.50. Two rooms about $905 all-in. Trip about $2,070–$2,460, about $100–$450 over."],
+          ["Food for 4", "About $550–$900, including Sherman’s, San Laurel or Redbird, Death & Co, The Copper, The Knock, and a Friday lunch, with tax and tip."],
+          ["Activities", "Science Center general admission is free; Air and Space Center (Endeavour) needs a timed reservation at $4 per person, about $16 for four. As of 8:59 AM PT today it was at capacity through 1:45 PM — book an afternoon slot now. Parking at Exposition Park is typically about $15–$25."],
+          ["Driving", "About 535 mi, Supercharging about $70–$90."],
+          ["Parking", "Lodging parking is in the lodging estimate. Science Center parking is in activities."]
+        ]
+      },
+      {
         id: "shortla",
         name: "West Hollywood, then Santa Barbara",
-        pick: true,
+        pick: false,
         drive: "About 530 mi. Wednesday is 126 mi; leaving 11:30 AM, plan 3–4.5 hours in Thanksgiving-eve traffic, arriving in West Hollywood about 2:30–4:00 PM, or 4:30 if the noon crunch is heavy. Thursday to Santa Barbara is about two hours; leave after noon or use 126/150 via Ojai to skip 101 at Rincon. Friday home is 307 mi; plan 5.5–6.5 hours.",
         museum: "Griffith Observatory after dark on Wednesday (open until 10:00 PM, closed Thanksgiving).",
         evening: "Harriet’s rooftop after Griffith on Wednesday (book 9:00 PM). The Knock on Thanksgiving in Santa Barbara (open Thanksgiving, book 5:00 PM).",
@@ -387,6 +434,54 @@
 
 
     const OPTION_SLEEPS = {
+      griffithsb: {
+        leave: "Leave 11:30 AM after Sherman’s breakfast",
+        leaveMap: "Sherman's Deli & Bakery, Palm Springs, CA",
+        wxStops: ["dhs", "griffith", "weho", "sb", "dublin"],
+        chooserLabel: "Tonight, 2 rooms, all non-refundable, live on Expedia ~11:53 AM PT. Thursday is La Cabane $523.",
+        tonightChoices: [
+          { name: "The Sun Rose", dest: "The Sun Rose West Hollywood, West Hollywood, CA", href: "https://www.expedia.com/h57961536.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2", rating: "9.4", feel: "polished Sunset rooms", price: "2 rooms $1,115, 4 left", trip: "trip ~$2,300–$2,650, ~$300–$650 over", over: true, tag: "top pick (over budget)" },
+          { name: "Conrad Los Angeles", dest: "Conrad Los Angeles, Los Angeles, CA", href: "https://www.expedia.com/h74503881.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2", rating: "9.4", feel: "new skyline luxury", price: "2 rooms $1,370, 4 left", trip: "trip ~$2,530–$2,920, well over $2,000", over: true },
+          { name: "JW Marriott L.A. LIVE", dest: "JW Marriott Los Angeles L.A. LIVE, Los Angeles, CA", href: "https://www.expedia.com/h2877393.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2", rating: "9.4", feel: "renovated LA Live", price: "2 rooms $905, 5 left", trip: "trip ~$2,070–$2,460, ~$100–$450 over", over: true },
+          { name: "Downtown L.A. Proper", dest: "Downtown Los Angeles Proper Hotel, Los Angeles, CA", href: "https://www.expedia.com/h37770419.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2", rating: "9.4", feel: "restored Broadway loft", price: "$790–$830, 1 Queen + 1 King, girls share a queen", trip: "trip under $2,000 if food is modest", over: false, tag: "best under budget" }
+        ],
+        sleeps: [
+          { night: "Thu", name: "La Cabane", dest: "La Cabane, Santa Barbara, CA", rating: "4.6★", year: "", feel: "quiet three-bedroom · $523", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2", status: "pass", book: "Book" }
+        ],
+        places: [
+          { name: "Griffith Observatory", blurb: "free hilltop views at sunset, open noon–10", dest: "Griffith Observatory, Los Angeles, CA" },
+          { name: "Dialog Café", blurb: "on-site dinner at The Sun Rose, open until 9", dest: "Dialog Cafe, The Sun Rose West Hollywood, CA" },
+          { name: "Harriet’s rooftop", blurb: "walkable nightcap next door to The Sun Rose, 5 PM–close", dest: "Harriet's Rooftop, 8490 Sunset Blvd, West Hollywood, CA" },
+          { name: "San Laurel", blurb: "on-site dinner if you stay at Conrad, about 5–10 PM", dest: "San Laurel, Conrad Los Angeles, CA" },
+          { name: "Death & Co", blurb: "Arts District cocktails from downtown hotels, Wed 6 PM–1 AM", dest: "Death & Co Los Angeles, 818 E 3rd St, Los Angeles, CA" },
+          { name: "Alice Keck Park", blurb: "inland Thanksgiving garden walk, free", dest: "Alice Keck Park Memorial Garden, Santa Barbara, CA" },
+          { name: "The Knock", blurb: "open Thanksgiving wine bar", dest: "The Knock, Santa Barbara, CA" }
+        ],
+        tide: "King tide through Thu noon: skip PCH and 101 at Rincon; use 126/150 via Ojai.",
+        detailNote: "Silver Lake Pool & Inn: 2 Queen ADA $593, 1 left; two rooms about $1,290 with valet $35, over budget, not on the card. The Sun Rose also had a Deluxe Skyline Queen Queen at $509, 1 left, higher than the $468 Sunset rooms."
+      },
+      sciencesb: {
+        leave: "Leave 11:30 AM after Sherman’s breakfast",
+        leaveMap: "Sherman's Deli & Bakery, Palm Springs, CA",
+        wxStops: ["dhs", "dtla", "sb", "dublin"],
+        chooserLabel: "Tonight, 2 rooms, all non-refundable, live on Expedia ~11:53 AM PT. Thursday is La Cabane $523.",
+        tonightChoices: [
+          { name: "Conrad Los Angeles", dest: "Conrad Los Angeles, Los Angeles, CA", href: "https://www.expedia.com/h74503881.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2", rating: "9.4", feel: "new skyline luxury", price: "2 rooms $1,370, 4 left", trip: "trip ~$2,530–$2,920, well over $2,000", over: true },
+          { name: "JW Marriott L.A. LIVE", dest: "JW Marriott Los Angeles L.A. LIVE, Los Angeles, CA", href: "https://www.expedia.com/h2877393.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2", rating: "9.4", feel: "renovated LA Live", price: "2 rooms $905, 5 left", trip: "trip ~$2,070–$2,460, ~$100–$450 over", over: true },
+          { name: "Downtown L.A. Proper", dest: "Downtown Los Angeles Proper Hotel, Los Angeles, CA", href: "https://www.expedia.com/h37770419.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2", rating: "9.4", feel: "restored Broadway loft", price: "$790–$830, 1 Queen + 1 King, girls share a queen", trip: "trip under $2,000 if food is modest", over: false, tag: "best under budget" }
+        ],
+        sleeps: [
+          { night: "Thu", name: "La Cabane", dest: "La Cabane, Santa Barbara, CA", rating: "4.6★", year: "", feel: "quiet three-bedroom · $523", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2", status: "pass", book: "Book" }
+        ],
+        places: [
+          { name: "California Science Center", blurb: "Endeavour, timed reservation required, open 10–5, closed Thu", dest: "California Science Center, Los Angeles, CA" },
+          { name: "San Laurel", blurb: "on-site José Andrés dinner, about 5–10 PM", dest: "San Laurel, Conrad Los Angeles, CA" },
+          { name: "Death & Co", blurb: "Arts District cocktails, Wed 6 PM–1 AM, short ride", dest: "Death & Co Los Angeles, 818 E 3rd St, Los Angeles, CA" },
+          { name: "Alice Keck Park", blurb: "inland Thanksgiving garden walk, free", dest: "Alice Keck Park Memorial Garden, Santa Barbara, CA" },
+          { name: "The Knock", blurb: "open Thanksgiving wine bar", dest: "The Knock, Santa Barbara, CA" }
+        ],
+        tide: "King tide through Thu noon: skip PCH and 101 at Rincon; use 126/150 via Ojai."
+      },
       shortla: {
         leave: "Leave 11:30 AM after Sherman’s breakfast",
         leaveMap: "Sherman's Deli & Bakery, Palm Springs, CA",
@@ -495,6 +590,52 @@
     };
 
     const DETAIL_DAYS = {
+      griffithsb: [
+        {
+          title: "Wednesday, Nov 25 · to the Sunset Strip, then Griffith",
+          drive: "Leave 11:30 AM after Sherman’s breakfast. 126 mi, 3–4.5 hr; arrive about 2:30–4:00 PM (4:30 if traffic is heavy). Hotel to Griffith is 20–35 min; plan 30–45 min around 4:00 PM.",
+          activity: "Griffith Observatory — free hilltop views at sunset (4:46 PM); open noon–10 PM. If you arrive after 4:00, go straight there with bags in the car, then check in.",
+          evening: "If The Sun Rose: Dialog Café on site (until 9 PM), then Harriet’s rooftop next door (Mon–Thu 5 PM–close). If downtown: San Laurel about 5–10 PM, then Death & Co (Wed 6 PM–1 AM, short ride).",
+          safety: "Use official Griffith parking ($10/hr) or a rideshare from the hotel; leave nothing visible in the car. The Strip is fine on foot near the hotel after dark."
+        },
+        {
+          title: "Thursday, Nov 26 · to Santa Barbara",
+          drive: "About 2 hr. Leave after noon, or take 126/150 via Ojai to skip 101 at Rincon and PCH.",
+          activity: "Alice Keck Park — free inland garden walk for the girls, 8 AM to sunset.",
+          evening: "Thanksgiving at The Copper — relaxed State Street feast; then The Knock — open Thanksgiving wine bar (book 5 PM).",
+          safety: "Stay off beaches and 101 at Rincon through noon; confirm off-street parking at La Cabane."
+        },
+        {
+          title: "Friday, Nov 27 · home to Dublin",
+          drive: "Leave by 9:30–10:00 AM. 307 mi; plan 5.5–6.5 hr (about 4 hr 45 min off-peak).",
+          activity: "Optional lunch in Solvang — one sit-down stop; skip Julefest or you’ll get home late.",
+          evening: "Eat on the road or at home; no planned night out.",
+          safety: "The flood warning has expired; still skip any flooded 101 shoulders, and don’t drive around barricades."
+        }
+      ],
+      sciencesb: [
+        {
+          title: "Wednesday, Nov 25 · to Exposition Park, then downtown",
+          drive: "Leave 11:30 AM after Sherman’s breakfast. About 130 mi, 3–4.5 hr; arrive about 2:30–4:00 PM (4:30 if traffic is heavy). The museum is 10–15 min from a downtown hotel.",
+          activity: "California Science Center — Endeavour in the new Air and Space Center; open 10 AM–5 PM, closed Thanksgiving. Timed reservation required ($4/person). As of 8:59 AM PT today it was at capacity through 1:45 PM — reserve an afternoon slot now. Go straight there if you will arrive after 3:00. If you arrive after 5:00, Wednesday’s highlight is the evening.",
+          evening: "Dinner at San Laurel — on-site José Andrés, dinner about 5–10 PM; then Death & Co — Arts District cocktails, Wed 6 PM–1 AM, short ride not a late walk. Redbird is a Historic Core backup (about 5–10 PM).",
+          safety: "Expo Park lots, typically about $15–$25; leave nothing visible in the car. Downtown after dark: stay on the lit Grand campus, use valet, and rideshare after 9 rather than walking east."
+        },
+        {
+          title: "Thursday, Nov 26 · to Santa Barbara",
+          drive: "About 2 hr. Leave after noon, or take 126/150 via Ojai to skip 101 at Rincon and PCH.",
+          activity: "Alice Keck Park — free inland garden walk for the girls, 8 AM to sunset.",
+          evening: "Thanksgiving at The Copper — relaxed State Street feast; then The Knock — open Thanksgiving wine bar (book 5 PM).",
+          safety: "Stay off beaches and 101 at Rincon through noon; confirm off-street parking at La Cabane."
+        },
+        {
+          title: "Friday, Nov 27 · home to Dublin",
+          drive: "Leave by 9:30–10:00 AM. 307 mi; plan 5.5–6.5 hr (about 4 hr 45 min off-peak).",
+          activity: "Optional lunch in Solvang — one sit-down stop; skip Julefest or you’ll get home late.",
+          evening: "Eat on the road or at home; no planned night out.",
+          safety: "The flood warning has expired; still skip any flooded 101 shoulders, and don’t drive around barricades."
+        }
+      ],
       shortla: [
         {
           title: "Wednesday, Nov 25 · to West Hollywood",
@@ -1263,12 +1404,26 @@
       return `${s.night}: ${s.name}${mapLink(s.dest)} · ${s.rating}${year} · ${s.feel}${note} · <a class="book${live}" href="${s.href}" target="_blank" rel="noopener">${label}</a>`;
     }
 
+    function choiceBits(c) {
+      const tripClass = c.over ? "over" : "under";
+      const tag = c.tag ? ` · <span class="tag">${c.tag}</span>` : "";
+      return `${c.name}${mapLink(c.dest)} · <a class="book" href="${c.href}" target="_blank" rel="noopener">Book</a> · ${c.rating} · ${c.feel} · ${c.price} · <span class="${tripClass}">${c.trip}</span>${tag}`;
+    }
+
     function optionCardHTML(o) {
       const meta = OPTION_SLEEPS[o.id];
       const leave = meta.leaveMap
         ? meta.leave.replace("Sherman’s breakfast", `Sherman’s breakfast${mapLink(meta.leaveMap)}`)
         : meta.leave;
-      const stays = (meta.sleeps || []).map((s) => `<p class="stay-line">${stayBits(s)}</p>`).join("");
+      let stays;
+      if (meta.tonightChoices) {
+        const label = `<p class="chooser-label">${meta.chooserLabel}</p>`;
+        const choices = meta.tonightChoices.map((c) => `<p class="choice">${choiceBits(c)}</p>`).join("");
+        const thu = (meta.sleeps || []).map((s) => `<p class="stay-line">${stayBits(s)}</p>`).join("");
+        stays = label + choices + thu;
+      } else {
+        stays = (meta.sleeps || []).map((s) => `<p class="stay-line">${stayBits(s)}</p>`).join("");
+      }
       const places = (meta.places || []).map((p) => {
         if (typeof p === "string") return `<p class="place-item">${p}</p>`;
         return `<p class="place-item">${p.name}${mapLink(p.dest)} — ${p.blurb}</p>`;
@@ -1645,7 +1800,9 @@
     }
 
     function renderDetailDays(id) {
-      return (DETAIL_DAYS[id] || []).map((d) => `
+      const meta = OPTION_SLEEPS[id] || {};
+      const note = meta.detailNote ? `<p class="detail-note">${meta.detailNote}</p>` : "";
+      return note + (DETAIL_DAYS[id] || []).map((d) => `
         <div class="day-block">
           <h3>${d.title}</h3>
           <ul>
