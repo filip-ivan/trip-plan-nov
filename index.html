@@ -146,6 +146,39 @@
     }
     .hidden { display: none; }
     footer { color: var(--muted); font-size: 13px; margin-top: 36px; }
+    .total {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      margin: 0 0 2px;
+      letter-spacing: -0.02em;
+    }
+    .total-note { color: var(--muted); font-size: 0.9rem; margin: 0 0 10px; }
+    .cost-compare { margin: 16px 0; overflow-x: auto; }
+    .cost-compare table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+    .cost-compare th, .cost-compare td {
+      text-align: left; vertical-align: top;
+      padding: 8px 10px 8px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .cost-compare th {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+      font-weight: 600;
+    }
+    .cost-compare .num { white-space: nowrap; font-variant-numeric: tabular-nums; }
+    .cost-box { margin: 0 0 16px; padding: 12px 14px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; }
+    .cost-box .total { margin-top: 0; }
+    .vibe { font-style: italic; color: var(--muted); margin: 0 0 12px; }
+    .stay-role {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--accent); display: block; margin-bottom: 2px;
+    }
+    .stay-role.alt { color: var(--muted); }
+    .stay-item { margin: 0 0 12px; }
+    .safety { display: block; color: var(--muted); font-size: 0.9rem; margin-top: 2px; }
+    .cost-assumptions { color: var(--muted); font-size: 0.9rem; margin: 8px 0 0; }
   </style>
 </head>
 <body>
@@ -163,6 +196,7 @@
 
     <h2>Decide</h2>
     <div class="cards" id="decision-cards"></div>
+    <div class="card cost-compare" id="cost-compare"></div>
     <div class="rec" id="recommendation"></div>
 
     <h2>Live weather</h2>
@@ -178,7 +212,7 @@
     <div id="itineraries"></div>
 
     <footer>
-      Updated November 25, 2026, early morning Pacific. Wednesday plans assume a 1:00 PM departure from Desert Hot Springs and include Thanksgiving-eve traffic. Other drive times are without stops or charging and can still change with traffic. Lodging prices are what the Airbnb Reserve box showed for these exact dates that morning; taxes and fees may be added at checkout unless a listing says prices include all fees. Prices can change. Nothing beyond the current Desert Hot Springs stay is booked. Weather comes from Open-Meteo when this file is opened in a browser, including directly from disk. You need an internet connection for forecasts and map tiles.
+      Updated November 25, 2026, morning Pacific. Wednesday plans assume a 1:00 PM departure from Desert Hot Springs and include Thanksgiving-eve traffic. Other drive times are without stops or charging and can still change with traffic. Cost totals are estimates. Hotel availability and rates were checked at 7:30 AM PT Nov 25; rooms may sell out. True two-bedroom hotel suites were basically unavailable, so hotel picks are two rooms (ask for connecting). Airbnb availability was checked at 7:15 AM PT Nov 25 (Vegas replacements at 7:17 AM PT); those Reserve-box totals include all fees unless a 15% buffer is noted. Hotel rates were quoted before tax unless noted, and the totals add an estimated 13–16% tax. Nothing beyond the current Desert Hot Springs stay is booked. Weather comes from Open-Meteo when this file is opened in a browser, including directly from disk. You need an internet connection for forecasts and map tiles.
     </footer>
   </div>
 
@@ -193,7 +227,17 @@
         museum: "Griffith Observatory after dark (open until 10:00 PM). Endeavour does not fit — the Science Center closes at 5:00 PM.",
         evening: "Harriet’s rooftop after Griffith on Wednesday (open until 10:30 PM; book 9:00 PM). The Knock on Thanksgiving in Santa Barbara, then Esperanza’s rooftop in Paso Robles on Friday.",
         worry: "One extra hotel move. Thursday is still a 2-hour drive to Santa Barbara before Thanksgiving dinner.",
-        rec: "The better Wednesday with a 1:00 PM start, and the recommended trip."
+        rec: "The better Wednesday with a 1:00 PM start, and the recommended trip.",
+        total: "About $3,200–$4,200",
+        altTotal: "Airbnb alternative about $2,350–$3,550.",
+        costLines: [
+          ["Lodging (primary)", "About $2,100–$2,450. 1 Hotel West Hollywood, two rooms (ask for connecting), about $876 plus tax. Thursday in Santa Barbara is a verified Airbnb ($500–$796; hotels there were sold out or unverified). Friday is two 2-Room Suites at Embassy Suites San Luis Obispo, about $544 plus tax."],
+          ["Lodging (alternative)", "About $1,320–$1,930 if you use verified Airbnbs all the way (WeHo $330–$487, Santa Barbara $500–$796, Morro Bay or Avila $490–$650). The Friday SLO loft or Atascadero house would be higher."],
+          ["Food for 4", "About $950–$1,400, including Mel’s, Harriet’s, The Copper, The Knock, Solvang Restaurant, Esperanza, and Casa de Fruta, with tax and tip."],
+          ["Activities", "Griffith is free; official parking is $10 a space per hour (about $20–$40), or use a rideshare. Julefest is free. Casa de Fruta rides are optional, about $0–$80."],
+          ["Driving", "About 525 mi, Supercharging about $66–$81."],
+          ["Parking", "1 Hotel is valet (rate not shown at 7:30 AM; about $40–$80 is a placeholder). Embassy Suites parking may be about $20; confirm."]
+        ]
       },
       {
         id: "coast",
@@ -203,7 +247,17 @@
         museum: "A long drive and a late dinner. Endeavour does not fit — you would reach the Science Center at closing, or after.",
         evening: "milk & honey on Wednesday (open until 10:00 PM; book 8:00 PM — Loquita closes at 9:00). The Knock on Thanksgiving, then Esperanza’s rooftop in Paso Robles on Friday.",
         worry: "Wednesday is a 6–7 hour drive in Thanksgiving-eve traffic, with a 7:00–8:00 PM arrival. That is over a 4–5 hour cap.",
-        rec: "Best if you want to unpack only once in Santa Barbara and will accept a long Wednesday drive."
+        rec: "Best if you want to unpack only once in Santa Barbara and will accept a long Wednesday drive.",
+        total: "About $2,450–$3,700",
+        altTotal: "All-Airbnb alternative about $2,350–$3,650.",
+        costLines: [
+          ["Lodging (primary)", "About $1,500–$2,120. Two nights in a verified Santa Barbara Airbnb (La Cabane $882, or the spacious home $1,489; both include all fees). Kimpton Canary was sold out; Hotel Californian was not verified. Friday is two 2-Room Suites at Embassy Suites San Luis Obispo, about $544 plus tax."],
+          ["Lodging (alternative)", "About $1,370–$2,140 if Friday is a verified Airbnb instead (Morro Bay $490 or Avila $650; the SLO loft or Atascadero house would be higher). The Ventura fallback ($731 for two nights) and the Montecito villa ($2,349, over the cap) are not in this range."],
+          ["Food for 4", "About $900–$1,350, including Finney’s, milk & honey, The Copper, The Knock, Solvang Restaurant, Esperanza, and Casa de Fruta, with tax and tip."],
+          ["Activities", "Julefest is free. Casa de Fruta rides are optional, about $0–$80."],
+          ["Driving", "About 519 mi, Supercharging about $65–$80."],
+          ["Parking", "Embassy Suites parking may be about $20; confirm. Airbnb parking is noted on each listing."]
+        ]
       },
       {
         id: "sd",
@@ -213,7 +267,17 @@
         museum: "Midway does not fit — last admission is 4:00 PM, and you would arrive after it closes. The evening is a harbor ferry and dinner instead.",
         evening: "Alexander’s on 30th in North Park, including a Thanksgiving prix fixe, then Loquita in Santa Barbara on Friday.",
         worry: "Saturday is a 6-hour drive. Leave Santa Barbara by 7:30 AM.",
-        rec: "Best if the zoo on Thanksgiving matters more than Midway, which no longer fits, or an early Saturday start."
+        rec: "Best if the zoo on Thanksgiving matters more than Midway, which no longer fits, or an early Saturday start.",
+        total: "About $2,950–$4,050",
+        altTotal: "Lafayette two-room hotel alternative about $3,650–$4,550.",
+        costLines: [
+          ["Lodging (primary)", "About $1,270–$1,880 in verified Airbnbs. San Diego for two nights: the apartment $569, North Park $821 (the walkable dinner pick), or the Rancho Santa Fe cottage $888, all fees included. Friday in Santa Barbara: the vintage duplex $703, the Lillie Guesthouse $916, or Casa Riviera $992. Embassy Suites Bay Downtown was sold out."],
+          ["Lodging (alternative)", "Lafayette Hotel, two rooms (ask for connecting) from about $281 a night each — about $562 a night, or $1,125 plus tax for two nights — then the same Friday Airbnb. That path is about $1,970–$2,300 for lodging."],
+          ["Food for 4", "About $1,200–$1,650. The Prado Thanksgiving is $79.95 adult / $19.95 child 12 and under; with the 14-year-old as an adult that is $259.80, plus tax, tip, and a supplemental fee, about $340–$390. Also includes Alexander’s, 101 Cafe, Loquita, and Casa de Fruta."],
+          ["Activities", "Zoo tickets $78 ages 12+ / $68 ages 3–11: $302, plus $16 official parking. Flagship ferry $9 × 4 × 2 crossings: $72. Julefest is free. Optional Casa de Fruta rides $0–$80."],
+          ["Driving", "About 658 mi, Supercharging about $83–$101."],
+          ["Parking", "Zoo parking is in activities. Confirm off-street parking at the Airbnb. Lafayette has paid on-site parking; the rate was not shown."]
+        ]
       },
       {
         id: "vegas",
@@ -223,11 +287,22 @@
         museum: "The Strip at night on Wednesday, then Monterey Bay Aquarium on Saturday.",
         evening: "Catch at Aria on Wednesday (open until 10:30 PM; book 8:30 or 9:00 PM) and Thanksgiving, then Esperanza’s rooftop after Sensorio on Friday.",
         worry: "Friday’s 7 hr 40 min drive is well over a 4–5 hour cap, and Wednesday is also a long day.",
-        rec: "Only if the wow for the girls matters more than a very long Friday."
+        rec: "Only if the wow for the girls matters more than a very long Friday.",
+        total: "About $3,300–$4,100",
+        altTotal: "Airbnb backup about $2,800–$4,100. Venetian two-suite alternative about $4,800–$5,600.",
+        costLines: [
+          ["Lodging (primary)", "About $1,290–$1,330. The Signature at MGM Grand, two 1-bedroom king suites at $298 each for two nights, including the resort fee: about $596 plus tax. Friday is two 2-Room Suites at Embassy Suites San Luis Obispo, about $544 plus tax."],
+          ["Lodging (alternative)", "Venetian: two Luxury Two Queen suites at about $951 each for two nights, including the resort fee, before tax — about $1,900 plus tax; connecting is not guaranteed. Or a verified Vegas Airbnb with a 15% fee buffer (LUX condo about $431, gated Palms-area 2BR $333, or the Cozy Getaway $280) plus Friday at the Embassy or a coast Airbnb, about $810–$1,400 for lodging."],
+          ["Food for 4", "About $1,200–$1,800, including Catch at Aria twice, Grand Lux, Wool Growers or a backup lunch, Esperanza, and the aquarium cafe, with tax and tip."],
+          ["Activities", "Omega Mart about $180–$230 (14 counts as an adult). Sensorio about $250–$270 with fees; parking is free. Monterey Bay Aquarium $65 adult / $50 ages 5–17: $230, plus about $15–$20 nearby parking."],
+          ["Driving", "About 850 mi, Supercharging about $107–$131."],
+          ["Parking", "Signature: park in the MGM Grand garage; confirm the overnight rate (about $40–$60 for two nights is a placeholder). Embassy Suites parking may be about $20; confirm."]
+        ]
       }
     ];
+    const COST_ASSUMPTIONS = "Estimates for a family of four, as of the morning of Nov 25, 2026, Pacific. Hotel availability/rates as checked 7:30 AM PT Nov 25; rooms may sell out. Hotel room rates were quoted before tax; totals add an estimated 13–16% tax. Airbnb prices are the all-in Reserve-box totals from 7:15 AM PT Nov 25, except the Vegas Airbnb backups, which were shown as totals at 7:17 AM without an expanded fee breakdown — those alternative ranges include about a 15% buffer. Food includes tax and tip, and the planned couple dinners. Where a kids’ price stops at 12 or 13, the 14-year-old is counted as an adult. Driving is Tesla Supercharging at about 0.28 kWh/mi and $0.45–$0.55/kWh, using each route’s total miles. Valet and garage fees that were not shown in the hotel check are called out and estimated.";
 
-    const RECOMMENDATION = "With a 1:00 PM Wednesday start, choose West Hollywood, then the coast. Thanksgiving-eve traffic is heavy from noon to 7:00 PM, so driving all the way to Santa Barbara is 6–7 hours and a 7:00–8:00 PM arrival — too late for Endeavour (the Science Center closes at 5:00 PM, and it is closed Thanksgiving, so the shuttle cannot move to another day). Stopping in West Hollywood is a 3.5–4.5 hour drive, which leaves time for Griffith Observatory after dark (open until 10:00 PM Wednesday, with free telescopes from about 7:00 PM) and a 9:00 PM rooftop reservation at Harriet’s (open until 10:30 PM). Thursday’s drive to Santa Barbara is only about two hours, and holiday traffic is often lighter, so The Knock at 5:00 PM still works. You do pack one extra time. Santa Barbara & Paso Robles is still the simpler two-stop trip if you would rather drive through Wednesday and unpack once, but it is no longer the better Wednesday. Choose San Diego only if the zoo on Thanksgiving is the priority — Midway’s last admission is 4:00 PM, so that museum is off this itinerary. Skip Las Vegas unless the Strip at night matters more than Friday’s 7 hr 40 min drive.";
+    const RECOMMENDATION = "With a 1:00 PM Wednesday start, choose West Hollywood, then the coast. Thanksgiving-eve traffic is heavy from noon to 7:00 PM, so driving all the way to Santa Barbara is 6–7 hours and a 7:00–8:00 PM arrival — too late for Endeavour (the Science Center closes at 5:00 PM, and it is closed Thanksgiving, so the shuttle cannot move to another day). Stopping in West Hollywood is a 3.5–4.5 hour drive, which leaves time for Griffith Observatory after dark (open until 10:00 PM Wednesday, with free telescopes from about 7:00 PM) and a 9:00 PM rooftop reservation at Harriet’s (open until 10:30 PM, and downstairs if you stay at 1 Hotel). Thursday’s drive to Santa Barbara is only about two hours, and holiday traffic is often lighter, so The Knock at 5:00 PM still works. You do pack one extra time. The 1 Hotel two-room rate is the spendy part of this route; the same itinerary with the verified WeHo Airbnbs is the cheaper way to do it. Santa Barbara & Paso Robles is still the simpler two-stop trip if you would rather drive through Wednesday and unpack once, and it is the lower primary total, but it is no longer the better Wednesday. Choose San Diego only if the zoo on Thanksgiving is the priority — Midway’s last admission is 4:00 PM, so that museum is off this itinerary. Skip Las Vegas unless the Strip at night matters more than Friday’s 7 hr 40 min drive.";
 
     const WX_STOPS = [
       { id: "dhs", name: "Desert Hot Springs", date: "2026-11-25", when: "Wednesday morning, departure", lat: 33.8992, lon: -116.3605 },
@@ -252,6 +327,7 @@
         days: [
           {
             title: "Wednesday, Nov 25 · Desert Hot Springs to Santa Barbara",
+            vibe: "A long Thanksgiving-eve drive, then a late, walkable dinner downtown once you roll in — not a museum day.",
             origin: "Desert Hot Springs, CA",
             dest: "Santa Barbara, CA",
             originLL: [-116.3605, 33.8992],
@@ -278,16 +354,18 @@
               { kind: "Lunch, 11:00 AM–1:00 PM, near Palm Springs", name: "Sherman’s Deli & Bakery", detail: "A classic New York–style deli since 1963 — cinnamon-bread French toast, corned beef on rye, and a long sandwich board the kids can actually get excited about. It is a short detour into downtown Palm Springs, and it is the planned family lunch before a 1:00 PM departure.", hours: "Official hours are daily 8:00 AM–9:00 PM. Thanksgiving (you will already be gone) is 8:00 AM–2:00 PM. Call (760) 325-1199 before you go.", map: "Sherman's Deli & Bakery, 401 E Tahquitz Canyon Way, Palm Springs, CA 92262", site: "https://shermansdeli.com/" },
               { kind: "Family dinner, about 8:00 PM, downtown Santa Barbara", name: "Finney’s Crafthouse", detail: "Burgers, tacos, and scratch plates at 35 State Street in the Funk Zone, a short walk from a State Street stay. Official hours Wednesday 11:00 AM–10:00 PM, so an 8:00 PM arrival still works. Feed the girls here, then the two of you walk to milk & honey; or eat together here if the drive runs long.", hours: "Official hours Wednesday 11:00 AM–10:00 PM. Open Wednesday, Nov 25. (805) 845-3100.", map: "Finney's Crafthouse, 35 State Street, Santa Barbara, CA 93101", site: "https://finneyscrafthouse.com/locations/santa-barbara/" }
             ],
-            stayTitle: "Santa Barbara area, Wednesday to Friday, 2 nights · Not booked yet · Two separate bedrooms · Confirmed on each listing page Nov 25, 2026 (Reserve box, these dates, 4 guests). Taxes may be extra unless noted.",
+            stayTitle: "Santa Barbara area, Wednesday to Friday, 2 nights · Not booked yet · Two separate bedrooms. Airbnb availability checked 7:15 AM PT Nov 25; prices are the all-in Reserve-box totals. Hotel availability/rates as checked 7:30 AM PT Nov 25; rooms may sell out. True two-bedroom hotel suites were basically unavailable, so hotel picks are two rooms (ask for connecting). Verified Santa Barbara Airbnbs are the primary pick here: Kimpton Canary was sold out, and Hotel Californian was not verified.",
             stays: [
-              { name: "La Cabane, Santa Barbara, 3 bedrooms 1.5 baths", detail: "$882 for 2 nights (was $1,459), 4.6 from 60 reviews, quiet single-level home with 3 queen beds. A short drive to State Street rather than a walk.", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2" },
-              { name: "Spacious Home Near Downtown & Beach, Santa Barbara, 3 bedrooms 2 baths", detail: "$1,489 for 2 nights, prices include all fees, 4.76 from 660 reviews, near the Zoo and East Beach, a short drive to The Knock.", href: "https://www.airbnb.com/rooms/20699020?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2" },
-              { name: "Midtown cottage, Ventura, 3 bedrooms 1 bath", detail: "$731 for 2 nights, 4.74 from 131 reviews. Use only if Santa Barbara is gone — about 30–40 minutes south, so Thanksgiving at The Knock is a drive. One bathroom for four is tight. The listing showed a same-day booking window when checked.", href: "https://www.airbnb.com/rooms/660783391832138039?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2" },
-              { name: "Beach House Villa at Miramar Estates, Montecito, 2 bedrooms 2 baths", detail: "$2,349 for 2 nights, about $1,175 a night, a bit over the cap. 4.88 from 149 reviews, steps from Miramar Beach. Stay off the sand while the surf warning lasts.", href: "https://www.airbnb.com/rooms/3843330?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2" }
+              { name: "La Cabane, Santa Barbara, 3 bedrooms 1.5 baths", role: "primary", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2", detail: "$882 for 2 nights, prices include all fees, 4.6 from 60 reviews, quiet single-level home with 3 queen beds. A short drive to State Street rather than a walk.", safety: "Parking and safety: a quiet residential street; confirm off-street parking. Leave nothing visible. State Street and The Knock are a short drive." },
+              { name: "Spacious Home Near Downtown & Beach, Santa Barbara, 3 bedrooms 2 baths", role: "alternative", href: "https://www.airbnb.com/rooms/20699020?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2", detail: "$1,489 for 2 nights, prices include all fees, 4.76 from 660 reviews, near the Zoo and East Beach, a short drive to The Knock.", safety: "Parking and safety: confirm driveway or garage. East Beach is a generally comfortable area; stay off the sand while the surf warning lasts." },
+              { name: "Midtown cottage, Ventura, 3 bedrooms 1 bath", role: "backup", href: "https://www.airbnb.com/rooms/660783391832138039?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2", detail: "$731 for 2 nights, prices include all fees, 4.74 from 131 reviews. Use only if Santa Barbara is gone — about 30–40 minutes south, so Thanksgiving at The Knock is a drive. One bathroom for four is tight.", safety: "Parking and safety: confirm off-street parking. Midtown Ventura is fine for a short stay; the tradeoff is the drive back to Santa Barbara." },
+              { name: "Beach House Villa at Miramar Estates, Montecito, 2 bedrooms 2 baths", role: "alternative", href: "https://www.airbnb.com/rooms/3843330?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2", detail: "$2,349 for 2 nights, prices include all fees, about $1,175 a night, a bit over the cap. 4.88 from 149 reviews, steps from Miramar Beach.", safety: "Parking and safety: Montecito is among the safer areas on this trip. Stay off the sand while the surf warning lasts. Confirm on-site parking." },
+              { name: "Hotel Californian and Kimpton Canary", role: "note", detail: "Kimpton Canary was sold out for Nov 25–27 at the 7:30 AM check (and for the other Santa Barbara date windows). Hotel Californian — connecting rooms or the Alcazar two-bedroom suite — was not verified. Call the hotel if you want to ask." }
             ]
           },
           {
             title: "Thursday, Nov 26 · Thanksgiving in Santa Barbara",
+            vibe: "An unhurried Thanksgiving in town: a relaxed midday meal, a stroll, and a late dinner for the two of you at The Knock.",
             origin: "Santa Barbara, CA",
             dest: "The Knock, 36 State St, Santa Barbara, CA 93101",
             originLL: [-119.6982, 34.4208],
@@ -301,9 +379,9 @@
             evening: {
               name: "The Knock",
               detail: "A quieter dinner for the two of you at Hotel Californian in the Funk Zone, a short walk from a State Street stay. The restaurant states it is open Thanksgiving Day.",
-              hours: "Tuesday–Saturday 5:00 PM–close, and open Thanksgiving, Nov 26.",
+              hours: "Official hours Tuesday–Saturday 5:00 PM–close, and the restaurant states it is open Thanksgiving Day, Nov 26. No published prix fixe — à la carte (burger about $28, steak frites about $59, pot pie about $26, cocktails about $18–$19). Book 5:00 PM or a little later.",
               price: "Upscale",
-              reservations: "Recommended",
+              reservations: "Recommended. Call (805) 882-0135.",
               map: "The Knock, 36 State St, Santa Barbara, CA 93101",
               site: "https://www.theknockkitchen.com/"
             },
@@ -313,6 +391,7 @@
           },
           {
             title: "Friday, Nov 27 · Solvang Julefest, then Paso Robles",
+            vibe: "A short hop into Solvang for the Julefest lights, then a rooftop evening in Paso Robles.",
             origin: "Santa Barbara, CA",
             dest: "Solvang, CA",
             dest2: "Paso Robles, CA",
@@ -323,7 +402,7 @@
               ["Drive", "Santa Barbara to Solvang is short; then 122 mi, about 2 hr 35 min, to Paso Robles"],
               ["Leave Solvang by", "Early evening if you want a relaxed arrival in Paso Robles"],
               ["Superchargers", "Optional in Santa Barbara before you go"],
-              ["Main activity", "Solvang Julefest opening night. Nightly light shows 5:00–9:00 PM, bakeries, a walkable holiday village."]
+              ["Main activity", "Solvang Julefest opening night, Friday, Nov 27. Nightly light shows 5:00–9:00 PM, bakeries, a walkable holiday village. The lights are free."]
             ],
             places: [
               { label: "Solvang map", q: "Solvang, CA" },
@@ -332,7 +411,7 @@
             evening: {
               name: "Esperanza on the Rooftop",
               detail: "Baja-inspired plates, cocktails, and a downtown Paso Robles view after you arrive. Walkable from a downtown Paso stay; a short drive from San Luis Obispo, Atascadero, or Morro Bay. The girls can stay in their room nearby.",
-              hours: "Friday 4:00 PM–11:00 PM (full food until 10:00 PM, drinks until 11:00 PM).",
+              hours: "Friday 4:00 PM–11:00 PM (full food until 10:00 PM, drinks until 11:00 PM). Open Friday, Nov 27.",
               price: "Moderate, about $30 and under on OpenTable",
               reservations: "OpenTable takes Friday reservations through 8:00 PM; after that, walk in or use the waitlist.",
               map: "Esperanza on the Rooftop, 944 Pine St, Paso Robles, CA 93446",
@@ -341,16 +420,18 @@
             meals: [
               { kind: "Lunch in Solvang", name: "Solvang Restaurant", detail: "Æbleskiver — round Danish pancake puffs with raspberry jam and powdered sugar — plus Danish plates from 11:00 AM. A festive, low-stakes lunch in the middle of Julefest, and 11- and 14-year-olds usually love it.", hours: "Usual Friday hours are 7:00 AM–3:00 PM. The official site says they are open most holidays and asks you to call or email for special holiday hours: (805) 688-4645. Eat midday so you finish before 3:00, then walk the village before the 5:00 PM lights.", map: "Solvang Restaurant, 1672 Copenhagen Dr, Solvang, CA 93463", site: "https://solvangrestaurant.com/" }
             ],
-            stayTitle: "Paso Robles area, Friday to Saturday, 1 night · Not booked yet · Two separate bedrooms · Confirmed on each listing page Nov 25, 2026 (Reserve box, these dates, 4 guests). Taxes may be extra unless noted.",
+            stayTitle: "Paso Robles area, Friday to Saturday, 1 night · Not booked yet · Two separate bedrooms. Airbnb availability checked 7:15 AM PT Nov 25; prices are the all-in Reserve-box totals. Hotel availability/rates as checked 7:30 AM PT Nov 25; rooms may sell out. True two-bedroom hotel suites were basically unavailable, so hotel picks are two rooms (ask for connecting).",
             stays: [
-              { name: "Sea to See, Morro Bay townhouse, 2 bedrooms 1 bath", detail: "$490 for 1 night, 4.96 from 139 reviews, Guest Favorite, bay-view deck. Stay off the waterline. A short drive to the Paso rooftop.", href: "https://www.airbnb.com/rooms/835723701210958328?check_in=2026-11-27&check_out=2026-11-28&adults=2&children=2" },
-              { name: "High Tide Hideaway, Avila Beach, 3 bedrooms 3 baths", detail: "$650 for 1 night (was $750), new listing with no reviews yet, a king and two queens, minutes from the beach, a drive to the rooftop.", href: "https://www.airbnb.com/rooms/1825685976467600757?check_in=2026-11-27&check_out=2026-11-28&adults=2&children=2" },
-              { name: "SLO Brew Lofts, San Luis Obispo, 2 bedrooms 2 baths", detail: "$889 for 1 night, 4.81 from 43 reviews, walkable downtown SLO, a short drive to the rooftop.", href: "https://www.airbnb.com/rooms/23186823?check_in=2026-11-27&check_out=2026-11-28&adults=2&children=2" },
-              { name: "The Old Valley Oak, Atascadero, 4 bedrooms 2 baths", detail: "$900 for 1 night (was $980), 4.63 from 30 reviews, about 15 minutes from Paso Robles.", href: "https://www.airbnb.com/rooms/920383238830356848?check_in=2026-11-27&check_out=2026-11-28&adults=2&children=2" }
+              { name: "Embassy Suites San Luis Obispo — two 2-Room Suites (ask for connecting)", role: "primary", href: "https://www.hilton.com/en/book/reservation/rooms/?ctyhocn=SLOCAES&arrivalDate=2026-11-27&departureDate=2026-11-28&room1NumAdults=2&room1NumChildren=2&room1Child1Age=14&room1Child2Age=11", detail: "Primary hotel pick. Two 2-Room Suites at $272 a night each, about $544 plus tax, with free breakfast. Each suite is a bedroom plus a living room, not a true two-bedroom. Book two suites and ask for connecting — connecting is on request, not guaranteed. Hotel availability/rates as checked 7:30 AM PT Nov 25; rooms may sell out.", safety: "Parking and safety: on-site self-parking. A $20 nightly fee has been listed in the past, but the fee was not shown in the 7:30 AM check — confirm at booking. Leave nothing visible. Esperanza’s rooftop is a short drive, not a walk." },
+              { name: "Sea to See, Morro Bay townhouse, 2 bedrooms 1 bath", role: "alternative", href: "https://www.airbnb.com/rooms/835723701210958328?check_in=2026-11-27&check_out=2026-11-28&adults=2&children=2", detail: "$490 for 1 night, prices include all fees, 4.96 from 139 reviews, Guest Favorite, bay-view deck. Stay off the waterline. A short drive to the Paso rooftop.", safety: "Parking and safety: free on-site garage has been reported on the listing; confirm. Stay off the waterline. Morro Bay is generally quiet overnight." },
+              { name: "High Tide Hideaway, Avila Beach, 3 bedrooms 3 baths", role: "alternative", href: "https://www.airbnb.com/rooms/1825685976467600757?check_in=2026-11-27&check_out=2026-11-28&adults=2&children=2", detail: "$650 for 1 night, prices include all fees (was $750), new listing with no reviews yet, a king and two queens, a drive to the rooftop.", safety: "Parking and safety: confirm off-street parking. Stay off the waterline." },
+              { name: "SLO Brew Lofts, San Luis Obispo, 2 bedrooms 2 baths", role: "alternative", href: "https://www.airbnb.com/rooms/23186823?check_in=2026-11-27&check_out=2026-11-28&adults=2&children=2", detail: "$889 for 1 night, prices include all fees, 4.81 from 43 reviews, walkable downtown SLO, a short drive to the rooftop.", safety: "Parking and safety: confirm the building’s parking. Downtown SLO is generally comfortable; still use off-street parking and leave nothing visible." },
+              { name: "The Old Valley Oak, Atascadero, 4 bedrooms 2 baths", role: "alternative", href: "https://www.airbnb.com/rooms/920383238830356848?check_in=2026-11-27&check_out=2026-11-28&adults=2&children=2", detail: "$900 for 1 night, prices include all fees (was $980), 4.63 from 30 reviews, about 15 minutes from Paso Robles.", safety: "Parking and safety: a residential Atascadero house; confirm off-street parking. A short drive to Paso Robles." }
             ]
           },
           {
             title: "Saturday, Nov 28 · Paso Robles to Dublin",
+            vibe: "An easy morning and the shortest drive home of the four options, with a quirky fruit-stand stop if you go via Gilroy.",
             origin: "Paso Robles, CA",
             dest: "Dublin, CA",
             originLL: [-120.691, 35.6266],
@@ -375,6 +456,7 @@
         days: [
           {
             title: "Wednesday, Nov 25 · Desert Hot Springs to West Hollywood",
+            vibe: "A shorter drive into West Hollywood, diner dinner, Griffith after dark, and a 9:00 PM rooftop nightcap — downstairs if you stay at 1 Hotel.",
             origin: "Desert Hot Springs, CA",
             dest: "West Hollywood, CA",
             originLL: [-116.3605, 33.8992],
@@ -383,7 +465,7 @@
               ["Drive", "126 mi. Off-peak this is about 2 hr 35 min; leaving at 1:00 PM on Thanksgiving eve, plan on 3.5–4.5 hours on I-10. Expect to arrive about 4:30–6:00 PM, sometimes 6:30."],
               ["Leave around", "1:00 PM, after lunch at Sherman’s. Wednesday traffic is heaviest from noon to 7:00 PM."],
               ["Superchargers", "Optional. Charge in the morning if you want a buffer."],
-              ["Main activity", "Griffith Observatory in the evening. The building is open noon–10:00 PM on Wednesday, Nov 25, and closed Thanksgiving. Sunset is at 4:46 PM, so this is a night-views visit, which is the magic of the place anyway. Free telescope viewing usually begins around 7:00 PM when the sky is clear; the line is cut off at 9:30 PM. Admission is free. It is about 8.5 mi, or 20–30 minutes, from West Hollywood; parking lots can fill on a clear night, so leave a little extra time. Space Shuttle Endeavour does not fit: the Science Center closes at 5:00 PM and is closed Thanksgiving, and Exposition Park is not on the way north on Friday or Saturday."]
+              ["Main activity", "Griffith Observatory in the evening. The building is open noon–10:00 PM on Wednesday, Nov 25, and closed Thanksgiving. Sunset is at 4:46 PM, so this is a night-views visit, which is the magic of the place anyway. Free telescope viewing usually begins around 7:00 PM when the sky is clear; the line is cut off at 9:30 PM. Admission is free. Official parking is $10 a space per hour (Los Angeles Recreation and Parks, mid-2026). It is about 8.5 mi, or 20–30 minutes, from West Hollywood; parking lots can fill on a clear night, so leave a little extra time, or use a rideshare. Space Shuttle Endeavour does not fit: the Science Center closes at 5:00 PM and is closed Thanksgiving, and Exposition Park is not on the way north on Friday or Saturday."]
             ],
             museumLink: { href: "https://griffithobservatory.lacity.gov/visit/", label: "Griffith Observatory hours and visit info" },
             places: [
@@ -392,7 +474,7 @@
             ],
             evening: {
               name: "Harriet’s Rooftop",
-              detail: "A rooftop cocktail lounge atop the 1 Hotel at 8490 Sunset Boulevard, with panoramic city views, a short walk or a few minutes’ drive from a West Hollywood stay so the girls can remain nearby. Book 9:00 PM, after Griffith and after the girls are back in their room. Catch LA, the earlier pick, is only open until 9:00 PM on Wednesday, which does not work after the observatory.",
+              detail: "A rooftop cocktail lounge atop the 1 Hotel at 8490 Sunset Boulevard. If you stay at 1 Hotel, it is downstairs, so the girls can remain in their room; from a WeHo Airbnb it is a short walk or a few minutes’ drive. Book 9:00 PM, after Griffith and after the girls are back in their room. Catch LA, the earlier pick, is only open until 9:00 PM on Wednesday, which does not work after the observatory.",
               hours: "OpenTable lists Tuesday and Wednesday 5:00–10:30 PM. Open Wednesday, Nov 25; closed Thanksgiving (you will already be in Santa Barbara). Book no later than 9:00–9:15 PM.",
               price: "Moderate to upscale, about $31–$50",
               reservations: "Required, and only online — OpenTable or harrietsrooftop.com. If there is no availability online, they do not take a walk-in list. (310) 651-6193.",
@@ -401,19 +483,21 @@
             },
             meals: [
               { kind: "Lunch, 11:00 AM–1:00 PM, near Palm Springs", name: "Sherman’s Deli & Bakery", detail: "The same easy sit-down as on the coast route: a landmark deli with French toast and piled-high sandwiches. This is the planned family lunch before a 1:00 PM departure.", hours: "Official hours are daily 8:00 AM–9:00 PM. Call (760) 325-1199 before you go.", map: "Sherman's Deli & Bakery, 401 E Tahquitz Canyon Way, Palm Springs, CA 92262", site: "https://shermansdeli.com/" },
-              { kind: "Family dinner, about 6:30 PM, West Hollywood", name: "Mel’s Drive-In", detail: "A classic Sunset Boulevard diner — milkshakes, burgers, and booths — at 8585 Sunset Boulevard. Eat together around 6:30 PM after you check in, or later if the drive runs long; the kitchen is open until midnight. Then all four of you go to Griffith around 7:30 PM for the telescopes.", hours: "Official hours Wednesday 7:00 AM–midnight.", map: "Mel's Drive-In, 8585 Sunset Boulevard, West Hollywood, CA 90069", site: "https://melsdrive-in.com/restaurant/mels-west-hollywood/" }
+              { kind: "Family dinner, about 6:30 PM, West Hollywood", name: "Mel’s Drive-In", detail: "A classic Sunset Boulevard diner — milkshakes, burgers, and booths — at 8585 Sunset Boulevard. Eat together around 6:30 PM after you check in, or later if the drive runs long; the kitchen is open until midnight. Then all four of you go to Griffith around 7:30 PM for the telescopes.", hours: "Official hours Wednesday 7:00 AM–midnight. Open Wednesday, Nov 25.", map: "Mel's Drive-In, 8585 Sunset Boulevard, West Hollywood, CA 90069", site: "https://melsdrive-in.com/restaurant/mels-west-hollywood/" }
             ],
-            stayTitle: "West Hollywood, Beverly Hills, or Hollywood, Wednesday to Thursday, 1 night · Not booked yet · Two separate bedrooms · Confirmed on each listing page Nov 25, 2026 (Reserve box, these dates, 4 guests).",
+            stayTitle: "West Hollywood, Wednesday to Thursday, 1 night · Not booked yet · Two rooms or two bedrooms. Airbnb availability checked 7:15 AM PT Nov 25; prices are the all-in Reserve-box totals. Hotel availability/rates as checked 7:30 AM PT Nov 25; rooms may sell out. True two-bedroom hotel suites were basically unavailable, so hotel picks are two rooms (ask for connecting).",
             stays: [
-              { name: "Luxury 2-bedroom apartment, West Hollywood, rooftop, 2 baths", detail: "$487 for 1 night, prices include all fees (was $560), 4.88 from 78 reviews, on Sunset Blvd by Formosa Park, restaurants outside the door, free garage parking for two cars. The best match for a walkable evening.", href: "https://www.airbnb.com/rooms/978209058162726733?check_in=2026-11-25&check_out=2026-11-26&adults=2&children=2" },
-              { name: "The Chaplin Boutique Hideaway, West Hollywood, 2 bedrooms 1 bath", detail: "$462 for 1 night, prices include all fees (was $588), 4.85 from 27 reviews, a gated bungalow with a garden near Formosa Park, walkable.", href: "https://www.airbnb.com/rooms/1524058962863203787?check_in=2026-11-25&check_out=2026-11-26&adults=2&children=2" },
-              { name: "Heart of West Hollywood 2-bedroom, 1.5 baths", detail: "$330 for 1 night (was $425), 4.7 from 10 reviews, top-floor unit, free parking.", href: "https://www.airbnb.com/rooms/1730193931912747022?check_in=2026-11-25&check_out=2026-11-26&adults=2&children=2" },
-              { name: "Top-floor penthouse, Beverly Hills, 2 bedrooms 2 baths", detail: "$438 for 1 night, 4.85 from 48 reviews, rooftop views. A short drive to Melrose or Rodeo Drive.", href: "https://www.airbnb.com/rooms/1231390647502297279?check_in=2026-11-25&check_out=2026-11-26&adults=2&children=2" },
-              { name: "2-bedroom condo, Hollywood Boulevard, 2 baths", detail: "$354 for 1 night (was $411), 4.81 from 43 reviews, breakfast included. A drive to a West Hollywood dinner.", href: "https://www.airbnb.com/rooms/1538009236335542610?check_in=2026-11-25&check_out=2026-11-26&adults=2&children=2" }
+              { name: "1 Hotel West Hollywood — two rooms (ask for connecting)", role: "primary", href: "https://www.1hotels.com/west-hollywood?arrive=2026-11-25&depart=2026-11-26&adult=2&child=2&rooms=2", detail: "Primary hotel pick. Single rooms were about $438 a night on the official rate, so two rooms are about $876 plus tax. No two-bedroom suite or connecting inventory was shown online — book two rooms and ask for connecting. Harriet’s rooftop is in the hotel. Hotel availability/rates as checked 7:30 AM PT Nov 25; rooms may sell out.", safety: "Parking and safety: valet parking (rate not shown at 7:30 AM). EV charging is listed on the hotel site. Hotel security and a staffed driveway. Leave nothing in the car." },
+              { name: "Luxury 2-bedroom apartment, West Hollywood, rooftop, 2 baths", role: "alternative", href: "https://www.airbnb.com/rooms/978209058162726733?check_in=2026-11-25&check_out=2026-11-26&adults=2&children=2", detail: "Cheaper alternative: $487 for 1 night, prices include all fees, 4.88 from 78 reviews, on Sunset Blvd by Formosa Park, restaurants outside the door.", safety: "Parking and safety: free residential garage for two cars. Formosa Park / Sunset is generally comfortable; still leave nothing visible." },
+              { name: "The Chaplin Boutique Hideaway, West Hollywood, 2 bedrooms 1 bath", role: "alternative", href: "https://www.airbnb.com/rooms/1524058962863203787?check_in=2026-11-25&check_out=2026-11-26&adults=2&children=2", detail: "$462 for 1 night, prices include all fees, 4.85 from 27 reviews, a gated bungalow with a garden near Formosa Park, walkable.", safety: "Parking and safety: gated bungalow; confirm off-street parking. A quieter WeHo pocket near Formosa Park." },
+              { name: "Heart of West Hollywood 2-bedroom, 1.5 baths", role: "alternative", href: "https://www.airbnb.com/rooms/1730193931912747022?check_in=2026-11-25&check_out=2026-11-26&adults=2&children=2", detail: "The lowest WeHo total: $330 for 1 night, prices include all fees, 4.7 from 10 reviews, top-floor unit, free parking.", safety: "Parking and safety: free parking is listed, but the type was not stated — confirm off-street parking before you book." },
+              { name: "Top-floor penthouse, Beverly Hills, 2 bedrooms 2 baths", role: "alternative", href: "https://www.airbnb.com/rooms/1231390647502297279?check_in=2026-11-25&check_out=2026-11-26&adults=2&children=2", detail: "$438 for 1 night, prices include all fees, 4.85 from 48 reviews, rooftop views. A short drive to Melrose or Rodeo Drive.", safety: "Parking and safety: gated community, among the safer areas on this stop. Confirm the assigned parking." },
+              { name: "2-bedroom condo, Hollywood Boulevard, 2 baths", role: "backup", href: "https://www.airbnb.com/rooms/1538009236335542610?check_in=2026-11-25&check_out=2026-11-26&adults=2&children=2", detail: "$354 for 1 night, prices include all fees, 4.81 from 43 reviews, breakfast included. A drive to a West Hollywood dinner.", safety: "Parking and safety: the weakest pick on this list. Hollywood Boulevard is a tourist corridor with frequent smash-and-grabs. Prefer the WeHo or Beverly Hills stays unless parking is clearly off-street and you leave nothing in the car." }
             ]
           },
           {
             title: "Thursday, Nov 26 · West Hollywood to Santa Barbara, Thanksgiving dinner",
+            vibe: "A roughly two-hour drive north, often lighter on Thanksgiving, and a proper Santa Barbara holiday evening.",
             origin: "West Hollywood, CA",
             dest: "Santa Barbara, CA",
             originLL: [-118.385, 34.0909],
@@ -431,24 +515,26 @@
             evening: {
               name: "The Knock",
               detail: "A quieter dinner for the two of you at Hotel Californian in the Funk Zone, a short walk from a State Street stay and a short drive from Summerland or the East Beach area. The restaurant states it is open Thanksgiving Day.",
-              hours: "Tuesday–Saturday 5:00 PM–close, and open Thanksgiving, Nov 26.",
+              hours: "Official hours Tuesday–Saturday 5:00 PM–close, and the restaurant states it is open Thanksgiving Day, Nov 26. No published prix fixe — à la carte (burger about $28, steak frites about $59, pot pie about $26, cocktails about $18–$19). Book 5:00 PM or a little later.",
               price: "Upscale",
-              reservations: "Recommended",
+              reservations: "Recommended. Call (805) 882-0135.",
               map: "The Knock, 36 State St, Santa Barbara, CA 93101",
               site: "https://www.theknockkitchen.com/"
             },
             meals: [
               { kind: "Thanksgiving lunch", name: "The Copper", detail: "Wood-fired pizza and pasta on State Street, and they invited families for a Thanksgiving feast — a relaxed midday meal so the girls are fed before The Knock in the evening.", hours: "Their events page lists a family Thanksgiving feast on Thursday, Nov 26, starting at 11:00 AM. The posted end time says 9:00 AM, which looks like a typo (Christmas on the same page is 11:00 AM–9:00 PM, and regular Thursday dinner runs until 9:00 PM). Call (805) 770-8055 to confirm when they close, and book ahead.", map: "The Copper, 1031 State St, Santa Barbara, CA 93101", site: "https://thecoppersb.com/events" }
             ],
-            stayTitle: "Santa Barbara area, Thursday to Friday, 1 night · Not booked yet · Two separate bedrooms · These are one-night stays for Thanksgiving only, re-checked on each listing page Nov 25, 2026. A two-night Santa Barbara booking from Wednesday would not apply here.",
+            stayTitle: "Santa Barbara area, Thursday to Friday, 1 night · Not booked yet · Two separate bedrooms. These are one-night stays for Thanksgiving only — a two-night booking from Wednesday would not apply here. Airbnb availability checked 7:15 AM PT Nov 25; prices are the all-in Reserve-box totals. Hotel availability/rates as checked 7:30 AM PT Nov 25; rooms may sell out. True two-bedroom hotel suites were basically unavailable, so hotel picks are two rooms (ask for connecting). Verified Airbnbs are the primary pick: Kimpton Canary was sold out for Nov 26–27, and Hotel Californian was not verified.",
             stays: [
-              { name: "La Cabane, Santa Barbara, 3 bedrooms 1.5 baths", detail: "$523 for 1 night (was $773), 4.6 from 60 reviews, quiet single-level home, a short drive to The Knock.", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2" },
-              { name: "Bright Boutique Cottage, Summerland, 2 bedrooms 1 bath", detail: "$500 for 1 night (was $650), 5.0 from 26 reviews, walk to Summerland’s small downtown, a short drive to The Knock.", href: "https://www.airbnb.com/rooms/1737750748850997183?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2" },
-              { name: "Spacious Home Near Downtown & Beach, Santa Barbara, 3 bedrooms 2 baths", detail: "$796 for 1 night, 4.76 from 660 reviews, near the Zoo and East Beach, a short drive to The Knock.", href: "https://www.airbnb.com/rooms/20699020?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2" }
+              { name: "Bright Boutique Cottage, Summerland, 2 bedrooms 1 bath", role: "primary", href: "https://www.airbnb.com/rooms/1737750748850997183?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2", detail: "$500 for 1 night, prices include all fees (was $650), 5.0 from 26 reviews, walk to Summerland’s small downtown, a short drive to The Knock.", safety: "Parking and safety: confirm off-street parking. Summerland is a small, generally quiet town. Stay off the sand while the surf warning lasts." },
+              { name: "La Cabane, Santa Barbara, 3 bedrooms 1.5 baths", role: "alternative", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2", detail: "$523 for 1 night, prices include all fees (was $773), 4.6 from 60 reviews, quiet single-level home, a short drive to The Knock.", safety: "Parking and safety: a quiet residential street; confirm off-street parking. Leave nothing visible." },
+              { name: "Spacious Home Near Downtown & Beach, Santa Barbara, 3 bedrooms 2 baths", role: "alternative", href: "https://www.airbnb.com/rooms/20699020?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2", detail: "$796 for 1 night, prices include all fees, 4.76 from 660 reviews, near the Zoo and East Beach, a short drive to The Knock.", safety: "Parking and safety: confirm driveway or garage. Stay off the sand while the surf warning lasts." },
+              { name: "Hotel Californian and Kimpton Canary", role: "note", detail: "Kimpton Canary was sold out for Nov 26–27 at the 7:30 AM check. Hotel Californian was not verified. Call the hotel if you want to ask about connecting rooms or the Alcazar suite." }
             ]
           },
           {
             title: "Friday, Nov 27 · Solvang Julefest, then Paso Robles",
+            vibe: "A short hop into Solvang for the Julefest lights, then a rooftop evening in Paso Robles.",
             origin: "Santa Barbara, CA",
             dest: "Solvang, CA",
             dest2: "Paso Robles, CA",
@@ -459,7 +545,7 @@
               ["Drive", "Santa Barbara to Solvang is short; then 122 mi, about 2 hr 35 min, to Paso Robles"],
               ["Leave Solvang by", "Early evening if you want a relaxed arrival in Paso Robles"],
               ["Superchargers", "Optional in Santa Barbara before you go"],
-              ["Main activity", "Solvang Julefest opening night. Nightly light shows 5:00–9:00 PM, bakeries, a walkable holiday village."]
+              ["Main activity", "Solvang Julefest opening night, Friday, Nov 27. Nightly light shows 5:00–9:00 PM, bakeries, a walkable holiday village. The lights are free."]
             ],
             places: [
               { label: "Solvang map", q: "Solvang, CA" },
@@ -468,7 +554,7 @@
             evening: {
               name: "Esperanza on the Rooftop",
               detail: "Baja-inspired plates, cocktails, and a downtown Paso Robles view after you arrive. Walkable from a downtown Paso stay; a short drive from San Luis Obispo, Atascadero, or Morro Bay. The girls can stay in their room nearby.",
-              hours: "Friday 4:00 PM–11:00 PM (full food until 10:00 PM, drinks until 11:00 PM).",
+              hours: "Friday 4:00 PM–11:00 PM (full food until 10:00 PM, drinks until 11:00 PM). Open Friday, Nov 27.",
               price: "Moderate, about $30 and under on OpenTable",
               reservations: "OpenTable takes Friday reservations through 8:00 PM; after that, walk in or use the waitlist.",
               map: "Esperanza on the Rooftop, 944 Pine St, Paso Robles, CA 93446",
@@ -477,16 +563,18 @@
             meals: [
               { kind: "Lunch in Solvang", name: "Solvang Restaurant", detail: "Æbleskiver — round Danish pancake puffs with raspberry jam and powdered sugar — plus Danish plates from 11:00 AM. A festive, low-stakes lunch in the middle of Julefest, and 11- and 14-year-olds usually love it.", hours: "Usual Friday hours are 7:00 AM–3:00 PM. The official site says they are open most holidays and asks you to call or email for special holiday hours: (805) 688-4645. Eat midday so you finish before 3:00, then walk the village before the 5:00 PM lights.", map: "Solvang Restaurant, 1672 Copenhagen Dr, Solvang, CA 93463", site: "https://solvangrestaurant.com/" }
             ],
-            stayTitle: "Paso Robles area, Friday to Saturday, 1 night · Not booked yet · Two separate bedrooms · Same confirmed listings as the Santa Barbara & Paso Robles route.",
+            stayTitle: "Paso Robles area, Friday to Saturday, 1 night · Not booked yet · Two separate bedrooms. Same date window as the coast route. Airbnb availability checked 7:15 AM PT Nov 25; prices are the all-in Reserve-box totals. Hotel availability/rates as checked 7:30 AM PT Nov 25; rooms may sell out. True two-bedroom hotel suites were basically unavailable, so hotel picks are two rooms (ask for connecting).",
             stays: [
-              { name: "Sea to See, Morro Bay townhouse, 2 bedrooms 1 bath", detail: "$490 for 1 night, 4.96 from 139 reviews, Guest Favorite, bay-view deck. Stay off the waterline. A short drive to the Paso rooftop.", href: "https://www.airbnb.com/rooms/835723701210958328?check_in=2026-11-27&check_out=2026-11-28&adults=2&children=2" },
-              { name: "High Tide Hideaway, Avila Beach, 3 bedrooms 3 baths", detail: "$650 for 1 night (was $750), new listing with no reviews yet, a king and two queens, a drive to the rooftop.", href: "https://www.airbnb.com/rooms/1825685976467600757?check_in=2026-11-27&check_out=2026-11-28&adults=2&children=2" },
-              { name: "SLO Brew Lofts, San Luis Obispo, 2 bedrooms 2 baths", detail: "$889 for 1 night, 4.81 from 43 reviews, walkable downtown SLO.", href: "https://www.airbnb.com/rooms/23186823?check_in=2026-11-27&check_out=2026-11-28&adults=2&children=2" },
-              { name: "The Old Valley Oak, Atascadero, 4 bedrooms 2 baths", detail: "$900 for 1 night (was $980), 4.63 from 30 reviews, about 15 minutes from Paso Robles.", href: "https://www.airbnb.com/rooms/920383238830356848?check_in=2026-11-27&check_out=2026-11-28&adults=2&children=2" }
+              { name: "Embassy Suites San Luis Obispo — two 2-Room Suites (ask for connecting)", role: "primary", href: "https://www.hilton.com/en/book/reservation/rooms/?ctyhocn=SLOCAES&arrivalDate=2026-11-27&departureDate=2026-11-28&room1NumAdults=2&room1NumChildren=2&room1Child1Age=14&room1Child2Age=11", detail: "Primary hotel pick. Two 2-Room Suites at $272 a night each, about $544 plus tax, with free breakfast. Each suite is a bedroom plus a living room, not a true two-bedroom. Book two suites and ask for connecting — connecting is on request, not guaranteed. Hotel availability/rates as checked 7:30 AM PT Nov 25; rooms may sell out.", safety: "Parking and safety: on-site self-parking. A $20 nightly fee has been listed in the past, but the fee was not shown in the 7:30 AM check — confirm at booking. Leave nothing visible. Esperanza’s rooftop is a short drive, not a walk." },
+              { name: "Sea to See, Morro Bay townhouse, 2 bedrooms 1 bath", role: "alternative", href: "https://www.airbnb.com/rooms/835723701210958328?check_in=2026-11-27&check_out=2026-11-28&adults=2&children=2", detail: "$490 for 1 night, prices include all fees, 4.96 from 139 reviews, Guest Favorite, bay-view deck. Stay off the waterline. A short drive to the Paso rooftop.", safety: "Parking and safety: free on-site garage has been reported on the listing; confirm. Stay off the waterline. Morro Bay is generally quiet overnight." },
+              { name: "High Tide Hideaway, Avila Beach, 3 bedrooms 3 baths", role: "alternative", href: "https://www.airbnb.com/rooms/1825685976467600757?check_in=2026-11-27&check_out=2026-11-28&adults=2&children=2", detail: "$650 for 1 night, prices include all fees (was $750), new listing with no reviews yet, a king and two queens, a drive to the rooftop.", safety: "Parking and safety: confirm off-street parking. Stay off the waterline." },
+              { name: "SLO Brew Lofts, San Luis Obispo, 2 bedrooms 2 baths", role: "alternative", href: "https://www.airbnb.com/rooms/23186823?check_in=2026-11-27&check_out=2026-11-28&adults=2&children=2", detail: "$889 for 1 night, prices include all fees, 4.81 from 43 reviews, walkable downtown SLO, a short drive to the rooftop.", safety: "Parking and safety: confirm the building’s parking. Downtown SLO is generally comfortable; still use off-street parking and leave nothing visible." },
+              { name: "The Old Valley Oak, Atascadero, 4 bedrooms 2 baths", role: "alternative", href: "https://www.airbnb.com/rooms/920383238830356848?check_in=2026-11-27&check_out=2026-11-28&adults=2&children=2", detail: "$900 for 1 night, prices include all fees (was $980), 4.63 from 30 reviews, about 15 minutes from Paso Robles.", safety: "Parking and safety: a residential Atascadero house; confirm off-street parking. A short drive to Paso Robles." }
             ]
           },
           {
             title: "Saturday, Nov 28 · Paso Robles to Dublin",
+            vibe: "An easy morning and the shortest drive home of the four options, with a quirky fruit-stand stop if you go via Gilroy.",
             origin: "Paso Robles, CA",
             dest: "Dublin, CA",
             originLL: [-120.691, 35.6266],
@@ -510,6 +598,7 @@
         days: [
           {
             title: "Wednesday, Nov 25 · Desert Hot Springs to San Diego",
+            vibe: "A mid-length drive, a short Coronado ferry at dusk, and dinner on 30th Street — Midway will have to wait for another trip.",
             origin: "Desert Hot Springs, CA",
             dest: "Broadway Pier, 990 N Harbor Dr, San Diego, CA 92101",
             originLL: [-116.3605, 33.8992],
@@ -518,7 +607,7 @@
               ["Drive", "134 mi. Off-peak this is about 2 hr 50 min; leaving at 1:00 PM on Thanksgiving eve, plan on 4–5 hours via I-10 and I-15. Expect to arrive about 5:00–6:00 PM."],
               ["Leave around", "1:00 PM, after lunch at Sherman’s."],
               ["Superchargers", "Optional. This leg is short enough to skip, or charge in the morning if you want a buffer."],
-              ["Main activity", "A harbor-lights evening, not the USS Midway. The museum’s last admission is 4:00 PM and the building closes at 5:00 PM; a 1:00 PM departure would get you there after both. It is closed Thanksgiving, and it is not on the way Friday, so it cannot move to another day. Instead, walk the Embarcadero — the carrier is lit up from the plaza even if you cannot go in — and take the Flagship ferry to Coronado and back. It is a 15-minute crossing, $9 for ages 4 and up, from Broadway Pier at 990 N Harbor Drive, right beside the Midway. Boats run into the evening; the 6:00 and 7:00 PM departures are the useful ones after a 1:00 PM start. Confirm the day’s last boat on Flagship’s site. This is a boat ride and a landing stroll, not a beach stop."]
+              ["Main activity", "A harbor-lights evening, not the USS Midway. The museum’s last admission is 4:00 PM and the building closes at 5:00 PM; a 1:00 PM departure would get you there after both. It is closed Thanksgiving, and it is not on the way Friday, so it cannot move to another day. Instead, walk the Embarcadero — the carrier is lit up from the plaza even if you cannot go in — and take the Flagship ferry to Coronado and back. It is a 15-minute crossing, $9 for ages 4 and up, from Broadway Pier at 990 N Harbor Drive, right beside the Midway. Boats run into the evening; the 6:00 and 7:00 PM departures are the useful ones after a 1:00 PM start. Confirm the day’s last boat on Flagship’s site, or call (619) 234-4111. This is a boat ride and a landing stroll, not a beach stop."]
             ],
             museumLink: { href: "https://www.flagshipsd.com/ferry-routes", label: "Flagship ferry routes and times" },
             places: [
@@ -528,7 +617,7 @@
             evening: {
               name: "Alexander’s on 30th",
               detail: "A neighborhood Italian restaurant in North Park, walkable from the North Park stay so the girls can remain in their room. After the ferry, it is a short drive from the harbor. Book 7:30 PM if you take the 6:00 PM boat; 8:00 PM is the latest comfortable time, because the kitchen closes at 9:00 PM.",
-              hours: "Wednesday dinner 5:00–9:00 PM.",
+              hours: "Official hours Wednesday dinner 5:00–9:00 PM. Open Wednesday, Nov 25. Book 7:30 PM, or 8:00 PM at the latest.",
               price: "Moderate, about $31–$50",
               reservations: "Recommended. Book 7:30 PM, or 8:00 PM at the latest.",
               map: "Alexander's on 30th, 3391 30th St, San Diego, CA 92104",
@@ -538,15 +627,17 @@
               { kind: "Lunch, 11:00 AM–1:00 PM, near Palm Springs", name: "Sherman’s Deli & Bakery", detail: "A classic New York–style deli since 1963 — cinnamon-bread French toast, corned beef on rye, and a long sandwich board. It is the planned family lunch before a 1:00 PM departure.", hours: "Official hours are daily 8:00 AM–9:00 PM. Call (760) 325-1199 before you go.", map: "Sherman's Deli & Bakery, 401 E Tahquitz Canyon Way, Palm Springs, CA 92262", site: "https://shermansdeli.com/" },
               { kind: "Family dinner or a bite before the ferry, Liberty Station", name: "Liberty Public Market", detail: "Everyone picks a stall — pizza, bao, empanadas, BBQ — about five minutes from Broadway Pier. Official market hours are daily 9:00 AM–8:00 PM, so this works if you arrive by 6:00 PM and want the girls fed before Alexander’s. If you arrive later, go straight to the 7:00 PM ferry and get them a simpler bite afterward.", hours: "Official market hours are daily 9:00 AM–8:00 PM; individual vendor hours vary. Closed Thanksgiving; open Wednesday, Nov 25.", map: "Liberty Public Market, 2820 Historic Decatur Rd, San Diego, CA 92106", site: "https://libertypublicmarketsd.com/" }
             ],
-            stayTitle: "San Diego, Wednesday to Friday, 2 nights · Not booked yet · Two separate bedrooms",
+            stayTitle: "San Diego, Wednesday to Friday, 2 nights · Not booked yet · Two separate bedrooms. Airbnb availability checked 7:15 AM PT Nov 25; prices are the all-in Reserve-box totals. Hotel availability/rates as checked 7:30 AM PT Nov 25; rooms may sell out. True two-bedroom hotel suites were basically unavailable, so hotel picks are two rooms (ask for connecting). Verified Airbnbs are the primary pick: Embassy Suites Bay Downtown was sold out, and Lafayette did not show a two-bedroom online.",
             stays: [
-              { name: "North Park, 2 bedrooms 2 baths", detail: "$958 total, 4.78 from 40 reviews, near Balboa Park and the zoo, walkable to dinner on 30th Street.", href: "https://www.airbnb.com/rooms/1437052837095927547" },
-              { name: "Rancho Santa Fe cottage, 2 bedrooms 2 baths", detail: "$888 total, 4.94 from 157 reviews, a secluded, comfortable house on five citrus acres. Dinner is a drive, not a walk.", href: "https://www.airbnb.com/rooms/4387302" },
-              { name: "San Diego apartment, 2 bedrooms 2 baths", detail: "$585 total, 4.73 from 51 reviews, a comfortable 2-bedroom with an arcade. Less walkable to the dinner streets.", href: "https://www.airbnb.com/rooms/1279779803016771156" }
+              { name: "North Park, 2 bedrooms 2 baths", role: "primary", href: "https://www.airbnb.com/rooms/1437052837095927547?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2", detail: "$821 for 2 nights, prices include all fees (was $958), 4.78 from 40 reviews, near Balboa Park and the zoo, walkable to dinner on 30th Street.", safety: "Parking and safety: North Park is walkable and a fine place to stay, but car break-ins are the main risk — 81 were reported in North Park through mid-September 2026, the highest in Uptown. Confirm off-street parking, and leave nothing visible." },
+              { name: "San Diego apartment, 2 bedrooms 2 baths", role: "alternative", href: "https://www.airbnb.com/rooms/1279779803016771156?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2", detail: "The lower Airbnb total: $569 for 2 nights, prices include all fees (was $585), 4.73 from 51 reviews, a comfortable 2-bedroom with an arcade. Less walkable to the dinner streets.", safety: "Parking and safety: confirm off-street parking. Leave nothing visible." },
+              { name: "Rancho Santa Fe cottage, 2 bedrooms 2 baths", role: "alternative", href: "https://www.airbnb.com/rooms/4387302?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2", detail: "$888 for 2 nights, prices include all fees, 4.94 from 157 reviews, a secluded, comfortable house on five citrus acres. Dinner is a drive, not a walk.", safety: "Parking and safety: a secluded lot in a very safe area, with on-site parking. The tradeoff is the drive to the zoo and to Alexander’s." },
+              { name: "The Lafayette Hotel & Club — two rooms (ask for connecting)", role: "alternative", href: "https://lafayettehotelsd.com/?checkin=2026-11-25&checkout=2026-11-27&adults=2&children=2", detail: "Hotel alternative. Single rooms from $281 a night, so two rooms are about $562 a night, plus tax for two nights. Two- and three-bedroom bungalows were not shown online — book two rooms and ask for connecting, or call (619) 296-2101. Embassy Suites Bay Downtown was sold out. Hotel availability/rates as checked 7:30 AM PT Nov 25; rooms may sell out.", safety: "Parking and safety: paid on-site parking (rate not shown). The hotel sits on El Cajon Blvd, which is busier than the residential blocks of 30th Street. Use the hotel lot and leave nothing visible." }
             ]
           },
           {
             title: "Thursday, Nov 26 · San Diego Zoo",
+            vibe: "A full zoo day and a formal Thanksgiving lunch at The Prado, then a quieter evening at Alexander’s if you still have the energy.",
             origin: "San Diego, CA",
             dest: "San Diego Zoo, 2920 Zoo Dr, San Diego, CA 92101",
             originLL: [-117.1611, 32.7157],
@@ -554,25 +645,26 @@
             local: true,
             facts: [
               ["Drive", "Local only. Holiday traffic is expected to be light."],
-              ["Main activity", "San Diego Zoo. The zoo’s own plan-your-visit page currently lists 9:00 AM–5:00 PM only through Wednesday, Nov 25 — confirm Thanksgiving hours on the zoo site before you go. Stay off the sand; the coastal flood and high-surf warnings still apply."]
+              ["Main activity", "San Diego Zoo. The zoo is open every day, including holidays. The official plan-your-visit page currently lists 9:00 AM–5:00 PM only through Wednesday, Nov 25 — confirm Thanksgiving hours on the date selector before you go (late November is typically 9:00 AM–5:00 PM). Tickets are $78 ages 12+ and $68 ages 3–11, so three adults and one child is $302, plus $16 official parking (the published rate from Jan 5, 2026). Stay off the sand; the coastal flood and high-surf warnings still apply."]
             ],
             places: [{ label: "San Diego Zoo map", q: "San Diego Zoo, 2920 Zoo Dr, San Diego, CA 92101" }],
             museumLink: { href: "https://zoo.sandiegozoo.org/", label: "San Diego Zoo" },
             evening: {
               name: "Alexander’s on 30th",
               detail: "Thanksgiving prix fixe, walkable from the North Park stay. Vegetarian and kids’ options are listed. An 18% gratuity is added.",
-              hours: "Official 2026 Thanksgiving page: Thursday, Nov 26, 3:00 PM–8:30 PM, three-course prix fixe. Reservations recommended.",
+              hours: "Official 2026 Thanksgiving page: Thursday, Nov 26, 3:00 PM–8:30 PM, three-course prix fixe about $28–$78 a person, with 18% auto gratuity. Kids’ plates include spaghetti or turkey. Reservations recommended.",
               price: "Prix fixe listed about $28–$78 per person, depending on the course and guest",
               reservations: "Highly recommended",
               map: "Alexander's on 30th, 3391 30th St, San Diego, CA 92104",
               site: "https://www.opentable.com/alexanders-on-30th"
             },
             meals: [
-              { kind: "Thanksgiving lunch", name: "The Prado at Balboa Park", detail: "A proper Thanksgiving meal right next to the zoo: a three-course holiday menu in a beautiful park setting, with a children’s price, so the family eats together at midday and the two of you still have Alexander’s in the evening.", hours: "Official Thanksgiving menu Thursday, Nov 26, 1:00–7:00 PM. $79.95 for adults and $19.95 for children, plus tax and tip. Reservations recommended: (619) 557-9441.", map: "The Prado at Balboa Park, 1549 El Prado, San Diego, CA 92101", site: "https://www.pradobalboa.com/happenings/" }
+              { kind: "Thanksgiving lunch", name: "The Prado at Balboa Park", detail: "A proper Thanksgiving meal right next to the zoo: a three-course holiday menu in a beautiful park setting, with a children’s price, so the family eats together at midday and the two of you still have Alexander’s in the evening.", hours: "Official Thanksgiving menu Thursday, Nov 26, 1:00–7:00 PM. $79.95 for adults and $19.95 for children 12 and under, plus tax, tip, and a supplemental fee. The 14-year-old is likely an adult: 3 × $79.95 + $19.95 = $259.80, or about $340–$390 with tax, tip, and the fee. Reservations recommended: (619) 557-9441.", map: "The Prado at Balboa Park, 1549 El Prado, San Diego, CA 92101", site: "https://www.pradobalboa.com/happenings/" }
             ],
           },
           {
             title: "Friday, Nov 27 · San Diego to Santa Barbara, evening in Solvang",
+            vibe: "Up the 101 with a diner stop, Julefest in Solvang, and a late night back in Santa Barbara.",
             origin: "San Diego, CA",
             dest: "Santa Barbara, CA",
             originLL: [-117.1611, 32.7157],
@@ -581,7 +673,7 @@
               ["Drive", "217 mi, about 4 hr 15 min"],
               ["Leave by", "9:00–9:30 AM, before the 1:00–7:00 PM Friday rush"],
               ["Superchargers", "Optional: Carlsbad on the way, or Santa Barbara (Anacapa St or State St) on arrival"],
-              ["Main activity", "Solvang Julefest opening night, 5:00–9:00 PM light shows, a walkable holiday village, then back to Santa Barbara."]
+              ["Main activity", "Solvang Julefest opening night, Friday, Nov 27, 5:00–9:00 PM light shows, a walkable holiday village, then back to Santa Barbara. The lights are free."]
             ],
             places: [
               { label: "Santa Barbara map", q: "Santa Barbara, CA" },
@@ -590,7 +682,7 @@
             evening: {
               name: "Loquita",
               detail: "Spanish tapas and cocktails on State Street after you return from Solvang, a short walk from a State Street stay.",
-              hours: "Friday 4:00 PM–close.",
+              hours: "Usual Friday hours are 4:00 PM–close. Confirm Friday, Nov 27 hours when you book, and do not count on a late kitchen.",
               price: "Moderate to upscale",
               reservations: "Recommended. Ask for a later table if you will still be in Solvang at 9:00 PM.",
               map: "Loquita, 202 State St, Santa Barbara, CA 93101",
@@ -599,15 +691,17 @@
             meals: [
               { kind: "Lunch on the 101", name: "101 Cafe", detail: "A 1950s diner on Coast Highway in Oceanside — murals, booths, and a genuine road-trip lunch about 40 minutes after you leave San Diego, with time afterward to reach Solvang before the 5:00 PM lights.", hours: "The restaurant’s site lists 8:00 AM–2:00 PM. They do not publish a Nov 27 exception, so call (760) 400-8870 to confirm the day after Thanksgiving.", map: "101 Cafe, 631 South Coast Hwy, Oceanside, CA 92054", site: "https://101-cafe.com/" }
             ],
-            stayTitle: "Santa Barbara or Summerland, Friday to Saturday, 1 night · Not booked yet",
+            stayTitle: "Santa Barbara or Summerland, Friday to Saturday, 1 night · Not booked yet · Two separate bedrooms. Airbnb availability checked 7:15 AM PT Nov 25; prices are the all-in Reserve-box totals. Hotel availability/rates as checked 7:30 AM PT Nov 25; rooms may sell out. True two-bedroom hotel suites were basically unavailable, so hotel picks are two rooms (ask for connecting). Verified Airbnbs are the primary pick: Kimpton Canary had only one room left (not two connecting rooms) and Hotel Californian was not verified.",
             stays: [
-              { name: "Casa Riviera, 2 bedrooms 2 baths", detail: "$991, 5.0 from 22 reviews, near State Street, walkable to Loquita.", href: "https://www.airbnb.com/rooms/1428573268112091622" },
-              { name: "Vintage Spanish duplex, 2 bedrooms 1 bath", detail: "$703, 4.82 from 316 reviews, a comfortable in-town apartment.", href: "https://www.airbnb.com/rooms/834469" },
-              { name: "The Lillie Guesthouse, Summerland, 3 bedrooms 2 baths", detail: "$840, 4.87 from 93 reviews, ocean-view home, a short drive into Santa Barbara.", href: "https://www.airbnb.com/rooms/1095985159895103802" }
+              { name: "Vintage Spanish duplex, 2 bedrooms 1 bath", role: "primary", href: "https://www.airbnb.com/rooms/834469?check_in=2026-11-27&check_out=2026-11-28&adults=2&children=2", detail: "$703 for 1 night, prices include all fees, 4.82 from 316 reviews, a comfortable in-town apartment.", safety: "Parking and safety: confirm off-street parking. In-town Santa Barbara is generally comfortable; leave nothing visible." },
+              { name: "The Lillie Guesthouse, Summerland, 3 bedrooms 2 baths", role: "alternative", href: "https://www.airbnb.com/rooms/1095985159895103802?check_in=2026-11-27&check_out=2026-11-28&adults=2&children=2", detail: "$916 for 1 night, prices include all fees (was $840), 4.87 from 93 reviews, ocean-view home, a short drive into Santa Barbara.", safety: "Parking and safety: confirm off-street parking. Stay off the waterline. Summerland is a small, generally quiet town." },
+              { name: "Casa Riviera, 2 bedrooms 2 baths", role: "alternative", href: "https://www.airbnb.com/rooms/1428573268112091622?check_in=2026-11-27&check_out=2026-11-28&adults=2&children=2", detail: "$992 for 1 night, prices include all fees (was $991), 5.0 from 22 reviews, near State Street, walkable to Loquita.", safety: "Parking and safety: confirm off-street parking near State Street. Leave nothing visible." },
+              { name: "Hotel Californian and Kimpton Canary", role: "note", detail: "Kimpton Canary had only one qualifying room left for Nov 27–28, so two connecting rooms could not be booked. Hotel Californian was not verified. Call the hotel if you want to ask about connecting rooms or the Alcazar suite." }
             ]
           },
           {
             title: "Saturday, Nov 28 · Santa Barbara to Dublin",
+            vibe: "The longest Saturday home — leave early so it stays a drive, not a slog.",
             origin: "Santa Barbara, CA",
             dest: "Dublin, CA",
             originLL: [-119.6982, 34.4208],
@@ -631,6 +725,7 @@
         days: [
           {
             title: "Wednesday, Nov 25 · Desert Hot Springs to Las Vegas",
+            vibe: "A long I-15 run that lands you on the Strip at night, which is when it actually looks like Las Vegas, and a late dinner at Catch.",
             origin: "Desert Hot Springs, CA",
             dest: "Las Vegas, NV",
             originLL: [-116.3605, 33.8992],
@@ -644,8 +739,8 @@
             places: [{ label: "Las Vegas Strip map", q: "Las Vegas Strip, NV" }],
             evening: {
               name: "Catch Las Vegas at Aria",
-              detail: "Seafood, sushi, and a dressy room, walkable from the MGM Signature and CityCenter stays so the girls can remain nearby. Book 8:30 or 9:00 PM, after you arrive and after a short walk on the Strip. If you get in after 9:00, you still have a little time; the kitchen is open until 10:30 PM.",
-              hours: "Daily 5:00–10:30 PM, including Wednesday.",
+              detail: "Seafood, sushi, and a dressy room. From The Signature at MGM Grand it is a short walk or hop, so the girls can remain in their suite. From the Palms-area or off-Strip Airbnbs it is a ride, not a walk. Book 8:30 or 9:00 PM, after you arrive. If you get in after 9:00, you still have a little time; the kitchen is open until 10:30 PM.",
+              hours: "Official hours daily 5:00–10:30 PM, including Wednesday, Nov 25, and Thanksgiving, Nov 26.",
               price: "Upscale",
               reservations: "Required. Book 8:30 or 9:00 PM on Catch’s site or SevenRooms, or call (877) 230-2742.",
               map: "CATCH Las Vegas, ARIA, 3730 S Las Vegas Blvd, Las Vegas, NV 89158",
@@ -655,14 +750,18 @@
               { kind: "Lunch, 11:00 AM–1:00 PM, near Palm Springs", name: "Sherman’s Deli & Bakery", detail: "The planned family lunch before a 1:00 PM departure — cinnamon-bread French toast, corned beef on rye, and a long sandwich board.", hours: "Official hours are daily 8:00 AM–9:00 PM. Call (760) 325-1199 before you go.", map: "Sherman's Deli & Bakery, 401 E Tahquitz Canyon Way, Palm Springs, CA 92262", site: "https://shermansdeli.com/" },
               { kind: "Afternoon stretch on I-15, about 4:00–4:30 PM", name: "Peggy Sue’s 50’s Diner", detail: "A genuine roadside diner at the Ghost Town Road exit in Yermo, about 144 mi in: jukebox, neon, and a welcome stretch of the legs. Official hours Monday–Thursday 7:00 AM–8:00 PM. This is a milkshake or a shared plate, not a second full lunch after Sherman’s. Then continue to Las Vegas.", hours: "Official hours Monday–Thursday 7:00 AM–8:00 PM. Open Wednesday, Nov 25.", map: "Peggy Sue's 50's Diner, 35654 Yermo Road, Yermo, CA 92398", site: "https://peggysuesdiner.com/PeggySues50sDiner-Contact.htm" }
             ],
-            stayTitle: "Las Vegas, Wednesday to Friday, 2 nights · Not booked yet · Two separate bedrooms",
+            stayTitle: "Las Vegas, Wednesday to Friday, 2 nights · Not booked yet. The Airbnb units at The Signature and in CityCenter were unavailable at 7:15 AM PT. Hotel availability/rates as checked 7:30 AM PT Nov 25; rooms may sell out. Vegas Airbnb backups were rechecked at 7:17 AM PT; those totals are as shown, and the cost range adds about a 15% fee buffer.",
             stays: [
-              { name: "MGM Signature, 2 bedrooms 3 baths", detail: "$973 total, 4.95 from 19 reviews, 1,424 sq ft two-suite condo with a Strip-view balcony, walkable to Aria.", href: "https://www.airbnb.com/rooms/809476338253615373" },
-              { name: "CityCenter tower, 2 bedrooms 2 baths", detail: "$749 total, 4.86 from 21 reviews, 32nd-floor suite with a balcony, walkable to dinner.", href: "https://www.airbnb.com/rooms/1341035074971111903" }
+              { name: "The Signature at MGM Grand — two 1-bedroom king suites", role: "primary", href: "https://www.marriott.com/reservation/availabilitySearch.mi?propertyCode=LASSG&isSearch=true&fromDate=11/25/26&toDate=11/27/26&numberOfRooms=2&numberOfAdults=2&numberOfChildren=2", detail: "Primary hotel pick. 1-bedroom king suites were $298 each for 2 nights, including the $50/night resort fee: two suites are about $596 plus tax. These are separate suites, not a connecting two-bedroom — book two and ask, but do not count on an interior door. No casino floor in the Signature towers. Catch at Aria is a short walk or hop. Hotel availability/rates as checked 7:30 AM PT Nov 25; rooms may sell out.", safety: "Parking and safety: park in the MGM Grand garage (self-park or valet); confirm the overnight rate. EV chargers have been reported in the self-park garage, first-come. Hotel security. Leave nothing in the car." },
+              { name: "The Venetian — two Luxury Two Queen suites (ask for connecting)", role: "alternative", href: "https://www.venetianlasvegas.com/booking?checkin=11/25/2026&checkout=11/27/2026&adults=2&children=2&rooms=2", detail: "Hotel alternative. Luxury Two Queen Prestige suites were about $951 each for 2 nights, including the $55/night resort fee, before tax. Book two suites; connecting is not guaranteed — call (866) 659-9643 to ask. A true two-bedroom suite was not shown online. Check-in is 21+. Guests 13 and older beyond the two included may incur a daily extra-person charge; confirm for the 14-year-old.", safety: "Parking and safety: use resort valet or self-park, never a side street, and leave nothing in the car." },
+              { name: "LUX 2BR/2BA Condo Strip View near Rio/Palms", role: "backup", href: "https://www.airbnb.com/rooms/1137766294553193706?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2", detail: "Airbnb backup: $431 for 2 nights as shown (was $489), 4.77 from 107 reviews. A true two-bedroom. Catch and Omega Mart are a short ride, not a walk. The cost range adds about a 15% fee buffer because the fee breakdown was not expanded.", safety: "Parking and safety: free community-lot parking for two cars. No garage or security was noted, so this is a higher break-in risk than the hotel garage — leave nothing in the car." },
+              { name: "2BR Pool-View Balcony next to Palms", role: "backup", href: "https://www.airbnb.com/rooms/50118608?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2", detail: "Airbnb backup, best parking safety of the Vegas Airbnbs: $333 for 2 nights as shown, 4.86 from 144 reviews, gated 24/7 secured community. Recheck the Reserve button before you book. The cost range adds about a 15% fee buffer.", safety: "Parking and safety: gated 24/7 community — the strongest parking setup among the Vegas Airbnbs. Still leave nothing visible. Catch is a ride." },
+              { name: "The Cozy Getaway, private 2BR guesthouse", role: "backup", href: "https://www.airbnb.com/rooms/1380797856970959364?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2", detail: "Airbnb backup: $280 for 2 nights as shown (was $449), 4.97 from 92 reviews. Not Strip-adjacent — Catch and Omega Mart are a drive. The cost range adds about a 15% fee buffer.", safety: "Parking and safety: assigned parking and a separate entrance, in a quieter area. A better parking setup than an open community lot, with the tradeoff of a longer ride to the Strip." }
             ]
           },
           {
             title: "Thursday, Nov 26 · Omega Mart",
+            vibe: "Omega Mart in the middle of the day, a casual Thanksgiving lunch, and Catch again at night.",
             origin: "Las Vegas, NV",
             dest: "Omega Mart, 3215 S Rancho Dr, Las Vegas, NV 89102",
             originLL: [-115.1398, 36.1699],
@@ -670,14 +769,14 @@
             local: true,
             facts: [
               ["Drive", "Local only. Holiday traffic is expected to be light."],
-              ["Main activity", "Omega Mart at Area15 — a surreal grocery store with hidden portals, a strong fit for 11 and 14. Hours vary; confirm before you go, especially on Thanksgiving."]
+              ["Main activity", "Omega Mart at Area15 — a surreal grocery store with hidden portals, a strong fit for 11 and 14. Hours vary by timed entry; confirm Thanksgiving, Nov 26, on Meow Wolf’s own ticketing (third-party calendars have shown about 10:00 AM–9:20 PM, but that is not official). General admission starts at $45 for ages 13+ and $40 for ages 4–12; holiday slots may be about $54 / $49. The 14-year-old counts as an adult, so plan on about $180–$230 for four."]
             ],
             places: [{ label: "Omega Mart map", q: "Omega Mart, 3215 S Rancho Dr, Las Vegas, NV 89102" }],
             museumLink: { href: "https://meowwolf.com/visit/las-vegas", label: "Omega Mart visitor page" },
             evening: {
               name: "Catch Las Vegas at Aria",
               detail: "The restaurant’s own page lists Thanksgiving hours and a full dinner menu plus seasonal specials.",
-              hours: "Thanksgiving, Nov 26, 5:00–10:30 PM.",
+              hours: "Official hours Thanksgiving, Nov 26, 5:00–10:30 PM, same as the rest of the week. Call (877) 230-2742 if you need to change the time.",
               price: "Upscale. Thanksgiving specials include turkey at $53 and other à la carte dishes.",
               reservations: "Required",
               map: "CATCH Las Vegas, ARIA, 3730 S Las Vegas Blvd, Las Vegas, NV 89158",
@@ -689,6 +788,7 @@
           },
           {
             title: "Friday, Nov 27 · Las Vegas to Paso Robles, then Sensorio",
+            vibe: "The hard travel day: an early start, a Basque lunch if you make the window, and Sensorio’s lights as the reward.",
             origin: "Las Vegas, NV",
             dest: "Paso Robles, CA",
             originLL: [-115.1398, 36.1699],
@@ -697,7 +797,7 @@
               ["Drive", "394 mi, about 7 hr 40 min via Barstow, Bakersfield, and Highway 46 — well over a 4–5 hour cap"],
               ["Leave by", "7:00 AM, or you will miss a sunset arrival at Sensorio"],
               ["Superchargers", "Barstow, Mojave, then Paso Robles on arrival (Riverside Ave or Golden Hill Rd)"],
-              ["Main activity", "Sensorio, 4:30–8:30 PM Friday (closed Thanksgiving). More than 100,000 glowing lights. Adults from about $65, children from about $30, plus fees."]
+              ["Main activity", "Sensorio, 4:30–8:30 PM Friday, Nov 27 (closed Thanksgiving). More than 100,000 glowing lights. Adults from about $65, children from about $30, plus fees. The 14-year-old is likely an adult, the 11-year-old a child: about $225 plus fees, or roughly $250–$270. Parking is free."]
             ],
             places: [
               { label: "Sensorio map", q: "Sensorio, 4380 Highway 46 East, Paso Robles, CA 93446" },
@@ -707,24 +807,26 @@
             evening: {
               name: "Esperanza on the Rooftop",
               detail: "A downtown Paso Robles rooftop after Sensorio. Walkable from a downtown stay; a short drive from the listings below.",
-              hours: "Friday 4:00 PM–11:00 PM (food until 10:00 PM).",
+              hours: "Friday 4:00 PM–11:00 PM (full food until 10:00 PM, drinks until 11:00 PM). Open Friday, Nov 27.",
               price: "Moderate, about $30 and under on OpenTable",
               reservations: "OpenTable takes Friday reservations through 8:00 PM; after Sensorio, plan on a walk-in or the waitlist.",
               map: "Esperanza on the Rooftop, 944 Pine St, Paso Robles, CA 93446",
               site: "https://www.esperanzarooftop.com/"
             },
             meals: [
-              { kind: "Lunch on the long drive", name: "Wool Growers Restaurant", detail: "Old-school Basque family dining in Bakersfield since 1954 — soup, beans, bread, then garlic fried chicken or lamb. It is the memorable stop that makes a 7-hour Friday feel like a trip, not just a transfer. Tables by reservation; walk-ins at the counter.", hours: "Official hours Friday lunch 11:30 AM–1:30 PM and dinner 5:00–8:00 PM (closed Sunday and Monday). They do not list a Nov 27 closure, but call (661) 327-9584 to confirm the day after Thanksgiving and to reserve. Leave Las Vegas by about 7:30–8:00 AM to make that lunch window (about four hours to Bakersfield).", map: "Wool Growers Restaurant, 620 E 19th Street, Bakersfield, CA 93305", site: "https://www.woolgrowers.net/" }
+              { kind: "Lunch on the long drive", name: "Wool Growers Restaurant", detail: "Old-school Basque family dining in Bakersfield since 1954 — soup, beans, bread, then garlic fried chicken or lamb. It is the memorable stop that makes a 7-hour Friday feel like a trip, not just a transfer. Tables by reservation; walk-ins at the counter.", hours: "Official hours Friday lunch 11:30 AM–1:30 PM and dinner 5:00–8:00 PM (closed Sunday and Monday). They do not list a Nov 27 closure, but call (661) 327-9584 to confirm the day after Thanksgiving and to reserve. Leave Las Vegas by about 7:00–7:30 AM to make that lunch window (about four hours to Bakersfield). The window is tight on a 7 hr 40 min Vegas-to-Paso day: if you miss 1:30 PM, you cannot wait for the 5:00 PM dinner and still make Sensorio at 4:30. Have a mid-afternoon backup in Barstow, Tehachapi, or a later-open place in Bakersfield.", map: "Wool Growers Restaurant, 620 E 19th Street, Bakersfield, CA 93305", site: "https://www.woolgrowers.net/" }
             ],
-            stayTitle: "Paso Robles area, Friday to Saturday, 1 night · Not booked yet",
+            stayTitle: "Friday stop on the drive home from Las Vegas, Friday to Saturday, 1 night · Not booked yet · Two separate bedrooms. Leave Vegas in the morning, lunch on the way, Sensorio that evening, aquarium Saturday. Airbnb availability checked 7:15 AM PT Nov 25; prices are the all-in Reserve-box totals. Hotel availability/rates as checked 7:30 AM PT Nov 25; rooms may sell out. True two-bedroom hotel suites were basically unavailable, so hotel picks are two rooms (ask for connecting).",
             stays: [
-              { name: "San Luis Obispo loft, 2 bedrooms 2 baths", detail: "$889, 4.81 from 43 reviews, walkable downtown SLO.", href: "https://www.airbnb.com/rooms/23186823" },
-              { name: "Morro Bay townhouse, 2 bedrooms 1 bath", detail: "$490, 4.96 from 139 reviews, bay-view deck. Stay off the waterline.", href: "https://www.airbnb.com/rooms/835723701210958328" },
-              { name: "Atascadero house, 4 bedrooms 2 baths", detail: "$900, 4.63 from 30 reviews, about 15 minutes from Paso Robles.", href: "https://www.airbnb.com/rooms/920383238830356848" }
+              { name: "Embassy Suites San Luis Obispo — two 2-Room Suites (ask for connecting)", role: "primary", href: "https://www.hilton.com/en/book/reservation/rooms/?ctyhocn=SLOCAES&arrivalDate=2026-11-27&departureDate=2026-11-28&room1NumAdults=2&room1NumChildren=2&room1Child1Age=14&room1Child2Age=11", detail: "Primary hotel pick for the Friday stop on the drive home. Two 2-Room Suites at $272 a night each, about $544 plus tax, with free breakfast. Each suite is a bedroom plus a living room, not a true two-bedroom. Book two suites and ask for connecting — connecting is on request, not guaranteed. Hotel availability/rates as checked 7:30 AM PT Nov 25; rooms may sell out.", safety: "Parking and safety: on-site self-parking. A $20 nightly fee has been listed in the past, but the fee was not shown in the 7:30 AM check — confirm at booking. Leave nothing visible. Esperanza’s rooftop is a short drive, not a walk." },
+              { name: "Sea to See, Morro Bay townhouse, 2 bedrooms 1 bath", role: "alternative", href: "https://www.airbnb.com/rooms/835723701210958328?check_in=2026-11-27&check_out=2026-11-28&adults=2&children=2", detail: "$490 for 1 night, prices include all fees, 4.96 from 139 reviews, Guest Favorite, bay-view deck. Stay off the waterline. A short drive to the Paso rooftop.", safety: "Parking and safety: free on-site garage has been reported on the listing; confirm. Stay off the waterline." },
+              { name: "SLO Brew Lofts, San Luis Obispo, 2 bedrooms 2 baths", role: "alternative", href: "https://www.airbnb.com/rooms/23186823?check_in=2026-11-27&check_out=2026-11-28&adults=2&children=2", detail: "$889 for 1 night, prices include all fees, 4.81 from 43 reviews, walkable downtown SLO.", safety: "Parking and safety: confirm the building’s parking. Downtown SLO is generally comfortable; still use off-street parking and leave nothing visible." },
+              { name: "The Old Valley Oak, Atascadero, 4 bedrooms 2 baths", role: "alternative", href: "https://www.airbnb.com/rooms/920383238830356848?check_in=2026-11-27&check_out=2026-11-28&adults=2&children=2", detail: "$900 for 1 night, prices include all fees, 4.63 from 30 reviews, about 15 minutes from Paso Robles.", safety: "Parking and safety: a residential Atascadero house; confirm off-street parking." }
             ]
           },
           {
             title: "Saturday, Nov 28 · Monterey Bay Aquarium, then Dublin",
+            vibe: "The one museum of the trip — the aquarium — then the last stretch home.",
             origin: "Paso Robles, CA",
             dest: "Monterey Bay Aquarium, 886 Cannery Row, Monterey, CA 93940",
             dest2: "Dublin, CA",
@@ -735,7 +837,7 @@
               ["Drive", "118 mi, about 2 hr 25 min to the aquarium, then 101 mi, about 2 hours, to Dublin"],
               ["Leave by", "8:00 AM from Paso Robles so you can leave Monterey by about 11:30 AM, before the Saturday noon–9:00 PM rush"],
               ["Superchargers", "Usually none needed if you charge in Paso Robles or Monterey"],
-              ["Main activity", "Monterey Bay Aquarium — the trip’s museum. Hours vary; Saturdays are often 9:00 AM–5:00 PM, last entry one hour before close — confirm on their schedule. Adults $65, ages 5–17 $50. Buy in advance on the aquarium’s site; tickets are non-refundable but can be exchanged until 4:00 PM that day. Keep the visit to about two and a half hours."]
+              ["Main activity", "Monterey Bay Aquarium — the trip’s museum. Confirm Saturday, Nov 28 hours on the aquarium’s schedule, or call (831) 648-4800; Saturdays are typically 9:00 AM–5:00 PM, with last entry one hour before close. Adults $65, ages 5–17 $50, so four tickets are $230. Nearby parking is about $15–$20. Buy in advance on the aquarium’s site; tickets are non-refundable but can be exchanged until 4:00 PM that day. Keep the visit to about two and a half hours."]
             ],
             museumLink: { href: "https://www.montereybayaquarium.org/visit/admission-tickets", label: "Aquarium tickets" },
             meals: [
@@ -764,6 +866,8 @@
         const card = document.createElement("article");
         card.className = "card" + (o.pick ? " pick" : "");
         card.innerHTML = `<h3>${o.name}</h3>
+          <p class="total">${o.total}</p>
+          <p class="total-note">${o.altTotal} ${o.rec}</p>
           <ul>
             <li><span>Total drive</span>${o.drive}</li>
             <li><span>Wednesday</span>${o.museum}</li>
@@ -772,6 +876,20 @@
           </ul>`;
         root.appendChild(card);
       });
+      const compare = document.getElementById("cost-compare");
+      compare.innerHTML = `<h3>Cost comparison</h3>
+        <p class="total-note">Estimates for a family of four. The total uses the primary lodging pick at each stop. Hotel availability/rates as checked 7:30 AM PT Nov 25; rooms may sell out.</p>
+        <table>
+          <thead><tr><th>Option</th><th>Primary total</th><th>Alternative</th></tr></thead>
+          <tbody>
+            ${OPTIONS.map((o) => `<tr>
+              <td>${o.name}${o.pick ? " (recommended)" : ""}</td>
+              <td class="num">${o.total}</td>
+              <td>${o.altTotal}</td>
+            </tr>`).join("")}
+          </tbody>
+        </table>
+        <p class="cost-assumptions">${COST_ASSUMPTIONS}</p>`;
       document.getElementById("recommendation").innerHTML =
         `<strong>Recommendation</strong>${RECOMMENDATION}`;
     }
@@ -1012,6 +1130,25 @@
       return `<dt>${label}</dt><dd>${value}</dd>`;
     }
 
+    function renderStay(s) {
+      const role = s.role === "primary" ? `<span class="stay-role">Primary pick</span>` :
+        s.role === "alternative" ? `<span class="stay-role alt">Also available</span>` :
+        s.role === "backup" ? `<span class="stay-role alt">Backup</span>` :
+        s.role === "note" ? `<span class="stay-role alt">Hotel check</span>` : "";
+      const link = s.href ? `<a href="${s.href}" target="_blank" rel="noopener">${s.name}</a>` : `<strong>${s.name}</strong>`;
+      const safety = s.safety ? `<span class="safety">${s.safety}</span>` : "";
+      return `<p class="stay-item">${role}${link} — ${s.detail}${safety}</p>`;
+    }
+
+    function renderCostBox(o) {
+      return `<div class="cost-box">
+        <p class="total">${o.total}</p>
+        <p class="total-note">${o.altTotal}</p>
+        <dl class="facts">${o.costLines.map((c) => factRow(c[0], c[1])).join("")}</dl>
+        <p class="cost-assumptions">${COST_ASSUMPTIONS}</p>
+      </div>`;
+    }
+
     function renderDay(optionId, day, idx) {
       const dirHref = GMAPS_DIR(day.origin, day.dest);
       const mid = mapId(optionId, idx);
@@ -1046,7 +1183,7 @@
         <div class="stay">
           <h3>Where to stay</h3>
           <p>${day.stayTitle}</p>
-          ${day.stays.map((s) => `<p><a href="${s.href}" target="_blank" rel="noopener">${s.name}</a> — ${s.detail}</p>`).join("")}
+          ${day.stays.map((s) => renderStay(s)).join("")}
         </div>` : "";
       const placeLinks = (day.places || []).map((p) =>
         `<a href="${GMAPS_PLACE(p.q)}" target="_blank" rel="noopener">${p.label}</a>`
@@ -1054,6 +1191,7 @@
       const extraDir = day.dest2 ? `<a href="${GMAPS_DIR(day.dest, day.dest2)}" target="_blank" rel="noopener">Open the second leg in Google Maps</a>` : "";
       return `<section class="day">
         <h3>${day.title}</h3>
+        ${day.vibe ? `<p class="vibe">${day.vibe}</p>` : ""}
         <dl class="facts">${day.facts.map((f) => factRow(f[0], f[1])).join("")}</dl>
         <div class="map" id="${mid}"></div>
         <div class="links">
@@ -1084,6 +1222,7 @@
         const itin = itineraries[o.id];
         return `<div class="option ${o.id === OPTIONS[0].id ? "" : "hidden"}" data-option="${o.id}">
           <p>${itin.intro}</p>
+          ${renderCostBox(o)}
           ${itin.days.map((d, i) => renderDay(o.id, d, i)).join("")}
         </div>`;
       }).join("");
