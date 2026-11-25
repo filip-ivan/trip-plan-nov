@@ -179,14 +179,19 @@
     .stay-item { margin: 0 0 12px; }
     .safety { display: block; color: var(--muted); font-size: 0.9rem; margin-top: 2px; }
     .cost-assumptions { color: var(--muted); font-size: 0.9rem; margin: 8px 0 0; }
+    .tab-sep {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); padding: 8px 4px; align-self: center;
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
     <header class="hero">
       <p class="kicker">From Desert Hot Springs · Tesla · Family of four</p>
-      <h1>Ways home, Wednesday to Saturday</h1>
-      <p class="meta">3 nights · Wed, Nov 25 to Sat, Nov 28, 2026 · Checkout from Desert Hot Springs at 11:00 AM PT Wednesday, leave around 1:00 PM after lunch · Home in Dublin Saturday · Two separate bedrooms · About $1,000 a night at most</p>
+      <h1>Ways home, Wednesday to Friday or Saturday</h1>
+      <p class="meta">Checkout from Desert Hot Springs at 11:00 AM PT Wednesday, leave around 1:00 PM after lunch. The new plan: two nights (Wed 11/25 and Thu 11/26) and home to Dublin on Friday, Nov 27, for no more than $2,000 all-in — lodging, food, activities, charging, and parking. The original three-night routes, arriving Saturday, are kept below; those are over $2,000. Two rooms or two bedrooms throughout.</p>
     </header>
 
     <div class="warn">
@@ -194,7 +199,14 @@
       A coastal flood warning and high surf are in effect on the Orange County and San Diego coast through Friday 1:00 PM, and on the Central Coast through Thursday noon, with king tides and dangerous rip currents. Pacific Coast Highway is closed northbound in Seal Beach. These routes stay inland or at harbor and town stops. There is no snow on the Grapevine.
     </div>
 
-    <h2>Decide</h2>
+    <h2>Under $2,000, home Friday</h2>
+    <p class="meta">Two nights only, and home on Friday, Nov 27. Totals below are all-in estimates for a family of four. They stay at or under $2,000 if you use the primary lodging picks. Nicer hotels are listed as alternatives; some of those only work if you keep food modest, and a few would break the cap — the cards say so.</p>
+    <div class="cards" id="short-decision-cards"></div>
+    <div class="card cost-compare" id="short-cost-compare"></div>
+    <div class="rec" id="short-recommendation"></div>
+
+    <h2>Longer options</h2>
+    <p class="meta">The original three-night routes, arriving home Saturday, Nov 28. These are over the $2,000 cap. Use them only if you restore a Friday night and a bigger budget.</p>
     <div class="cards" id="decision-cards"></div>
     <div class="card cost-compare" id="cost-compare"></div>
     <div class="rec" id="recommendation"></div>
@@ -212,12 +224,77 @@
     <div id="itineraries"></div>
 
     <footer>
-      Updated November 25, 2026, morning Pacific. Wednesday plans assume a 1:00 PM departure from Desert Hot Springs and include Thanksgiving-eve traffic. Other drive times are without stops or charging and can still change with traffic. Cost totals are estimates. Primary hotels are from Expedia, checked at 7:45 AM PT Nov 25; each pick is two rooms, and the all-in estimate adds parking, resort or destination fees, and a tax buffer when those may be due at the hotel. Booking-site prices can exclude resort fees and charges paid at the hotel; all-in estimate shown. Rooms may sell out. Airbnb availability was checked at 7:15 AM PT Nov 25 (Vegas backups at 7:17 AM PT). Nothing beyond the current Desert Hot Springs stay is booked. Weather comes from Open-Meteo when this file is opened in a browser, including directly from disk. You need an internet connection for forecasts and map tiles.
+      Updated November 25, 2026, 8:04 AM Pacific. Wednesday plans assume a 1:00 PM departure from Desert Hot Springs and include Thanksgiving-eve traffic. The under-$2,000 options arrive home Friday, Nov 27. The longer options arrive Saturday and are over that cap. Cost totals are estimates. Primary hotels are from Expedia, checked at 7:45 AM PT Nov 25; each hotel pick is two rooms, and the all-in estimate adds parking, resort or destination fees, and a tax buffer when those may be due at the hotel. Booking-site prices can exclude resort fees and charges paid at the hotel; all-in estimate shown. Rooms may sell out. Airbnb availability was checked at 7:15 AM PT Nov 25. Nothing beyond the current Desert Hot Springs stay is booked. Weather comes from Open-Meteo when this file is opened in a browser, including directly from disk. You need an internet connection for forecasts and map tiles.
     </footer>
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script>
+    const SHORT_OPTIONS = [
+      {
+        id: "shortla",
+        name: "West Hollywood, then Santa Barbara",
+        pick: true,
+        drive: "About 530 mi. Wednesday is 126 mi; plan 3.5–4.5 hours in Thanksgiving-eve traffic, arriving in West Hollywood about 4:30–6:30 PM. Thursday to Santa Barbara is about two hours. Friday home is 307 mi; plan 5.5–6.5 hours in return traffic (about 4 hr 45 min off-peak).",
+        museum: "Griffith Observatory after dark on Wednesday (open until 10:00 PM, closed Thanksgiving).",
+        evening: "Harriet’s rooftop after Griffith on Wednesday (book 9:00 PM). The Knock on Thanksgiving in Santa Barbara (open Thanksgiving, book 5:00 PM).",
+        worry: "One extra move on Thursday morning, and Friday is a 5.5–6.5 hour drive. Leave Santa Barbara by mid-morning, or by 2:00 PM if you stop in Solvang for lunch.",
+        rec: "The better short Wednesday, and the recommended under-$2,000 trip.",
+        total: "About $1,470–$1,950",
+        altTotal: "Stays under $2,000 with the primary lodging (a WeHo Airbnb or The Beverly House, plus a Santa Barbara Airbnb). The AC Hotel or a Santa Barbara hotel like Hyatt Place or La Playa can break $2,000 unless you keep food modest.",
+        costLines: [
+          ["Lodging (primary)", "About $830–$890. Wednesday: Heart of West Hollywood Airbnb, $330 all-in, or The Beverly House, two rooms, Expedia $169 × 2 = $338 est., all-in about $340–$390 with a tax buffer (free but limited parking; no resort fee found). Thursday: Summerland cottage $500 all-in, or La Cabane $523. Combined lodging about $830–$890."],
+          ["Lodging (alternative)", "AC Hotel Beverly Hills is about $490–$560 all-in including $59 valet. Hyatt Place Santa Barbara is about $850–$980; La Playa Inn about $860–$1,000. Pairing the AC Hotel with a Santa Barbara hotel likely exceeds $2,000 unless food is kept to the low end. Verified WeHo Airbnbs also include Chaplin $462 and the luxury Sunset apartment $487."],
+          ["Food for 4", "About $550–$900, including Sherman’s, Mel’s, Harriet’s, The Copper (not The Prado’s $340–$390 feast), The Knock, and a Friday lunch in Solvang or at Casa de Fruta, with tax and tip. Skip Pastas on Friday if you need margin."],
+          ["Activities", "Griffith is free; official parking is $10 a space per hour, about $20–$40, or use a rideshare."],
+          ["Driving", "About 530 mi, Supercharging about $66–$81."],
+          ["Parking", "Lodging parking is in the lodging estimate. Griffith parking is in activities."]
+        ]
+      },
+      {
+        id: "shortsb",
+        name: "Santa Barbara, two nights",
+        pick: false,
+        drive: "About 520 mi. Wednesday is the long day: 212 mi, plan 6–7 hours in Thanksgiving-eve traffic, arriving about 7:00–8:00 PM — over a 4–5 hour cap. Friday home is 307 mi; plan 5.5–6.5 hours.",
+        museum: "A long drive and a late dinner on Wednesday. No museum stop — Endeavour does not fit.",
+        evening: "milk & honey on Wednesday (open until 10:00 PM; book 8:00 PM). The Knock on Thanksgiving (open Thanksgiving, book 5:00 PM).",
+        worry: "Wednesday is a 6–7 hour drive. You unpack only once.",
+        rec: "Best if you want one base and will accept a long Wednesday for a walkable Thanksgiving in town.",
+        total: "About $1,500–$1,860",
+        altTotal: "The Ventura Airbnb as a fallback is about $1,350–$1,710 for the whole trip. A two-night Goleta hotel (Best Western, about $1,270–$1,470 for lodging) only keeps the trip at $2,000 at the low end, and only if food stays modest.",
+        costLines: [
+          ["Lodging (primary)", "La Cabane, $882 for 2 nights, prices include all fees. A quiet three-bedroom, a short drive to State Street and The Knock."],
+          ["Lodging (alternative)", "Ventura midtown cottage, $731 for 2 nights, all fees included — use if Santa Barbara is gone; The Knock is then a 30–40 minute drive, and one bathroom is tight. Best Western Plus South Coast Inn in Goleta, two rooms, about $1,270–$1,470 all-in, complimentary parking; that hotel path only hits $2,000 at the low end. Hilton Garden Inn Goleta is about $1,420–$1,630 and would likely break the cap."],
+          ["Food for 4", "About $550–$900, including Sherman’s, Finney’s, milk & honey, The Copper, The Knock, and a Friday lunch, with tax and tip."],
+          ["Activities", "A walkable day in town on Thursday. Julefest lights on Friday are optional and would mean a late arrival in Dublin."],
+          ["Driving", "About 520 mi, Supercharging about $65–$80."],
+          ["Parking", "Confirm off-street parking at the Airbnb. Hotel parking is in the alternative lodging estimates."]
+        ]
+      },
+      {
+        id: "shortventura",
+        name: "Ventura, two nights",
+        pick: false,
+        drive: "About 510 mi. Wednesday is about 176 mi; off-peak this is about 3 hours, but leaving at 1:00 PM on Thanksgiving eve, plan 5–6 hours, arriving about 6:00–7:00 PM — usually earlier than a Santa Barbara push. Friday home is 333 mi; plan 6–7 hours (about 5 hours off-peak).",
+        museum: "An earlier Wednesday than the Santa Barbara two-night route, then a downtown evening. Thursday is a short hop into Santa Barbara.",
+        evening: "The Twist on Main in downtown Ventura on Wednesday (wine, cocktails, and live music; listed Wed 4:00–10:00 PM — confirm Nov 25). W2O rooftop at Watermark on Thanksgiving (usual Thu 5:00–11:00 PM — call to confirm Nov 26), after a day in Santa Barbara.",
+        worry: "The Thursday rooftop is not yet confirmed for Thanksgiving — call Watermark. Friday is a slightly longer drive home than from Santa Barbara.",
+        rec: "The least expensive short trip, if you are willing to base in Ventura and drive into Santa Barbara on Thursday.",
+        total: "About $1,350–$1,710",
+        altTotal: "This is the lowest-cost short option. A Ventura hotel rate for these dates was not in the 7:45 AM Expedia file — check the Best Western at Ventura Pier link before swapping it in, and add fees. A Goleta hotel would cost more and may press the $2,000 cap.",
+        costLines: [
+          ["Lodging (primary)", "Midtown cottage, Ventura, $731 for 2 nights, prices include all fees, 3 bedrooms 1 bath. One bathroom for four is tight, but it is the verified stay that keeps this trip well under $2,000."],
+          ["Lodging (alternative)", "Best Western at Ventura Pier is the hotel to recheck on Expedia for Nov 25–27 (parking has been listed as included; no 7:45 AM rate was captured). Best Western Plus South Coast Inn in Goleta is about $1,270–$1,470 for two nights and only works at the low end of a $2,000 cap."],
+          ["Food for 4", "About $550–$900, including Sherman’s, a downtown or harbor dinner in Ventura, The Twist on Main, The Copper, The Knock, and a Friday lunch, with tax and tip."],
+          ["Activities", "Thursday in Santa Barbara is the day’s main outing. Stay off the sand and piers through Thursday noon."],
+          ["Driving", "About 510 mi, Supercharging about $64–$78."],
+          ["Parking", "Confirm off-street parking at the cottage. Leave nothing visible."]
+        ]
+      }
+    ];
+
+    const SHORT_RECOMMENDATION = "For a Friday arrival and a $2,000 all-in cap, choose West Hollywood, then Santa Barbara. A 1:00 PM Wednesday start still leaves time for Griffith after dark and Harriet’s at 9:00 PM, and Thursday’s short drive north puts you in Santa Barbara for The Knock on Thanksgiving. Use the verified WeHo Airbnb ($330) or The Beverly House (about $340–$390 all-in for two rooms) and a Santa Barbara Airbnb Thursday ($500–$523), and the trip comes in at about $1,470–$1,950. Nicer hotels — the AC Hotel, Hyatt Place, or La Playa — are easy to add, but they eat the margin; trim food (skip Friday dinner out, keep Thanksgiving at The Copper, not a prix-fixe feast) or stay with the primary lodging. Santa Barbara for two nights, at La Cabane for $882, is simpler and also under $2,000 (about $1,500–$1,860), at the cost of a 6–7 hour Wednesday. Ventura for two nights is the cheapest (about $1,350–$1,710), with The Twist on Main Wednesday and a downtown rooftop Thursday after a Santa Barbara day — call to confirm the rooftop on Thanksgiving.";
+
     const OPTIONS = [
       {
         id: "la",
@@ -300,7 +377,7 @@
         ]
       }
     ];
-    const COST_ASSUMPTIONS = "Estimates for a family of four, as of the morning of Nov 25, 2026, Pacific. Primary hotels are from Expedia, checked at 7:45 AM PT Nov 25, for 2 adults and children ages 14 and 11. There are no two-bedroom suites, so each hotel pick is two rooms. The Expedia card total is for one room and was labeled as including taxes and fees; that could not be independently confirmed. The all-in estimate is 2× that total (est., 2 rooms), plus parking and resort or destination fees often paid at the hotel, plus a tax buffer of about 12–15.5% in California or 13.38% in Vegas in case taxes are not already in the card. The low end of each lodging range assumes the card already includes tax; the high end adds the buffer. Booking-site prices can exclude resort fees and charges paid at the hotel; all-in estimate shown. Rooms may sell out. Hotel-site rates from the 7:30 AM check are secondary only. Airbnb prices are the all-in Reserve-box totals from 7:15 AM PT Nov 25 (Vegas backups 7:17 AM, with about a 15% fee buffer in those alternative ranges). Food includes tax and tip, and the planned couple dinners. Where a kids’ price stops at 12 or 13, the 14-year-old is counted as an adult. Driving is Tesla Supercharging at about 0.28 kWh/mi and $0.45–$0.55/kWh, using each route’s total miles.";
+    const COST_ASSUMPTIONS = "Estimates for a family of four, as of the morning of Nov 25, 2026, Pacific. The under-$2,000 options are two nights, home Friday, Nov 27; that cap includes lodging, food, activities, charging, and parking. Primary hotels are from Expedia, checked at 7:45 AM PT Nov 25, for 2 adults and children ages 14 and 11. There are no two-bedroom suites, so each hotel pick is two rooms. The Expedia card total is for one room and was labeled as including taxes and fees; that could not be independently confirmed. The all-in estimate is 2× that total (est., 2 rooms), plus parking and resort or destination fees often paid at the hotel, plus a tax buffer of about 12–15.5% in California or 13.38% in Vegas in case taxes are not already in the card. The low end of each lodging range assumes the card already includes tax; the high end adds the buffer. Booking-site prices can exclude resort fees and charges paid at the hotel; all-in estimate shown. Rooms may sell out. Hotel-site rates from the 7:30 AM check are secondary only. Airbnb prices are the all-in Reserve-box totals from 7:15 AM PT Nov 25 (Vegas backups 7:17 AM, with about a 15% fee buffer in those alternative ranges). Food includes tax and tip, and the planned couple dinners. Where a kids’ price stops at 12 or 13, the 14-year-old is counted as an adult. Driving is Tesla Supercharging at about 0.28 kWh/mi and $0.45–$0.55/kWh, using each route’s total miles.";
 
     const RECOMMENDATION = "With a 1:00 PM Wednesday start, choose West Hollywood, then the coast. Thanksgiving-eve traffic is heavy from noon to 7:00 PM, so driving all the way to Santa Barbara is 6–7 hours and a 7:00–8:00 PM arrival — too late for Endeavour (the Science Center closes at 5:00 PM, and it is closed Thanksgiving, so the shuttle cannot move to another day). Stopping in West Hollywood is a 3.5–4.5 hour drive, which leaves time for Griffith Observatory after dark (open until 10:00 PM Wednesday, with free telescopes from about 7:00 PM) and a 9:00 PM rooftop reservation at Harriet’s (open until 10:30 PM). Harriet’s is a short drive from the AC Hotel in Beverly Hills, a short walk from Chamberlain, and downstairs if you stay at 1 Hotel. Thursday’s drive to Santa Barbara is only about two hours, and holiday traffic is often lighter, so The Knock at 5:00 PM still works. You do pack one extra time. The Expedia two-room path through the AC Hotel, La Playa Inn, and the Hampton Inn in San Luis Obispo is the primary cost basis; verified Airbnbs on the same route are usually cheaper. Santa Barbara & Paso Robles is still the simpler two-stop trip if you would rather drive through Wednesday and unpack once, and it is the lower primary total, but it is no longer the better Wednesday. Choose San Diego only if the zoo on Thanksgiving is the priority — Midway’s last admission is 4:00 PM, so that museum is off this itinerary. Skip Las Vegas unless the Strip at night matters more than Friday’s 7 hr 40 min drive.";
 
@@ -310,7 +387,8 @@
       { id: "weho", name: "West Hollywood", date: "2026-11-25", when: "Wednesday night, LA-stop route", lat: 34.0909, lon: -118.385 },
       { id: "sd", name: "San Diego", date: "2026-11-25", when: "Wednesday–Thursday, San Diego route", lat: 32.7157, lon: -117.1611 },
       { id: "vegas", name: "Las Vegas", date: "2026-11-26", when: "Wednesday–Thursday, Las Vegas route", lat: 36.1699, lon: -115.1398 },
-      { id: "sb", name: "Santa Barbara", date: "2026-11-26", when: "Thursday in town, Friday on two routes", lat: 34.4208, lon: -119.6982 },
+      { id: "ventura", name: "Ventura", date: "2026-11-25", when: "Wednesday night, Ventura short route", lat: 34.2804, lon: -119.2945 },
+      { id: "sb", name: "Santa Barbara", date: "2026-11-26", when: "Thursday in town, Friday on the short routes and two longer ones", lat: 34.4208, lon: -119.6982 },
       { id: "paso", name: "Paso Robles", date: "2026-11-27", when: "Friday night / Saturday morning", lat: 35.6266, lon: -120.691 },
       { id: "monterey", name: "Monterey", date: "2026-11-28", when: "Saturday, Las Vegas route museum", lat: 36.618, lon: -121.9015 },
       { id: "dublin", name: "Dublin", date: "2026-11-28", when: "Saturday, arrival", lat: 37.7021, lon: -121.9358 }
@@ -322,6 +400,285 @@
       `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
 
     const itineraries = {
+      shortla: {
+        intro: "Lunch at Sherman’s, leave Desert Hot Springs around 1:00 PM, and spend Wednesday night near West Hollywood so Griffith and Harriet’s still fit. Thursday is a short drive to Santa Barbara for Thanksgiving and The Knock. Friday you take 101 home. This is the under-$2,000 trip that keeps the most variety.",
+        days: [
+          {
+            title: "Wednesday, Nov 25 · Desert Hot Springs to West Hollywood",
+            vibe: "A shorter Thanksgiving-eve drive, diner dinner, Griffith after dark, and a 9:00 PM rooftop nightcap at Harriet’s.",
+            origin: "Desert Hot Springs, CA",
+            dest: "West Hollywood, CA",
+            originLL: [-116.3605, 33.8992],
+            destLL: [-118.385, 34.0909],
+            facts: [
+              ["Drive", "126 mi. Off-peak this is about 2 hr 15 min; leaving at 1:00 PM on Thanksgiving eve, plan 3.5–4.5 hours. Expect to arrive about 4:30–6:30 PM."],
+              ["Leave around", "1:00 PM, after lunch at Sherman’s."],
+              ["Superchargers", "Optional. You can often make this leg without a stop if you start with a comfortable charge."],
+              ["Main activity", "Griffith Observatory in the evening. The building is open noon–10:00 PM on Wednesday, Nov 25, and closed Thanksgiving. Sunset is at 4:46 PM. Free telescope viewing usually begins around 7:00 PM when the sky is clear; the line is cut off at 9:30 PM. Admission is free. Official parking is $10 a space per hour (about $20–$40), or use a rideshare. It is about 8.5 mi, or 20–30 minutes, from West Hollywood."]
+            ],
+            places: [
+              { label: "Griffith Observatory", q: "Griffith Observatory, Los Angeles, CA" }
+            ],
+            museumLink: { href: "https://griffithobservatory.lacity.gov/visit/", label: "Griffith Observatory hours and visit info" },
+            evening: {
+              name: "Harriet’s Rooftop",
+              detail: "A rooftop cocktail lounge atop the 1 Hotel at 8490 Sunset Boulevard. From The Beverly House or a WeHo Airbnb it is a short drive; from Chamberlain it would be a short walk. Book 9:00 PM, after Griffith and after the girls are back in their room.",
+              hours: "OpenTable lists Tuesday and Wednesday 5:00–10:30 PM. Open Wednesday, Nov 25; closed Thanksgiving (you will already be heading north). Book no later than 9:00–9:15 PM. Reservations are online only.",
+              price: "Moderate to upscale, about $31–$50",
+              reservations: "Required, and only online — OpenTable or harrietsrooftop.com. If there is no availability online, they do not take a walk-in list. (310) 651-6193.",
+              map: "Harriet's Rooftop, 1 Hotel West Hollywood, 8490 Sunset Boulevard, West Hollywood, CA 90069",
+              site: "https://www.1hotels.com/west-hollywood/taste/harriets-rooftop"
+            },
+            meals: [
+              { kind: "Lunch, 11:00 AM–1:00 PM, near Palm Springs", name: "Sherman’s Deli & Bakery", detail: "The planned family lunch before a 1:00 PM departure — cinnamon-bread French toast, corned beef on rye, and a long sandwich board.", hours: "Official hours are daily 8:00 AM–9:00 PM. Call (760) 325-1199 before you go.", map: "Sherman's Deli & Bakery, 401 E Tahquitz Canyon Way, Palm Springs, CA 92262", site: "https://shermansdeli.com/" },
+              { kind: "Family dinner, about 6:30 PM, West Hollywood", name: "Mel’s Drive-In", detail: "A classic Sunset Boulevard diner — milkshakes, burgers, and booths — at 8585 Sunset Boulevard. Eat together around 6:30 PM after you check in, or later if the drive runs long; the kitchen is open until midnight. Then all four of you go to Griffith around 7:30 PM for the telescopes.", hours: "Official hours Wednesday 7:00 AM–midnight. Open Wednesday, Nov 25.", map: "Mel's Drive-In, 8585 Sunset Boulevard, West Hollywood, CA 90069", site: "https://melsdrive-in.com/restaurant/mels-west-hollywood/" }
+            ],
+            stayTitle: "West Hollywood / Beverly, Wednesday to Thursday, 1 night · Not booked yet · Two rooms or two bedrooms. Airbnb availability checked 7:15 AM PT Nov 25. Expedia rates checked 7:45 AM PT Nov 25; two rooms are estimated at 2× the one-room card total, plus parking and fees. Booking-site prices can exclude resort fees and charges paid at the hotel; all-in estimate shown.",
+            stays: [
+              { name: "Heart of West Hollywood 2-bedroom, 1.5 baths", role: "primary", href: "https://www.airbnb.com/rooms/1730193931912747022?check_in=2026-11-25&check_out=2026-11-26&adults=2&children=2", detail: "Primary pick to stay under $2,000: $330 for 1 night, prices include all fees, 4.7 from 10 reviews, top-floor unit, free parking.", safety: "Parking and safety: free parking is listed, but the type was not stated — confirm off-street parking before you book. Leave nothing visible." },
+              { name: "The Beverly House by AGA — 2 rooms", role: "alternative", href: "https://www.expedia.com/h2602837.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2&children=1_14,1_11", detail: "Cheapest Expedia hotel: $169 for one room, so two rooms are $338 est. All-in about $340–$390 after a tax buffer if needed. No resort fee found. Recheck two-room availability. Booking-site prices can exclude resort fees and charges paid at the hotel; all-in estimate shown.", safety: "Parking and safety: free self-parking, but it is limited and first-come — call ahead if you are arriving by car. The hotel is on Beverly Blvd in the Fairfax area, not in central Beverly Hills. Some guests have noted tight parking and a mixed block; use the lot, not overnight street parking, and leave nothing in the car." },
+              { name: "The Chaplin Boutique Hideaway, West Hollywood, 2 bedrooms 1 bath", role: "airbnb", href: "https://www.airbnb.com/rooms/1524058962863203787?check_in=2026-11-25&check_out=2026-11-26&adults=2&children=2", detail: "$462 for 1 night, prices include all fees, 4.85 from 27 reviews, a gated bungalow near Formosa Park. Still fits the cap with a $500 Thursday Airbnb.", safety: "Parking and safety: gated bungalow; confirm off-street parking." },
+              { name: "AC Hotel Beverly Hills — 2 rooms", role: "alternative", href: "https://www.expedia.com/h27431944.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2&children=1_14,1_11", detail: "Nicer hotel alternative: $216 × 2 = $432 est., all-in about $490–$560 after $59 valet (the hotel site lists valet and no self-park, even though Expedia listed parking as included). Pairing this with a Santa Barbara hotel can break $2,000; it can still work with a $500 Airbnb Thursday if you keep food toward the low end.", safety: "Parking and safety: valet only, $59/day on the hotel site. Wilshire / Beverly Hills is among the safer corridors. Leave nothing in the car. Check-in is 21+." }
+            ]
+          },
+          {
+            title: "Thursday, Nov 26 · West Hollywood to Santa Barbara, Thanksgiving",
+            vibe: "A roughly two-hour drive north, often lighter on Thanksgiving, then a relaxed midday meal and The Knock in the evening.",
+            origin: "West Hollywood, CA",
+            dest: "Santa Barbara, CA",
+            originLL: [-118.385, 34.0909],
+            destLL: [-119.6982, 34.4208],
+            facts: [
+              ["Drive", "About 95 mi, usually around 2 hours. Thanksgiving morning traffic is often lighter than Wednesday. Leave West Hollywood by mid-morning so you are in Santa Barbara for a midday meal."],
+              ["Leave by", "10:00 AM is comfortable; 11:00 AM still works."],
+              ["Superchargers", "Optional."],
+              ["Main activity", "A relaxed Thanksgiving in Santa Barbara: State Street, the Funk Zone, and a viewpoint above the water. Stay off the sand and piers while the Central Coast flood and high-surf warnings last through Thursday noon. One main activity — don’t add a second Los Angeles stop this morning."]
+            ],
+            places: [
+              { label: "Santa Barbara map", q: "Santa Barbara, CA" }
+            ],
+            evening: {
+              name: "The Knock",
+              detail: "A quieter dinner for the two of you at Hotel Californian in the Funk Zone. From a Summerland or La Cabane stay it is a short drive, so the girls can remain in their room.",
+              hours: "Official hours Tuesday–Saturday 5:00 PM–close, and the restaurant states it is open Thanksgiving Day, Nov 26. No published prix fixe — à la carte (burger about $28, steak frites about $59, pot pie about $26, cocktails about $18–$19). Book 5:00 PM or a little later.",
+              price: "Upscale",
+              reservations: "Recommended. Call (805) 882-0135.",
+              map: "The Knock, 36 State St, Santa Barbara, CA 93101",
+              site: "https://www.theknockkitchen.com/"
+            },
+            meals: [
+              { kind: "Thanksgiving lunch", name: "The Copper", detail: "Wood-fired pizza and pasta on State Street, and they invited families for a Thanksgiving feast — a relaxed midday meal so the girls are fed before The Knock. Keeping this, not The Prado’s $340–$390 feast, is part of staying under $2,000.", hours: "Their events page lists a family Thanksgiving feast on Thursday, Nov 26, starting at 11:00 AM. The posted end time says 9:00 AM, which looks like a typo. Call (805) 770-8055 to confirm when they close, and book ahead. Regular pizza and pasta are about $17–$32 if the feast price is not published.", map: "The Copper, 1031 State St, Santa Barbara, CA 93101", site: "https://thecoppersb.com/events" }
+            ],
+            stayTitle: "Santa Barbara area, Thursday to Friday, 1 night · Not booked yet. Airbnb availability checked 7:15 AM PT Nov 25. Expedia hotels from the 7:45 AM check; two rooms estimated at 2×, plus fees.",
+            stays: [
+              { name: "Bright Boutique Cottage, Summerland, 2 bedrooms 1 bath", role: "primary", href: "https://www.airbnb.com/rooms/1737750748850997183?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2", detail: "Primary pick: $500 for 1 night, prices include all fees, 5.0 from 26 reviews, walk to Summerland’s small downtown, a short drive to The Knock.", safety: "Parking and safety: confirm off-street parking. Summerland is a small, generally quiet town. Stay off the sand while the surf warning lasts." },
+              { name: "La Cabane, Santa Barbara, 3 bedrooms 1.5 baths", role: "airbnb", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2", detail: "$523 for 1 night, prices include all fees, 4.6 from 60 reviews, quiet single-level home, a short drive to The Knock.", safety: "Parking and safety: a quiet residential street; confirm off-street parking. Leave nothing visible." },
+              { name: "Hyatt Place Santa Barbara — 2 rooms", role: "alternative", href: "https://www.expedia.com/h32661326.Hotel-Information?chkin=2026-11-26&chkout=2026-11-27&adults=2&children=1_14,1_11", detail: "Expedia alternative: $415 × 2 = $830 est., all-in about $850–$980 after $9.99 parking, a $3/night destination fee per room, and a tax buffer if needed. Combined with a WeHo hotel this can break $2,000. Booking-site prices can exclude resort fees and charges paid at the hotel; all-in estimate shown.", safety: "Parking and safety: self-parking $9.99/night. Upper State Street is generally fine; leave nothing visible." },
+              { name: "La Playa Inn — 2 rooms", role: "alternative", href: "https://www.expedia.com/h27343.Hotel-Information?chkin=2026-11-26&chkout=2026-11-27&adults=2&children=1_14,1_11", detail: "Expedia alternative: $432 × 2 = $864 est., all-in about $860–$1,000, parking included, 9.6 rating. Beautiful, but it uses most of the remaining budget. Stay off the sand.", safety: "Parking and safety: free private lot, one space per room. West Beach is generally comfortable; stay off the sand and piers through Thursday noon." }
+            ]
+          },
+          {
+            title: "Friday, Nov 27 · Santa Barbara to Dublin",
+            vibe: "An early start up 101, a festive lunch in Solvang if you want it, and home in the afternoon or early evening — not a late-night arrival unless you stay for the Julefest lights.",
+            origin: "Santa Barbara, CA",
+            dest: "Dublin, CA",
+            originLL: [-119.6982, 34.4208],
+            destLL: [-121.9358, 37.7021],
+            facts: [
+              ["Drive", "307 mi. Off-peak this is about 4 hr 45 min; on the Friday of Thanksgiving weekend, plan 5.5–6.5 hours."],
+              ["Leave by", "9:30–10:00 AM for a mid-afternoon arrival. If you stop in Solvang for lunch, be back on 101 by 2:00 PM."],
+              ["Superchargers", "Optional: Kettleman City, or Gilroy if you cut inland on 152."],
+              ["Main activity", "Drive home. Solvang lunch is the one stop. Julefest lights are 5:00–9:00 PM and free, but staying for the 5:00 PM start means a 10:00–11:00 PM arrival in Dublin — treat that as optional, not the plan."]
+            ],
+            places: [
+              { label: "Solvang", q: "Solvang, CA" }
+            ],
+            meals: [
+              { kind: "Lunch in Solvang, or skip and eat later", name: "Solvang Restaurant", detail: "Æbleskiver and Danish plates in a walkable village — a festive, low-stakes lunch on the way home. Eat midday so you finish before 3:00 and still have a daylight drive.", hours: "Usual Friday hours are 7:00 AM–3:00 PM. The official site says they are open most holidays and asks you to call or email for special holiday hours: (805) 688-4645.", map: "Solvang Restaurant, 1672 Copenhagen Dr, Solvang, CA 93463", site: "https://solvangrestaurant.com/" },
+              { kind: "Optional dinner, once you are close to home", name: "Pastas Trattoria", detail: "A relaxed Italian landing on Main Street in Pleasanton, about 10 minutes from Dublin. Skip it if you need to stay under $2,000 or if you arrive late and would rather unpack.", hours: "They have been listed 11:30 AM–10:00 PM on Saturdays; call (925) 417-2222 to confirm Friday, Nov 27, and to book. Skip this stop if you need to stay under $2,000.", map: "Pastas Trattoria, 405 Main Street, Pleasanton, CA 94566", site: "https://www.pastastrattoriapleasanton.com/contact.html" }
+            ]
+          }
+        ]
+      },
+      shortsb: {
+        intro: "Lunch at Sherman’s, a 1:00 PM departure, and a long Thanksgiving-eve drive to Santa Barbara. You unpack once, have a late Wednesday dinner, and spend Thanksgiving in town before a Friday drive home on 101. Simpler than two hotel moves, at the cost of a 6–7 hour Wednesday.",
+        days: [
+          {
+            title: "Wednesday, Nov 25 · Desert Hot Springs to Santa Barbara",
+            vibe: "A long Thanksgiving-eve drive, then a late, walkable dinner downtown once you roll in — not a museum day.",
+            origin: "Desert Hot Springs, CA",
+            dest: "Santa Barbara, CA",
+            originLL: [-116.3605, 33.8992],
+            destLL: [-119.6982, 34.4208],
+            facts: [
+              ["Drive", "212 mi. Off-peak this is about 4 hr 15 min; leaving at 1:00 PM on Thanksgiving eve, plan on 6–7 hours. Expect to arrive about 7:00–8:00 PM, later if there is a crash or a stall."],
+              ["Leave around", "1:00 PM, after lunch at Sherman’s."],
+              ["Superchargers", "Optional. Charge in the morning if you want a buffer, or stop once on the way if the drive runs long."],
+              ["Main activity", "This is a drive-and-dinner day. Space Shuttle Endeavour does not fit: the California Science Center closes at 5:00 PM, and a 1:00 PM departure in this traffic would get you there at closing, or after."]
+            ],
+            places: [
+              { label: "Santa Barbara map", q: "Santa Barbara, CA" }
+            ],
+            evening: {
+              name: "milk & honey",
+              detail: "Craft cocktails and tapas at 30 W Anapamu Street. From La Cabane it is a short drive rather than a walk, so plan to get the girls settled before you go, or choose this only if you are comfortable with a short hop. Book 8:00 PM. Loquita is only open until 9:00 PM on Wednesday — too close to a 7:00–8:00 PM arrival.",
+              hours: "Monday–Wednesday 5:00–10:00 PM. Open Wednesday, Nov 25. Book 8:00 PM; an 8:30 PM table still works if the drive runs long.",
+              price: "Moderate to upscale",
+              reservations: "Recommended. Call (805) 275-4232, or use their site.",
+              map: "milk & honey tapas, 30 W Anapamu St, Santa Barbara, CA 93101",
+              site: "https://milknhoneytapas.com/"
+            },
+            meals: [
+              { kind: "Lunch, 11:00 AM–1:00 PM, near Palm Springs", name: "Sherman’s Deli & Bakery", detail: "The planned family lunch before a 1:00 PM departure.", hours: "Official hours are daily 8:00 AM–9:00 PM. Call (760) 325-1199 before you go.", map: "Sherman's Deli & Bakery, 401 E Tahquitz Canyon Way, Palm Springs, CA 92262", site: "https://shermansdeli.com/" },
+              { kind: "Family dinner, about 8:00 PM, downtown Santa Barbara", name: "Finney’s Crafthouse", detail: "Burgers, tacos, and scratch plates at 35 State Street in the Funk Zone. Official hours Wednesday 11:00 AM–10:00 PM, so an 8:00 PM arrival still works. Feed the girls here, then the two of you go to milk & honey; or eat together here if the drive runs long.", hours: "Official hours Wednesday 11:00 AM–10:00 PM. Open Wednesday, Nov 25. (805) 845-3100.", map: "Finney's Crafthouse, 35 State Street, Santa Barbara, CA 93101", site: "https://finneyscrafthouse.com/locations/santa-barbara/" }
+            ],
+            stayTitle: "Santa Barbara area, Wednesday to Friday, 2 nights · Not booked yet. Airbnb availability checked 7:15 AM PT Nov 25. Expedia Goleta hotels from the 7:45 AM check; two rooms estimated at 2×, plus fees.",
+            stays: [
+              { name: "La Cabane, Santa Barbara, 3 bedrooms 1.5 baths", role: "primary", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2", detail: "Primary pick: $882 for 2 nights, prices include all fees, 4.6 from 60 reviews, quiet single-level home with 3 queen beds. A short drive to State Street and The Knock. This is what keeps the two-night Santa Barbara trip comfortably under $2,000.", safety: "Parking and safety: a quiet residential street; confirm off-street parking. Leave nothing visible." },
+              { name: "Midtown cottage, Ventura, 3 bedrooms 1 bath", role: "airbnb", href: "https://www.airbnb.com/rooms/660783391832138039?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2", detail: "Fallback if Santa Barbara is gone: $731 for 2 nights, prices include all fees. About 30–40 minutes south, so The Knock is a drive. One bathroom for four is tight.", safety: "Parking and safety: confirm off-street parking. The tradeoff is the drive back to Santa Barbara." },
+              { name: "Best Western Plus South Coast Inn, Goleta — 2 rooms", role: "alternative", href: "https://www.expedia.com/h13294.Hotel-Information?chkin=2026-11-25&chkout=2026-11-27&adults=2&children=1_14,1_11", detail: "Hotel alternative: $637 × 2 = $1,274 est. for two nights. All-in about $1,270–$1,470 with complimentary parking and a tax buffer if needed. Room type was not checked. This path only keeps the whole trip at $2,000 at the low end, and only if food stays modest. Goleta is a 15–20 minute drive to The Knock. Booking-site prices can exclude resort fees and charges paid at the hotel; all-in estimate shown.", safety: "Parking and safety: complimentary on-site parking, one space per room. Goleta is generally quiet; the tradeoff is the drive into Santa Barbara." }
+            ]
+          },
+          {
+            title: "Thursday, Nov 26 · Thanksgiving in Santa Barbara",
+            vibe: "An unhurried Thanksgiving in town: a relaxed midday meal, a stroll, and a late dinner for the two of you at The Knock.",
+            origin: "Santa Barbara, CA",
+            dest: "The Knock, 36 State St, Santa Barbara, CA 93101",
+            originLL: [-119.6982, 34.4208],
+            destLL: [-119.6899, 34.4136],
+            facts: [
+              ["Drive", "In town. A short hop to State Street, the Funk Zone, and a viewpoint above the water."],
+              ["Main activity", "A walkable day in town: State Street, the Funk Zone, and a viewpoint above the water — stay off the sand and piers while the Central Coast flood and high-surf warnings last through Thursday noon."]
+            ],
+            places: [
+              { label: "Santa Barbara map", q: "Santa Barbara, CA" }
+            ],
+            evening: {
+              name: "The Knock",
+              detail: "A quieter dinner for the two of you at Hotel Californian in the Funk Zone. From La Cabane it is a short drive, so the girls can remain in their room.",
+              hours: "Official hours Tuesday–Saturday 5:00 PM–close, and the restaurant states it is open Thanksgiving Day, Nov 26. No published prix fixe — à la carte (burger about $28, steak frites about $59, pot pie about $26, cocktails about $18–$19). Book 5:00 PM or a little later.",
+              price: "Upscale",
+              reservations: "Recommended. Call (805) 882-0135.",
+              map: "The Knock, 36 State St, Santa Barbara, CA 93101",
+              site: "https://www.theknockkitchen.com/"
+            },
+            meals: [
+              { kind: "Thanksgiving lunch", name: "The Copper", detail: "Wood-fired pizza and pasta on State Street, and they invited families for a Thanksgiving feast — a relaxed midday meal so the girls are fed before The Knock. Keeping this, not a $340–$390 prix-fixe feast, is part of staying under $2,000.", hours: "Their events page lists a family Thanksgiving feast on Thursday, Nov 26, starting at 11:00 AM. The posted end time says 9:00 AM, which looks like a typo. Call (805) 770-8055 to confirm when they close, and book ahead.", map: "The Copper, 1031 State St, Santa Barbara, CA 93101", site: "https://thecoppersb.com/events" }
+            ]
+          },
+          {
+            title: "Friday, Nov 27 · Santa Barbara to Dublin",
+            vibe: "An early start up 101, a festive lunch in Solvang if you want it, and home in the afternoon or early evening.",
+            origin: "Santa Barbara, CA",
+            dest: "Dublin, CA",
+            originLL: [-119.6982, 34.4208],
+            destLL: [-121.9358, 37.7021],
+            facts: [
+              ["Drive", "307 mi. Off-peak this is about 4 hr 45 min; on the Friday of Thanksgiving weekend, plan 5.5–6.5 hours."],
+              ["Leave by", "9:30–10:00 AM for a mid-afternoon arrival. If you stop in Solvang for lunch, be back on 101 by 2:00 PM."],
+              ["Superchargers", "Optional: Kettleman City, or Gilroy if you cut inland on 152."],
+              ["Main activity", "Drive home. Solvang lunch is the one stop. Julefest lights at 5:00 PM would mean a 10:00–11:00 PM arrival in Dublin — optional, not the plan."]
+            ],
+            places: [
+              { label: "Solvang", q: "Solvang, CA" }
+            ],
+            meals: [
+              { kind: "Lunch in Solvang, or skip and eat later", name: "Solvang Restaurant", detail: "Æbleskiver and Danish plates in a walkable village, on the way home.", hours: "Usual Friday hours are 7:00 AM–3:00 PM. Call (805) 688-4645 to confirm the day after Thanksgiving.", map: "Solvang Restaurant, 1672 Copenhagen Dr, Solvang, CA 93463", site: "https://solvangrestaurant.com/" },
+              { kind: "Optional dinner, once you are close to home", name: "Pastas Trattoria", detail: "A relaxed Italian landing in downtown Pleasanton, about 10 minutes from Dublin. Skip it if you need to stay under $2,000.", hours: "They have been listed 11:30 AM–10:00 PM on Saturdays; call (925) 417-2222 to confirm Friday, Nov 27, and to book. Skip this stop if you need to stay under $2,000.", map: "Pastas Trattoria, 405 Main Street, Pleasanton, CA 94566", site: "https://www.pastastrattoriapleasanton.com/contact.html" }
+            ]
+          }
+        ]
+      },
+      shortventura: {
+        intro: "The lowest-cost short trip: lunch at Sherman’s, a 1:00 PM departure, and a base in Ventura for two nights — usually an earlier Wednesday arrival than Santa Barbara. Thursday you drive 30–40 minutes into Santa Barbara for Thanksgiving and The Knock, then Friday you take 101 home.",
+        days: [
+          {
+            title: "Wednesday, Nov 25 · Desert Hot Springs to Ventura",
+            vibe: "A longish but usually earlier arrival than Santa Barbara, a harbor or downtown family dinner, then wine and cocktails for the two of you on Main Street.",
+            origin: "Desert Hot Springs, CA",
+            dest: "Ventura, CA",
+            originLL: [-116.3605, 33.8992],
+            destLL: [-119.2945, 34.2804],
+            facts: [
+              ["Drive", "About 176 mi. Off-peak this is about 3 hours; leaving at 1:00 PM on Thanksgiving eve, plan 5–6 hours, because you still have to cross the Los Angeles basin. Expect to arrive about 6:00–7:00 PM, earlier than a Santa Barbara push."],
+              ["Leave around", "1:00 PM, after lunch at Sherman’s."],
+              ["Superchargers", "Optional. Stop once if the drive runs long."],
+              ["Main activity", "Arrive, settle in, and take a downtown or harbor evening. Stay off the sand and piers; the Central Coast flood and high-surf warnings last through Thursday noon."]
+            ],
+            places: [
+              { label: "Downtown Ventura", q: "Downtown Ventura, CA" }
+            ],
+            evening: {
+              name: "The Twist on Main",
+              detail: "Wine, craft cocktails, food, and live music in downtown Ventura, a short drive from the midtown cottage so the girls can remain in their room. Book or arrive around 8:00 PM after a family dinner.",
+              hours: "Listed Wednesday–Thursday 4:00–10:00 PM. Confirm Wednesday, Nov 25, when you call: (805) 641-0053. Closed Monday–Tuesday; do not assume holiday-eve hours without checking.",
+              price: "Moderate",
+              reservations: "Call (805) 641-0053, or use their site.",
+              map: "The Twist on Main, 454 E Main St, Ventura, CA 93001",
+              site: "https://thetwistonmain.com/"
+            },
+            meals: [
+              { kind: "Lunch, 11:00 AM–1:00 PM, near Palm Springs", name: "Sherman’s Deli & Bakery", detail: "The planned family lunch before a 1:00 PM departure.", hours: "Official hours are daily 8:00 AM–9:00 PM. Call (760) 325-1199 before you go.", map: "Sherman's Deli & Bakery, 401 E Tahquitz Canyon Way, Palm Springs, CA 92262", site: "https://shermansdeli.com/" },
+              { kind: "Family dinner, downtown or the harbor, about 6:30–7:00 PM", name: "Lure Fish House", detail: "A casual, reliable family dinner at Ventura Harbor — fish, tacos, and a kids’ menu — so the girls are fed before The Twist on Main. Confirm Wednesday, Nov 25 hours on their site before you go.", hours: "Confirm Wednesday, Nov 25 hours on lurefishhouse.com before you go. If it is closed or slammed, pick another downtown or harbor restaurant and call ahead.", map: "Lure Fish House, 60 S Seaward Ave, Ventura, CA 93001", site: "https://www.lurefishhouse.com/" }
+            ],
+            stayTitle: "Ventura, Wednesday to Friday, 2 nights · Not booked yet. Airbnb availability checked 7:15 AM PT Nov 25. A Ventura hotel rate for these dates was not in the 7:45 AM Expedia file — the Best Western at Ventura Pier is listed to recheck.",
+            stays: [
+              { name: "Midtown cottage, Ventura, 3 bedrooms 1 bath", role: "primary", href: "https://www.airbnb.com/rooms/660783391832138039?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2", detail: "Primary pick: $731 for 2 nights, prices include all fees, 4.74 from 131 reviews, 3 bedrooms 1 bath. One bathroom for four is tight, but this is the verified stay that keeps the trip well under $2,000. Downtown and The Twist on Main are a short drive.", safety: "Parking and safety: confirm off-street parking. Midtown Ventura is fine for a short stay; leave nothing visible." },
+              { name: "Best Western at Ventura Pier — 2 rooms, check Expedia", role: "alternative", href: "https://www.expedia.com/h5556.Hotel-Information?chkin=2026-11-25&chkout=2026-11-27&adults=2&children=1_14,1_11", detail: "Hotel to recheck live. No rate was captured at 7:45 AM for Nov 25–27. Open the dated link, estimate two rooms at 2× the one-room total, and add parking or resort fees. Listings have shown free parking and breakfast. Only swap this in if the all-in total still keeps the trip at or under $2,000. Booking-site prices can exclude resort fees and charges paid at the hotel; all-in estimate shown.", safety: "Parking and safety: confirm that parking is actually included and is off-street. The pier area is a tourist strip; stay off the sand, and leave nothing in the car." },
+              { name: "Best Western Plus South Coast Inn, Goleta — 2 rooms", role: "alternative", href: "https://www.expedia.com/h13294.Hotel-Information?chkin=2026-11-25&chkout=2026-11-27&adults=2&children=1_14,1_11", detail: "Goleta hotel alternative: about $1,270–$1,470 all-in for two nights. Closer to The Knock, but it only keeps a $2,000 trip at the low end if food stays modest.", safety: "Parking and safety: complimentary on-site parking. Goleta is generally quiet; The Knock is a 15–20 minute drive." }
+            ]
+          },
+          {
+            title: "Thursday, Nov 26 · Santa Barbara for Thanksgiving",
+            vibe: "A short hop up the coast, a relaxed midday meal in town, and The Knock in the evening — then back to Ventura so the girls are in their own room.",
+            origin: "Ventura, CA",
+            dest: "Santa Barbara, CA",
+            originLL: [-119.2945, 34.2804],
+            destLL: [-119.6982, 34.4208],
+            facts: [
+              ["Drive", "About 32 mi, 30–40 minutes each way on 101."],
+              ["Leave by", "Mid-morning, so you are in Santa Barbara for a midday meal."],
+              ["Main activity", "Thanksgiving in Santa Barbara: State Street, the Funk Zone, and a viewpoint above the water. Stay off the sand and piers while the warnings last through Thursday noon. Drive back to Ventura after The Knock."]
+            ],
+            places: [
+              { label: "Santa Barbara map", q: "Santa Barbara, CA" }
+            ],
+            evening: {
+              name: "W2O Rooftop Lounge at Watermark",
+              detail: "A rooftop cocktail lounge in downtown Ventura, a short drive from the midtown cottage so the girls can remain in their room. Thursday is the better night for this rooftop (it is not open Wednesday). Spend Thanksgiving day in Santa Barbara, come back to Ventura in the late afternoon, and go up for a sunset or evening drink. If the rooftop is closed on Thanksgiving, use The Twist on Main again (listed Thursday 4:00–10:00 PM) — confirm both.",
+              hours: "Usual Thursday hours are 5:00 PM–11:00 PM, with happy hour 5:00–7:00 PM and live music 8:00–11:00 PM. Thanksgiving, Nov 26, is not confirmed on their site — call (805) 643-6800 before you count on it. Backup: The Twist on Main, listed Thursday 4:00–10:00 PM, (805) 641-0053, also confirm Thanksgiving.",
+              price: "Moderate to upscale",
+              reservations: "Call (805) 643-6800 to confirm Thanksgiving hours and to ask about a reservation.",
+              map: "W2O Rooftop Lounge, Watermark, 598 E Main St, Ventura, CA 93001",
+              site: "https://www.watermarkonmain.com/"
+            },
+            meals: [
+              { kind: "Thanksgiving lunch", name: "The Copper", detail: "Wood-fired pizza and pasta on State Street, and a family Thanksgiving feast from 11:00 AM. A midday meal in town, before The Knock.", hours: "Their events page lists a family Thanksgiving feast on Thursday, Nov 26, starting at 11:00 AM. Call (805) 770-8055 to confirm when they close, and book ahead.", map: "The Copper, 1031 State St, Santa Barbara, CA 93101", site: "https://thecoppersb.com/events" }
+            ]
+          },
+          {
+            title: "Friday, Nov 27 · Ventura to Dublin",
+            vibe: "A slightly longer Friday than from Santa Barbara — leave early, maybe a Solvang lunch, and home by early evening.",
+            origin: "Ventura, CA",
+            dest: "Dublin, CA",
+            originLL: [-119.2945, 34.2804],
+            destLL: [-121.9358, 37.7021],
+            facts: [
+              ["Drive", "333 mi. Off-peak this is about 5 hours; on the Friday of Thanksgiving weekend, plan 6–7 hours."],
+              ["Leave by", "9:00–9:30 AM for a mid-afternoon arrival. If you stop in Solvang for lunch, be back on 101 by 1:30–2:00 PM."],
+              ["Superchargers", "Optional: Kettleman City, or Gilroy if you cut inland on 152."],
+              ["Main activity", "Drive home. Solvang lunch is the one stop if you want it. Julefest lights at 5:00 PM would make a very late arrival — skip them on this route."]
+            ],
+            places: [
+              { label: "Solvang", q: "Solvang, CA" }
+            ],
+            meals: [
+              { kind: "Lunch in Solvang, or skip and eat later", name: "Solvang Restaurant", detail: "Æbleskiver and Danish plates, a short hop up 101 from Ventura, then the long run north.", hours: "Usual Friday hours are 7:00 AM–3:00 PM. Call (805) 688-4645 to confirm the day after Thanksgiving.", map: "Solvang Restaurant, 1672 Copenhagen Dr, Solvang, CA 93463", site: "https://solvangrestaurant.com/" },
+              { kind: "Optional dinner, once you are close to home", name: "Pastas Trattoria", detail: "A relaxed Italian landing in downtown Pleasanton. Skip it if you need to stay under $2,000 or arrive late.", hours: "They have been listed 11:30 AM–10:00 PM on Saturdays; call (925) 417-2222 to confirm Friday, Nov 27, and to book. Skip this stop if you need to stay under $2,000.", map: "Pastas Trattoria, 405 Main Street, Pleasanton, CA 94566", site: "https://www.pastastrattoriapleasanton.com/contact.html" }
+            ]
+          }
+        ]
+      },
       coast: {
         intro: "Checkout at 11:00 AM, lunch at Sherman’s, then a 1:00 PM departure. Wednesday is a long drive through Thanksgiving-eve traffic — the Science Center would already be closing when you arrived, so this is a drive-and-dinner day. Two nights in walkable Santa Barbara, Julefest on Friday, then a short Saturday home from Paso Robles.",
         days: [
@@ -877,13 +1234,8 @@
       return t.content;
     }
 
-    function renderDecision() {
-      const root = document.getElementById("decision-cards");
-      root.innerHTML = "";
-      OPTIONS.forEach((o) => {
-        const card = document.createElement("article");
-        card.className = "card" + (o.pick ? " pick" : "");
-        card.innerHTML = `<h3>${o.name}</h3>
+    function optionCardHTML(o) {
+      return `<h3>${o.name}</h3>
           <p class="total">${o.total}</p>
           <p class="total-note">${o.altTotal} ${o.rec}</p>
           <ul>
@@ -892,15 +1244,23 @@
             <li><span>Evenings together</span>${o.evening}</li>
             <li><span>The main worry</span>${o.worry}</li>
           </ul>`;
+    }
+
+    function fillDecisionGroup(list, cardsId, compareId, recId, recText, heading) {
+      const root = document.getElementById(cardsId);
+      root.innerHTML = "";
+      list.forEach((o) => {
+        const card = document.createElement("article");
+        card.className = "card" + (o.pick ? " pick" : "");
+        card.innerHTML = optionCardHTML(o);
         root.appendChild(card);
       });
-      const compare = document.getElementById("cost-compare");
-      compare.innerHTML = `<h3>Cost comparison</h3>
+      document.getElementById(compareId).innerHTML = `<h3>${heading}</h3>
         <p class="total-note">Estimates for a family of four. The total uses the primary lodging pick at each stop. Expedia rates as checked 7:45 AM PT Nov 25. Booking-site prices can exclude resort fees and charges paid at the hotel; all-in estimate shown. Rooms may sell out.</p>
         <table>
           <thead><tr><th>Option</th><th>Primary total</th><th>Alternative</th></tr></thead>
           <tbody>
-            ${OPTIONS.map((o) => `<tr>
+            ${list.map((o) => `<tr>
               <td>${o.name}${o.pick ? " (recommended)" : ""}</td>
               <td class="num">${o.total}</td>
               <td>${o.altTotal}</td>
@@ -908,8 +1268,12 @@
           </tbody>
         </table>
         <p class="cost-assumptions">${COST_ASSUMPTIONS}</p>`;
-      document.getElementById("recommendation").innerHTML =
-        `<strong>Recommendation</strong>${RECOMMENDATION}`;
+      document.getElementById(recId).innerHTML = `<strong>Recommendation</strong>${recText}`;
+    }
+
+    function renderDecision() {
+      fillDecisionGroup(SHORT_OPTIONS, "short-decision-cards", "short-cost-compare", "short-recommendation", SHORT_RECOMMENDATION, "Cost comparison — home Friday");
+      fillDecisionGroup(OPTIONS, "decision-cards", "cost-compare", "recommendation", RECOMMENDATION, "Cost comparison — longer options");
     }
 
     const ROUTES = {"coast-0":[[33.89921,-116.36044],[33.91828,-116.39493],[33.92522,-116.44042],[33.92498,-116.48772],[33.92487,-116.53404],[33.90524,-116.55816],[33.91447,-116.60391],[33.92297,-116.64896],[33.92477,-116.69479],[33.92451,-116.73918],[33.91885,-116.78351],[33.93167,-116.82817],[33.92439,-116.87218],[33.92598,-116.92035],[33.92743,-116.96745],[33.94639,-117.00414],[33.97203,-117.04029],[34.00348,-117.06463],[34.02146,-117.1034],[34.03584,-117.14722],[34.06161,-117.17798],[34.06673,-117.2249],[34.06393,-117.2706],[34.06526,-117.31667],[34.06891,-117.36349],[34.06784,-117.41016],[34.06682,-117.45672],[34.06566,-117.50362],[34.06746,-117.54987],[34.0678,-117.59755],[34.08599,-117.63806],[34.08718,-117.68465],[34.08166,-117.73177],[34.07275,-117.77445],[34.06376,-117.81825],[34.06959,-117.8629],[34.07229,-117.9099],[34.07089,-117.95646],[34.06483,-118.00301],[34.07077,-118.0482],[34.07216,-118.09333],[34.07159,-118.14166],[34.05636,-118.18304],[34.06832,-118.21657],[34.09603,-118.24419],[34.12619,-118.27305],[34.15548,-118.29471],[34.1538,-118.34069],[34.15454,-118.38759],[34.15573,-118.43451],[34.16547,-118.47668],[34.17128,-118.52186],[34.17299,-118.568],[34.16884,-118.61301],[34.15233,-118.65544],[34.14744,-118.69902],[34.14327,-118.74171],[34.14671,-118.78525],[34.161,-118.82999],[34.17708,-118.87117],[34.18442,-118.91495],[34.19982,-118.95696],[34.21236,-119.00335],[34.21762,-119.04705],[34.22104,-119.09244],[34.22252,-119.13962],[34.23844,-119.179],[34.25694,-119.21901],[34.26273,-119.2646],[34.27789,-119.30185],[34.29747,-119.3412],[34.32244,-119.3757],[34.34149,-119.41177],[34.36347,-119.44881],[34.38319,-119.48363],[34.40266,-119.52277],[34.41677,-119.56559],[34.42146,-119.61055],[34.42306,-119.65575],[34.42074,-119.69827]],"coast-2":[[34.42074,-119.69827],[34.41363,-119.70117],[34.42526,-119.71993],[34.43695,-119.75169],[34.4418,-119.75961],[34.45055,-119.76154],[34.46086,-119.77045],[34.46895,-119.77271],[34.47022,-119.7776],[34.4738,-119.77415],[34.47677,-119.76921],[34.48028,-119.77175],[34.48354,-119.77567],[34.48484,-119.78114],[34.49001,-119.78334],[34.4871,-119.78899],[34.48909,-119.79347],[34.49561,-119.80058],[34.50366,-119.80412],[34.50506,-119.8142],[34.50897,-119.82157],[34.51584,-119.82836],[34.52798,-119.83706],[34.53251,-119.85368],[34.53845,-119.86333],[34.54508,-119.87821],[34.54736,-119.89585],[34.55192,-119.91048],[34.5592,-119.91739],[34.56155,-119.92602],[34.56764,-119.94313],[34.56937,-119.95297],[34.57272,-119.95968],[34.5752,-119.97111],[34.58258,-119.99122],[34.58723,-120.01354],[34.58784,-120.02652],[34.59402,-120.03698],[34.6102,-120.05449],[34.61057,-120.05925],[34.60667,-120.10357],[34.59606,-120.13412],[34.59585,-120.14592],[34.60867,-120.18094],[34.6322,-120.1874],[34.66885,-120.16948],[34.68543,-120.15666],[34.70889,-120.17394],[34.72191,-120.20916],[34.7418,-120.26956],[34.7681,-120.30484],[34.79828,-120.34014],[34.84498,-120.37827],[34.91173,-120.41791],[34.9836,-120.43238],[35.04143,-120.48861],[35.09329,-120.54275],[35.11224,-120.56661],[35.13065,-120.60871],[35.14256,-120.63976],[35.16419,-120.68704],[35.17479,-120.6968],[35.18802,-120.70102],[35.22953,-120.69099],[35.24308,-120.68303],[35.27749,-120.67028],[35.29182,-120.65497],[35.29657,-120.62985],[35.31671,-120.62128],[35.33341,-120.62421],[35.35094,-120.63307],[35.37232,-120.63995],[35.41316,-120.62654],[35.46203,-120.64813],[35.48953,-120.67223],[35.52106,-120.70401],[35.54255,-120.71389],[35.56736,-120.70107],[35.61362,-120.69066],[35.62669,-120.69101]],"vegas-3":[[35.62669,-120.69101],[35.63723,-120.68423],[35.66227,-120.69715],[35.71702,-120.69521],[35.75125,-120.6998],[35.79228,-120.73234],[35.84909,-120.76576],[35.86098,-120.80868],[35.90025,-120.8418],[35.96405,-120.88781],[36.01662,-120.92502],[36.09701,-121.02445],[36.1649,-121.05429],[36.20375,-121.13195],[36.19815,-121.15127],[36.25322,-121.1767],[36.29129,-121.19792],[36.3138,-121.23392],[36.36603,-121.28015],[36.42507,-121.32946],[36.45062,-121.36505],[36.48959,-121.4244],[36.52148,-121.44774],[36.56724,-121.51561],[36.62788,-121.58734],[36.66715,-121.62768],[36.6532,-121.63831],[36.63638,-121.66747],[36.59833,-121.69903],[36.58103,-121.71857],[36.56953,-121.75377],[36.56743,-121.7807],[36.57344,-121.81946],[36.58338,-121.8469],[36.58713,-121.86469],[36.59417,-121.86739],[36.59453,-121.8719],[36.59369,-121.88206],[36.59776,-121.89268],[36.60842,-121.89616],[36.61784,-121.90185],[36.61259,-121.9009],[36.60171,-121.89309],[36.60037,-121.87279],[36.60383,-121.85984],[36.60924,-121.85922],[36.61894,-121.84772],[36.6251,-121.84025],[36.6435,-121.82032],[36.65185,-121.81511],[36.67294,-121.81073],[36.68072,-121.80746],[36.71109,-121.79649],[36.72842,-121.78638],[36.75601,-121.7606],[36.7638,-121.74971],[36.76929,-121.74009],[36.7801,-121.70297],[36.78767,-121.68117],[36.78915,-121.66876],[36.78912,-121.66745],[36.79889,-121.6646],[36.80366,-121.65308],[36.81401,-121.64075],[36.82214,-121.6301],[36.83067,-121.62972],[36.84645,-121.63516],[36.8535,-121.63426],[36.85856,-121.62617],[36.86216,-121.6125],[36.85906,-121.59706],[36.86133,-121.58129],[36.87018,-121.57243],[36.87835,-121.56513],[36.8922,-121.5563],[36.91078,-121.55473],[36.91699,-121.54816],[36.93317,-121.5509],[36.94915,-121.55271],[36.97363,-121.55448],[36.98427,-121.55856],[37.01785,-121.56399],[37.10479,-121.6115],[37.16332,-121.66387],[37.19908,-121.70494],[37.24439,-121.77305],[37.29363,-121.80975],[37.33989,-121.84949],[37.36742,-121.84555],[37.43679,-121.88898],[37.49212,-121.91941],[37.53175,-121.94018],[37.54487,-121.92022],[37.55527,-121.91586],[37.56226,-121.90502],[37.57629,-121.87985],[37.59703,-121.87322],[37.6346,-121.88393],[37.69906,-121.92173],[37.7021,-121.93581]],"coast-1":[[34.42074,-119.69827],[34.42055,-119.69801],[34.42043,-119.69786],[34.42035,-119.69774],[34.42033,-119.69771],[34.42029,-119.69765],[34.42019,-119.69751],[34.42012,-119.69742],[34.42009,-119.69739],[34.41983,-119.69702],[34.4198,-119.69699],[34.41975,-119.69692],[34.4197,-119.69685],[34.41938,-119.69642],[34.41922,-119.69621],[34.41918,-119.69615],[34.41889,-119.69575],[34.41887,-119.69571],[34.41882,-119.69564],[34.41878,-119.69559],[34.41871,-119.69549],[34.41821,-119.69482],[34.41819,-119.69478],[34.41818,-119.69477],[34.41811,-119.69467],[34.41796,-119.69449],[34.41794,-119.69445],[34.41788,-119.69438],[34.41783,-119.69431],[34.41757,-119.69395],[34.41748,-119.69382],[34.41716,-119.69339],[34.41699,-119.69316],[34.41698,-119.69314],[34.41694,-119.69308],[34.41687,-119.69314],[34.41658,-119.69346],[34.41632,-119.69372],[34.41613,-119.69393],[34.41597,-119.6941],[34.41594,-119.69412],[34.41593,-119.69414],[34.41585,-119.69422],[34.4158,-119.69415],[34.41578,-119.69413],[34.41561,-119.69392],[34.41551,-119.6938],[34.41537,-119.69361],[34.41525,-119.69342],[34.41457,-119.69238],[34.4144,-119.69216],[34.41434,-119.69209],[34.41415,-119.69187],[34.41408,-119.69178],[34.41405,-119.69175],[34.41399,-119.69167],[34.41407,-119.69159],[34.4141,-119.69157],[34.4141,-119.69156],[34.41435,-119.6913],[34.41451,-119.69113],[34.41455,-119.6911],[34.41458,-119.69106],[34.41473,-119.6909],[34.41489,-119.69073],[34.41502,-119.69059],[34.41507,-119.69053],[34.41503,-119.69047],[34.41443,-119.68965],[34.41435,-119.68955],[34.41433,-119.68951],[34.41414,-119.68926],[34.41409,-119.68931],[34.41407,-119.68933],[34.41394,-119.68947],[34.41382,-119.6896],[34.41369,-119.68975],[34.41366,-119.68978],[34.41361,-119.68982],[34.41357,-119.68987]],"sd-0":[[33.89921,-116.36044],[33.90307,-116.36028],[33.92096,-116.40625],[33.92525,-116.44407],[33.92497,-116.50099],[33.92487,-116.53384],[33.90897,-116.54537],[33.91447,-116.60391],[33.92216,-116.65409],[33.92471,-116.69401],[33.92482,-116.73802],[33.91908,-116.79966],[33.93166,-116.82912],[33.92435,-116.88535],[33.92743,-116.96745],[33.91775,-116.9772],[33.90183,-116.98543],[33.89774,-116.98782],[33.89271,-116.98816],[33.88367,-116.99081],[33.87567,-116.99202],[33.87132,-116.99517],[33.86853,-117.00091],[33.8681,-117.005],[33.86548,-117.00831],[33.86142,-117.00837],[33.85668,-117.00936],[33.84951,-117.00623],[33.8428,-117.00363],[33.82997,-117.00364],[33.82087,-117.00416],[33.78825,-117.00688],[33.75755,-117.00661],[33.73459,-117.00674],[33.72094,-117.00665],[33.71195,-117.01258],[33.69947,-117.04012],[33.6961,-117.08495],[33.67654,-117.08462],[33.64294,-117.08398],[33.62281,-117.09733],[33.59821,-117.11844],[33.58226,-117.13294],[33.56096,-117.13869],[33.55049,-117.14105],[33.53945,-117.14472],[33.52975,-117.15336],[33.5232,-117.16213],[33.51402,-117.15766],[33.48259,-117.14164],[33.45172,-117.13551],[33.42663,-117.15036],[33.38952,-117.17474],[33.36447,-117.16128],[33.32715,-117.15928],[33.28836,-117.14956],[33.25573,-117.15741],[33.19749,-117.12604],[33.15573,-117.10426],[33.12476,-117.10429],[33.09969,-117.0899],[33.07516,-117.07058],[33.05068,-117.07315],[33.02342,-117.07908],[32.98787,-117.08301],[32.95468,-117.10192],[32.92864,-117.11403],[32.89378,-117.11573],[32.87015,-117.10796],[32.84174,-117.13311],[32.80776,-117.15334],[32.772,-117.1613],[32.75789,-117.16051],[32.75038,-117.15539],[32.73324,-117.15547],[32.72334,-117.15539],[32.71572,-117.15643],[32.71578,-117.16393],[32.71577,-117.16986],[32.71427,-117.17509]],"sd-1":[[32.7157,-117.1611],[32.7157,-117.16098],[32.7157,-117.16018],[32.71571,-117.15927],[32.71571,-117.15917],[32.71571,-117.15835],[32.71572,-117.15744],[32.71572,-117.15643],[32.71572,-117.15561],[32.71573,-117.15527],[32.71573,-117.15491],[32.71583,-117.1547],[32.71633,-117.15471],[32.71664,-117.15471],[32.71677,-117.15471],[32.71688,-117.15471],[32.71724,-117.15471],[32.71775,-117.15471],[32.71792,-117.15472],[32.71841,-117.15472],[32.71886,-117.15472],[32.71937,-117.15473],[32.71975,-117.15474],[32.72043,-117.15474],[32.72135,-117.15475],[32.72234,-117.15481],[32.72369,-117.15519],[32.72444,-117.15545],[32.72563,-117.15581],[32.72654,-117.15591],[32.72702,-117.15589],[32.72741,-117.15582],[32.72778,-117.15567],[32.72901,-117.15499],[32.72982,-117.15457],[32.73023,-117.15445],[32.73067,-117.15438],[32.73121,-117.15437],[32.73193,-117.15452],[32.7324,-117.1547],[32.73337,-117.15527],[32.73386,-117.15551],[32.73493,-117.15577],[32.73527,-117.15577],[32.73603,-117.15565],[32.73622,-117.15561],[32.73643,-117.15556],[32.73687,-117.15529],[32.73718,-117.1549],[32.73811,-117.15378],[32.73878,-117.15284],[32.73941,-117.1521],[32.74015,-117.15153],[32.74044,-117.15135],[32.74088,-117.15126],[32.74114,-117.15113],[32.74115,-117.15023],[32.74115,-117.14932],[32.74115,-117.14915],[32.74116,-117.14769],[32.74109,-117.14758],[32.7409,-117.14758],[32.74059,-117.14755],[32.74043,-117.14751],[32.74029,-117.14748],[32.74017,-117.14756],[32.73996,-117.14824],[32.73989,-117.14838],[32.73974,-117.1485],[32.73848,-117.14863],[32.7381,-117.14871],[32.73782,-117.14876],[32.73753,-117.14881],[32.73712,-117.14889],[32.73684,-117.14884],[32.73666,-117.14878],[32.7364,-117.14878],[32.73603,-117.14878],[32.73578,-117.1487],[32.73546,-117.14855]],"sd-2":[[32.7157,-117.1611],[32.72092,-117.16386],[32.73986,-117.17867],[32.7662,-117.20548],[32.82214,-117.22896],[32.86221,-117.23005],[32.91575,-117.23131],[32.97432,-117.25083],[33.01449,-117.2691],[33.06384,-117.29171],[33.14364,-117.33338],[33.19689,-117.36764],[33.22508,-117.39398],[33.29172,-117.45689],[33.35545,-117.52938],[33.42257,-117.60771],[33.45302,-117.64395],[33.47566,-117.67415],[33.51857,-117.66473],[33.55893,-117.67286],[33.6029,-117.68766],[33.6332,-117.72558],[33.67439,-117.75589],[33.71991,-117.79532],[33.7448,-117.84171],[33.76435,-117.86523],[33.79944,-117.89772],[33.83437,-117.93601],[33.86156,-117.98957],[33.88659,-118.03296],[33.91665,-118.07923],[33.96348,-118.11926],[34.00434,-118.15285],[34.01964,-118.17987],[34.03128,-118.21797],[34.05042,-118.21391],[34.07844,-118.21975],[34.10298,-118.25029],[34.14231,-118.27788],[34.15554,-118.29534],[34.15462,-118.31306],[34.1525,-118.33289],[34.15417,-118.34527],[34.15336,-118.36409],[34.15657,-118.40318],[34.15693,-118.44828],[34.16484,-118.47375],[34.17136,-118.52965],[34.16835,-118.58227],[34.16263,-118.62902],[34.1508,-118.68937],[34.13826,-118.72855],[34.14673,-118.79591],[34.17641,-118.86213],[34.18476,-118.92696],[34.20139,-118.97193],[34.20688,-118.99114],[34.21694,-119.0344],[34.22215,-119.12368],[34.23673,-119.177],[34.25594,-119.21688],[34.25941,-119.25133],[34.27195,-119.27721],[34.27777,-119.30142],[34.30418,-119.34641],[34.32086,-119.37001],[34.32503,-119.3934],[34.34615,-119.42159],[34.35634,-119.43621],[34.36831,-119.45299],[34.37636,-119.47189],[34.38198,-119.48268],[34.39935,-119.51347],[34.40694,-119.54739],[34.41811,-119.5899],[34.42094,-119.60784],[34.42258,-119.63571],[34.42312,-119.65976],[34.41901,-119.68932],[34.42074,-119.69827]],"sd-3":[[34.42074,-119.69827],[34.42404,-119.71813],[34.44139,-119.75753],[34.4583,-119.76934],[34.46968,-119.77574],[34.4757,-119.772],[34.48163,-119.77233],[34.48564,-119.78094],[34.48691,-119.78941],[34.49577,-119.80064],[34.50446,-119.81225],[34.51398,-119.82497],[34.53241,-119.84702],[34.54206,-119.86816],[34.54952,-119.90676],[34.56124,-119.91976],[34.56787,-119.9461],[34.57243,-119.96142],[34.58398,-119.99284],[34.58778,-120.02542],[34.60989,-120.05443],[34.63489,-120.08197],[34.66636,-120.11128],[34.67349,-120.12923],[34.68068,-120.153],[34.69015,-120.15844],[34.72355,-120.21281],[34.76857,-120.30523],[34.83864,-120.37244],[34.97907,-120.42996],[35.0857,-120.5319],[35.12223,-120.58621],[35.15112,-120.65477],[35.17793,-120.69803],[35.23443,-120.68627],[35.2809,-120.66891],[35.29709,-120.62886],[35.33136,-120.62272],[35.36882,-120.64103],[35.44964,-120.63923],[35.50744,-120.69516],[35.55271,-120.71343],[35.62484,-120.68618],[35.68272,-120.69673],[35.76097,-120.69878],[35.84403,-120.76012],[35.88358,-120.84131],[35.98751,-120.90409],[36.1122,-121.01988],[36.2045,-121.13716],[36.25189,-121.17626],[36.30134,-121.21949],[36.40675,-121.31824],[36.46038,-121.38101],[36.52298,-121.45961],[36.62586,-121.5841],[36.69364,-121.6619],[36.77854,-121.6695],[36.80092,-121.66193],[36.81495,-121.63941],[36.83054,-121.62967],[36.85212,-121.63522],[36.86256,-121.6175],[36.85952,-121.59376],[36.8726,-121.57153],[36.89167,-121.55643],[36.91521,-121.54927],[36.93679,-121.55243],[36.97593,-121.55534],[37.03228,-121.57189],[37.16159,-121.66184],[37.22814,-121.74457],[37.315,-121.82802],[37.38356,-121.86172],[37.49329,-121.92051],[37.5438,-121.92091],[37.56079,-121.9078],[37.5801,-121.87536],[37.6394,-121.88427],[37.7021,-121.93581]],"vegas-0":[[33.89921,-116.36044],[33.90361,-116.36004],[33.92346,-116.41687],[33.92504,-116.46918],[33.92493,-116.51998],[33.9327,-116.54517],[33.98984,-116.54902],[34.01636,-116.5806],[34.02826,-116.5861],[34.04072,-116.5871],[34.05419,-116.57282],[34.06855,-116.55266],[34.08053,-116.5351],[34.09513,-116.50935],[34.10692,-116.48566],[34.11377,-116.46855],[34.1193,-116.44633],[34.12063,-116.43031],[34.12289,-116.41574],[34.12803,-116.39685],[34.13494,-116.37886],[34.13496,-116.32819],[34.13497,-116.30968],[34.13507,-116.27671],[34.13521,-116.22739],[34.13515,-116.17834],[34.13512,-116.12386],[34.13547,-116.09139],[34.13545,-116.07142],[34.13566,-116.05152],[34.13637,-115.98398],[34.16567,-115.92732],[34.16548,-115.82143],[34.16561,-115.74133],[34.18854,-115.72576],[34.21549,-115.71971],[34.23858,-115.7228],[34.25713,-115.71886],[34.31638,-115.69873],[34.35326,-115.69031],[34.39894,-115.70067],[34.44377,-115.73502],[34.47263,-115.74187],[34.54962,-115.74549],[34.55522,-115.75633],[34.55809,-115.74899],[34.55986,-115.65946],[34.61992,-115.66459],[34.67867,-115.67672],[34.74109,-115.6605],[34.76952,-115.63103],[34.78779,-115.61271],[34.80435,-115.61144],[34.83354,-115.62406],[34.8889,-115.65011],[34.99984,-115.65487],[35.01814,-115.64235],[35.05888,-115.59497],[35.10572,-115.5471],[35.15379,-115.52336],[35.18785,-115.50277],[35.2133,-115.50703],[35.23263,-115.50624],[35.26074,-115.4987],[35.30886,-115.45557],[35.36345,-115.41596],[35.39815,-115.38739],[35.45117,-115.38871],[35.47438,-115.44714],[35.63413,-115.3845],[35.81034,-115.30645],[35.94298,-115.18446],[36.03344,-115.18063],[36.10463,-115.1805],[36.13145,-115.18019],[36.15593,-115.16084],[36.16741,-115.15934],[36.17544,-115.14441],[36.17071,-115.13978],[36.16971,-115.13993]],"vegas-1":[[36.16971,-115.13993],[36.16937,-115.13914],[36.16883,-115.13949],[36.16867,-115.13959],[36.16808,-115.13998],[36.16723,-115.14053],[36.16692,-115.14073],[36.16642,-115.14105],[36.16581,-115.14145],[36.16534,-115.14177],[36.16448,-115.14232],[36.16408,-115.14259],[36.16302,-115.14328],[36.16285,-115.14339],[36.16183,-115.14406],[36.16123,-115.14445],[36.16095,-115.14463],[36.1606,-115.14486],[36.15961,-115.14551],[36.15937,-115.14567],[36.15911,-115.14584],[36.15898,-115.14599],[36.1589,-115.14628],[36.15891,-115.14722],[36.15892,-115.14813],[36.15893,-115.14869],[36.15892,-115.14899],[36.15891,-115.14976],[36.15889,-115.15044],[36.15889,-115.1509],[36.1589,-115.1518],[36.1589,-115.1523],[36.1589,-115.15346],[36.15892,-115.15417],[36.15892,-115.155],[36.15892,-115.15599],[36.15896,-115.15755],[36.15906,-115.15848],[36.15911,-115.1589],[36.15916,-115.15981],[36.15915,-115.16132],[36.15808,-115.16133],[36.15739,-115.16136],[36.15627,-115.16158],[36.15558,-115.16183],[36.15483,-115.16217],[36.15369,-115.16284],[36.15323,-115.16322],[36.15243,-115.16397],[36.14986,-115.16628],[36.14849,-115.16749],[36.14683,-115.16898],[36.14422,-115.17128],[36.13714,-115.17756],[36.13584,-115.17861],[36.13359,-115.17987],[36.12879,-115.1812],[36.12723,-115.18139],[36.12666,-115.18158],[36.12639,-115.18188],[36.12635,-115.18316],[36.12639,-115.18466],[36.12637,-115.18552],[36.12638,-115.18578],[36.1264,-115.18638],[36.12656,-115.18923],[36.12659,-115.18998],[36.1266,-115.19022],[36.12714,-115.19022],[36.12803,-115.19023],[36.1286,-115.19016],[36.12936,-115.19015],[36.13023,-115.19017],[36.13075,-115.19017],[36.13126,-115.19019],[36.13146,-115.18982],[36.13143,-115.18903],[36.13141,-115.1885],[36.13208,-115.18794],[36.13216,-115.18699]],"vegas-2":[[36.16971,-115.13993],[36.16402,-115.14263],[36.15891,-115.14718],[36.15892,-115.15487],[36.15483,-115.16217],[36.13108,-115.18063],[36.10567,-115.18084],[36.04259,-115.18098],[35.94816,-115.18286],[35.81584,-115.30272],[35.61798,-115.38756],[35.51777,-115.43066],[35.46346,-115.4634],[35.47109,-115.50339],[35.47551,-115.57563],[35.41006,-115.77117],[35.30992,-116.00501],[35.25189,-116.09048],[35.19049,-116.15794],[35.09915,-116.28604],[35.08399,-116.37539],[35.03344,-116.47009],[34.92888,-116.72202],[34.90275,-116.88648],[34.90547,-116.98104],[34.8865,-117.00925],[34.88302,-117.06261],[34.88768,-117.09298],[34.91439,-117.10761],[34.91761,-117.1567],[34.91446,-117.23292],[34.92457,-117.32987],[34.94901,-117.4161],[34.99025,-117.49703],[34.99617,-117.5421],[35.00145,-117.58664],[35.01044,-117.64958],[35.00697,-117.70451],[35.00378,-117.79354],[35.01053,-117.89008],[35.01409,-117.94151],[35.01809,-117.99953],[35.0307,-118.09355],[35.07208,-118.11307],[35.10555,-118.15852],[35.11825,-118.22102],[35.10521,-118.25548],[35.09737,-118.30168],[35.10967,-118.32125],[35.11538,-118.37704],[35.12947,-118.4123],[35.14233,-118.46848],[35.16139,-118.47378],[35.17891,-118.48499],[35.18972,-118.50588],[35.21514,-118.55113],[35.22498,-118.56808],[35.23918,-118.57855],[35.24982,-118.60113],[35.26215,-118.62088],[35.26347,-118.6442],[35.27012,-118.68677],[35.27768,-118.71581],[35.30844,-118.77903],[35.34267,-118.86063],[35.35253,-118.91673],[35.35256,-118.97892],[35.35299,-119.04525],[35.3617,-119.05205],[35.37168,-119.06181],[35.36784,-119.0828],[35.36218,-119.0989],[35.35486,-119.17698],[35.35433,-119.24158],[35.35458,-119.25202],[35.35484,-119.33127],[35.4417,-119.45565],[35.60747,-119.64652],[35.61607,-119.6898],[35.61571,-119.74394],[35.61471,-119.92137],[35.62502,-119.98635],[35.65735,-120.0532],[35.69218,-120.12591],[35.71722,-120.17544],[35.74213,-120.21259],[35.73917,-120.27365],[35.70766,-120.31675],[35.67771,-120.34436],[35.66168,-120.41184],[35.6591,-120.49525],[35.65947,-120.54759],[35.65886,-120.60553],[35.64846,-120.6279],[35.64437,-120.6494],[35.64042,-120.65815],[35.63641,-120.66341],[35.63273,-120.67494],[35.6293,-120.68328],[35.62669,-120.69101]],"la-0":[[33.89921,-116.36044],[33.91295,-116.37742],[33.91981,-116.40145],[33.92502,-116.42879],[33.92529,-116.45811],[33.92497,-116.48444],[33.92494,-116.51353],[33.92485,-116.54084],[33.90567,-116.54547],[33.90769,-116.57032],[33.91317,-116.5976],[33.91891,-116.62576],[33.92246,-116.65207],[33.9226,-116.68015],[33.92168,-116.70682],[33.92489,-116.73513],[33.92061,-116.76047],[33.91885,-116.78929],[33.92545,-116.81294],[33.92988,-116.8385],[33.9244,-116.86386],[33.92439,-116.89683],[33.92598,-116.92035],[33.92701,-116.94701],[33.92712,-116.97489],[33.93967,-116.99848],[33.95575,-117.01657],[33.97008,-117.03801],[33.98837,-117.05506],[34.00834,-117.06728],[34.01553,-117.09256],[34.02568,-117.11639],[34.03423,-117.14168],[34.05071,-117.16007],[34.06193,-117.18215],[34.06673,-117.2056],[34.06674,-117.23689],[34.0641,-117.26475],[34.06363,-117.29139],[34.06555,-117.31977],[34.06891,-117.34721],[34.06871,-117.3738],[34.06821,-117.40174],[34.06738,-117.43017],[34.06682,-117.45672],[34.06607,-117.48493],[34.0669,-117.51171],[34.0675,-117.54133],[34.06753,-117.56738],[34.06766,-117.5946],[34.07576,-117.62],[34.08736,-117.6439],[34.08733,-117.67043],[34.0823,-117.69805],[34.08175,-117.72771],[34.07394,-117.75241],[34.07298,-117.77766],[34.06667,-117.80371],[34.06587,-117.83033],[34.06821,-117.85756],[34.07205,-117.88466],[34.0723,-117.91112],[34.07257,-117.94013],[34.06933,-117.96908],[34.06583,-117.99541],[34.06776,-118.02113],[34.07077,-118.0482],[34.07238,-118.07536],[34.0722,-118.10333],[34.07168,-118.13244],[34.0663,-118.15553],[34.05707,-118.18155],[34.05389,-118.2079],[34.05382,-118.23368],[34.06764,-118.25536],[34.07696,-118.28033],[34.08786,-118.30441],[34.09074,-118.32979],[34.09081,-118.35742],[34.09063,-118.385]],"la-1":[[34.09063,-118.385],[34.08485,-118.38425],[34.08026,-118.39122],[34.07393,-118.40038],[34.06958,-118.40672],[34.06709,-118.41462],[34.06694,-118.42875],[34.06289,-118.43278],[34.06072,-118.4364],[34.05917,-118.44251],[34.05706,-118.4501],[34.05853,-118.45398],[34.07957,-118.47205],[34.09458,-118.47614],[34.09956,-118.4779],[34.1055,-118.47788],[34.11792,-118.4816],[34.13518,-118.47185],[34.14401,-118.47112],[34.15339,-118.46764],[34.1597,-118.46814],[34.16538,-118.47561],[34.17062,-118.50128],[34.17283,-118.53394],[34.17237,-118.57076],[34.17078,-118.60561],[34.16459,-118.62343],[34.14931,-118.67303],[34.1513,-118.69249],[34.13931,-118.71468],[34.14277,-118.73613],[34.14755,-118.774],[34.15942,-118.8276],[34.17589,-118.85507],[34.18465,-118.89473],[34.18518,-118.9282],[34.20041,-118.95953],[34.20144,-118.97709],[34.2054,-118.98725],[34.21372,-119.00754],[34.21608,-119.0309],[34.21941,-119.0717],[34.22216,-119.12418],[34.22722,-119.16643],[34.23908,-119.18012],[34.25031,-119.20692],[34.26472,-119.23617],[34.26071,-119.24876],[34.26459,-119.26849],[34.27195,-119.27721],[34.27696,-119.29018],[34.27861,-119.30428],[34.29215,-119.33722],[34.30708,-119.34954],[34.3172,-119.36355],[34.32221,-119.3783],[34.32424,-119.39268],[34.34126,-119.41143],[34.34759,-119.42274],[34.35524,-119.43089],[34.35638,-119.44049],[34.36155,-119.44703],[34.37349,-119.45885],[34.37644,-119.47104],[34.37655,-119.47808],[34.38319,-119.48363],[34.39203,-119.50783],[34.40156,-119.51738],[34.40597,-119.54106],[34.41573,-119.55929],[34.41711,-119.58615],[34.42123,-119.60063],[34.42099,-119.60816],[34.42096,-119.62478],[34.4211,-119.63958],[34.42274,-119.65427],[34.4199,-119.67254],[34.41965,-119.6874],[34.42023,-119.69242],[34.42074,-119.69827]],"la-2":[[34.42074,-119.69827],[34.41363,-119.70117],[34.42526,-119.71993],[34.43695,-119.75169],[34.4418,-119.75961],[34.45055,-119.76154],[34.46086,-119.77045],[34.46895,-119.77271],[34.47022,-119.7776],[34.4738,-119.77415],[34.47677,-119.76921],[34.48028,-119.77175],[34.48354,-119.77567],[34.48484,-119.78114],[34.49001,-119.78334],[34.4871,-119.78899],[34.48909,-119.79347],[34.49561,-119.80058],[34.50366,-119.80412],[34.50506,-119.8142],[34.50897,-119.82157],[34.51584,-119.82836],[34.52798,-119.83706],[34.53251,-119.85368],[34.53845,-119.86333],[34.54508,-119.87821],[34.54736,-119.89585],[34.55192,-119.91048],[34.5592,-119.91739],[34.56155,-119.92602],[34.56764,-119.94313],[34.56937,-119.95297],[34.57272,-119.95968],[34.5752,-119.97111],[34.58258,-119.99122],[34.58723,-120.01354],[34.58784,-120.02652],[34.59402,-120.03698],[34.6102,-120.05449],[34.61057,-120.05925],[34.60667,-120.10357],[34.59606,-120.13412],[34.59585,-120.14592],[34.60867,-120.18094],[34.6322,-120.1874],[34.66885,-120.16948],[34.68543,-120.15666],[34.70889,-120.17394],[34.72191,-120.20916],[34.7418,-120.26956],[34.7681,-120.30484],[34.79828,-120.34014],[34.84498,-120.37827],[34.91173,-120.41791],[34.9836,-120.43238],[35.04143,-120.48861],[35.09329,-120.54275],[35.11224,-120.56661],[35.13065,-120.60871],[35.14256,-120.63976],[35.16419,-120.68704],[35.17479,-120.6968],[35.18802,-120.70102],[35.22953,-120.69099],[35.24308,-120.68303],[35.27749,-120.67028],[35.29182,-120.65497],[35.29657,-120.62985],[35.31671,-120.62128],[35.33341,-120.62421],[35.35094,-120.63307],[35.37232,-120.63995],[35.41316,-120.62654],[35.46203,-120.64813],[35.48953,-120.67223],[35.52106,-120.70401],[35.54255,-120.71389],[35.56736,-120.70107],[35.61362,-120.69066],[35.62669,-120.69101]],"la-3":[[35.62669,-120.69101],[35.63723,-120.68423],[35.66227,-120.69715],[35.71702,-120.69521],[35.75125,-120.6998],[35.79228,-120.73234],[35.84909,-120.76576],[35.86098,-120.80868],[35.90025,-120.8418],[35.96405,-120.88781],[36.01662,-120.92502],[36.09701,-121.02445],[36.1649,-121.05429],[36.20375,-121.13195],[36.19815,-121.15127],[36.25322,-121.1767],[36.29129,-121.19792],[36.3138,-121.23392],[36.36603,-121.28015],[36.42507,-121.32946],[36.45062,-121.36505],[36.48959,-121.4244],[36.52148,-121.44774],[36.56724,-121.51561],[36.62788,-121.58734],[36.66715,-121.62768],[36.6532,-121.63831],[36.63638,-121.66747],[36.59833,-121.69903],[36.58103,-121.71857],[36.56953,-121.75377],[36.56743,-121.7807],[36.57344,-121.81946],[36.58338,-121.8469],[36.58713,-121.86469],[36.59417,-121.86739],[36.59453,-121.8719],[36.59369,-121.88206],[36.59776,-121.89268],[36.60842,-121.89616],[36.61784,-121.90185],[36.61259,-121.9009],[36.60171,-121.89309],[36.60037,-121.87279],[36.60383,-121.85984],[36.60924,-121.85922],[36.61894,-121.84772],[36.6251,-121.84025],[36.6435,-121.82032],[36.65185,-121.81511],[36.67294,-121.81073],[36.68072,-121.80746],[36.71109,-121.79649],[36.72842,-121.78638],[36.75601,-121.7606],[36.7638,-121.74971],[36.76929,-121.74009],[36.7801,-121.70297],[36.78767,-121.68117],[36.78915,-121.66876],[36.78912,-121.66745],[36.79889,-121.6646],[36.80366,-121.65308],[36.81401,-121.64075],[36.82214,-121.6301],[36.83067,-121.62972],[36.84645,-121.63516],[36.8535,-121.63426],[36.85856,-121.62617],[36.86216,-121.6125],[36.85906,-121.59706],[36.86133,-121.58129],[36.87018,-121.57243],[36.87835,-121.56513],[36.8922,-121.5563],[36.91078,-121.55473],[36.91699,-121.54816],[36.93317,-121.5509],[36.94915,-121.55271],[36.97363,-121.55448],[36.98427,-121.55856],[37.01785,-121.56399],[37.10479,-121.6115],[37.16332,-121.66387],[37.19908,-121.70494],[37.24439,-121.77305],[37.29363,-121.80975],[37.33989,-121.84949],[37.36742,-121.84555],[37.43679,-121.88898],[37.49212,-121.91941],[37.53175,-121.94018],[37.54487,-121.92022],[37.55527,-121.91586],[37.56226,-121.90502],[37.57629,-121.87985],[37.59703,-121.87322],[37.6346,-121.88393],[37.69906,-121.92173],[37.7021,-121.93581]],"coast-3":[[35.62669,-120.69101],[35.63723,-120.68423],[35.66227,-120.69715],[35.71702,-120.69521],[35.75125,-120.6998],[35.79228,-120.73234],[35.84909,-120.76576],[35.86098,-120.80868],[35.90025,-120.8418],[35.96405,-120.88781],[36.01662,-120.92502],[36.09701,-121.02445],[36.1649,-121.05429],[36.20375,-121.13195],[36.19815,-121.15127],[36.25322,-121.1767],[36.29129,-121.19792],[36.3138,-121.23392],[36.36603,-121.28015],[36.42507,-121.32946],[36.45062,-121.36505],[36.48959,-121.4244],[36.52148,-121.44774],[36.56724,-121.51561],[36.62788,-121.58734],[36.66715,-121.62768],[36.6532,-121.63831],[36.63638,-121.66747],[36.59833,-121.69903],[36.58103,-121.71857],[36.56953,-121.75377],[36.56743,-121.7807],[36.57344,-121.81946],[36.58338,-121.8469],[36.58713,-121.86469],[36.59417,-121.86739],[36.59453,-121.8719],[36.59369,-121.88206],[36.59776,-121.89268],[36.60842,-121.89616],[36.61784,-121.90185],[36.61259,-121.9009],[36.60171,-121.89309],[36.60037,-121.87279],[36.60383,-121.85984],[36.60924,-121.85922],[36.61894,-121.84772],[36.6251,-121.84025],[36.6435,-121.82032],[36.65185,-121.81511],[36.67294,-121.81073],[36.68072,-121.80746],[36.71109,-121.79649],[36.72842,-121.78638],[36.75601,-121.7606],[36.7638,-121.74971],[36.76929,-121.74009],[36.7801,-121.70297],[36.78767,-121.68117],[36.78915,-121.66876],[36.78912,-121.66745],[36.79889,-121.6646],[36.80366,-121.65308],[36.81401,-121.64075],[36.82214,-121.6301],[36.83067,-121.62972],[36.84645,-121.63516],[36.8535,-121.63426],[36.85856,-121.62617],[36.86216,-121.6125],[36.85906,-121.59706],[36.86133,-121.58129],[36.87018,-121.57243],[36.87835,-121.56513],[36.8922,-121.5563],[36.91078,-121.55473],[36.91699,-121.54816],[36.93317,-121.5509],[36.94915,-121.55271],[36.97363,-121.55448],[36.98427,-121.55856],[37.01785,-121.56399],[37.10479,-121.6115],[37.16332,-121.66387],[37.19908,-121.70494],[37.24439,-121.77305],[37.29363,-121.80975],[37.33989,-121.84949],[37.36742,-121.84555],[37.43679,-121.88898],[37.49212,-121.91941],[37.53175,-121.94018],[37.54487,-121.92022],[37.55527,-121.91586],[37.56226,-121.90502],[37.57629,-121.87985],[37.59703,-121.87322],[37.6346,-121.88393],[37.69906,-121.92173],[37.7021,-121.93581]]};
@@ -1226,35 +1590,49 @@
       </section>`;
     }
 
+    function allTripOptions() {
+      return SHORT_OPTIONS.concat(OPTIONS);
+    }
+
+    function addTab(tabs, o, isOn) {
+      const b = document.createElement("button");
+      b.className = "tab" + (isOn ? " on" : "");
+      b.type = "button";
+      b.textContent = o.name;
+      b.setAttribute("data-option", o.id);
+      b.addEventListener("click", () => showOption(o.id));
+      tabs.appendChild(b);
+    }
+
     function renderItineraries() {
       const tabs = document.getElementById("tabs");
       const root = document.getElementById("itineraries");
       tabs.innerHTML = "";
-      OPTIONS.forEach((o, i) => {
-        const b = document.createElement("button");
-        b.className = "tab" + (i === 0 ? " on" : "");
-        b.type = "button";
-        b.textContent = o.name;
-        b.addEventListener("click", () => showOption(o.id));
-        tabs.appendChild(b);
-      });
-      root.innerHTML = OPTIONS.map((o) => {
+      const first = SHORT_OPTIONS[0].id;
+      SHORT_OPTIONS.forEach((o, i) => addTab(tabs, o, i === 0));
+      const sep = document.createElement("span");
+      sep.className = "tab-sep";
+      sep.textContent = "Longer options";
+      tabs.appendChild(sep);
+      OPTIONS.forEach((o) => addTab(tabs, o, false));
+      const all = allTripOptions();
+      root.innerHTML = all.map((o) => {
         const itin = itineraries[o.id];
-        return `<div class="option ${o.id === OPTIONS[0].id ? "" : "hidden"}" data-option="${o.id}">
+        return `<div class="option ${o.id === first ? "" : "hidden"}" data-option="${o.id}">
           <p>${itin.intro}</p>
           ${renderCostBox(o)}
           ${itin.days.map((d, i) => renderDay(o.id, d, i)).join("")}
         </div>`;
       }).join("");
-      itineraries[OPTIONS[0].id].days.forEach((d, i) => initMap(OPTIONS[0].id, i, d));
+      itineraries[first].days.forEach((d, i) => initMap(first, i, d));
     }
 
     function showOption(id) {
       document.querySelectorAll(".option").forEach((n) => {
         n.classList.toggle("hidden", n.getAttribute("data-option") !== id);
       });
-      document.querySelectorAll(".tab").forEach((t, i) => {
-        t.classList.toggle("on", OPTIONS[i].id === id);
+      document.querySelectorAll("#tabs .tab").forEach((tab) => {
+        tab.classList.toggle("on", tab.getAttribute("data-option") === id);
       });
       itineraries[id].days.forEach((d, i) => initMap(id, i, d));
     }
