@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Three ways home · Wed Nov 25–Sat Nov 28, 2026</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <style>
+    :root {
+      --bg: #f3efe7;
+      --paper: #fffcf7;
+      --ink: #1a1714;
+      --muted: #5e584f;
+      --line: #ddd4c6;
+      --accent: #7a2e1f;
+      --accent-soft: #f3e4dc;
+      --alert: #9b1b1b;
+      --alert-bg: #fdecec;
+      --ok: #1c5c38;
+      --shadow: 0 1px 2px rgba(26, 23, 20, 0.06), 0 8px 24px rgba(26, 23, 20, 0.06);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: "Georgia", "Times New Roman", serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 28px 20px 64px; }
+    header.hero { margin-bottom: 28px; }
+    p.kicker {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 8px;
+    }
+    h1 { font-size: 2.1rem; font-weight: 500; line-height: 1.15; margin: 0 0 8px; }
+    .meta { color: var(--muted); margin: 0 0 16px; }
+    .note, .warn, .rec {
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin: 16px 0;
+    }
+    .note { background: var(--paper); border: 1px solid var(--line); }
+    .warn { background: var(--alert-bg); border: 1px solid #e8b4b4; color: var(--alert); }
+    .rec { background: var(--accent-soft); border: 1px solid #e0c4b6; }
+    .rec strong, .warn strong, .note strong { display: block; margin-bottom: 4px; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; }
+    h2 { font-size: 1.45rem; font-weight: 500; margin: 36px 0 12px; }
+    h3 { font-size: 1.15rem; font-weight: 500; margin: 0 0 8px; }
+    p { margin: 0 0 10px; }
+    a { color: var(--accent); }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 16px 0 8px; }
+    @media (max-width: 800px) { .cards { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px 16px 14px;
+      box-shadow: var(--shadow);
+    }
+    .card.pick { outline: 2px solid var(--accent); }
+    .card h3 { margin-bottom: 10px; }
+    .card ul { margin: 0; padding: 0; list-style: none; }
+    .card li { margin: 0 0 8px; padding-left: 0; font-size: 0.95rem; }
+    .card li span {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+    }
+    .toolbar {
+      display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+      margin: 8px 0 14px;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    button, .tab {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--ink);
+      padding: 8px 14px;
+      cursor: pointer;
+    }
+    button.primary, .tab.on {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    button:disabled { opacity: 0.6; cursor: wait; }
+    .updated { color: var(--muted); font-size: 13px; }
+    .weather-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+    .wcard { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+    .wcard h4 { margin: 0 0 4px; font-size: 1rem; }
+    .wcard .when { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+    .alert-flag {
+      background: var(--alert-bg);
+      color: var(--alert);
+      border-radius: 6px;
+      padding: 6px 8px;
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .day {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 0 0 16px;
+      box-shadow: var(--shadow);
+    }
+    .facts { display: grid; grid-template-columns: 140px 1fr; gap: 4px 12px; margin: 8px 0 12px; font-size: 0.95rem; }
+    .facts dt { color: var(--muted); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; padding-top: 4px; }
+    .facts dd { margin: 0; }
+    .map { height: 280px; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); margin: 10px 0 8px; background: #e8e2d6; }
+    .links { display: flex; flex-wrap: wrap; gap: 10px 16px; margin: 8px 0 0; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 14px; }
+    .stay { border-top: 1px solid var(--line); margin-top: 10px; padding-top: 10px; }
+    .stay p { margin: 0 0 6px; }
+    .wcard .pending { color: var(--muted); margin: 0; }
+    .wcard .err { margin: 0 0 8px; }
+    .wcard .fallback { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 13px; margin: 0; }
+    .map-fallback { display: flex; align-items: center; justify-content: center; height: 100%; color: var(--muted); padding: 16px; text-align: center; }
+    html { overflow-x: hidden; }
+    .wrap { overflow-x: hidden; }
+    .map { width: 100%; max-width: 100%; }
+    .links a { overflow-wrap: anywhere; }
+    @media (max-width: 800px) {
+      .wrap { padding: 18px 14px 48px; }
+      h1 { font-size: 1.7rem; }
+      .facts { grid-template-columns: 1fr; gap: 2px 0; }
+      .facts dt { padding-top: 8px; }
+      .map { height: 220px; }
+      .toolbar { gap: 8px; }
+      button, .tab { padding: 8px 12px; }
+    }
+    .hidden { display: none; }
+    footer { color: var(--muted); font-size: 13px; margin-top: 36px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <p class="kicker">From Desert Hot Springs · Tesla · Family of four</p>
+      <h1>Three ways home, Wednesday to Saturday</h1>
+      <p class="meta">3 nights · Wed, Nov 25 to Sat, Nov 28, 2026 · Checkout from Desert Hot Springs by 11:00 AM PT Wednesday · Home in Dublin Saturday · Two separate bedrooms · About $1,000 a night at most</p>
+    </header>
+
+    <div class="warn">
+      <strong>Stay off the beaches</strong>
+      A coastal flood warning and high surf are in effect on the Orange County and San Diego coast through Friday 1:00 PM, and on the Central Coast through Thursday noon, with king tides and dangerous rip currents. Pacific Coast Highway is closed northbound in Seal Beach. These routes stay inland or at harbor and town stops. There is no snow on the Grapevine.
+    </div>
+
+    <h2>Decide</h2>
+    <div class="cards" id="decision-cards"></div>
+    <div class="rec" id="recommendation"></div>
+
+    <h2>Live weather</h2>
+    <div class="toolbar">
+      <button class="primary" id="refresh-wx" type="button">Refresh weather</button>
+      <span class="updated" id="wx-updated">Loading forecast…</span>
+    </div>
+    <p class="meta">Forecasts are for the day you are at each stop, from Open-Meteo. Alerts come from the National Weather Service when the browser allows that request, and show in red. If a forecast can’t load, each stop has a link to its weather.gov page.</p>
+    <div class="weather-grid" id="weather-grid"></div>
+
+    <h2>Route details</h2>
+    <div class="toolbar" id="tabs" role="tablist"></div>
+    <div id="itineraries"></div>
+
+    <footer>
+      Found on November 24, 2026. Drive times are without stops or charging and can change with traffic. Lodging prices are before taxes, from Airbnb 2-bedroom listings, and can change. Nothing beyond the current Desert Hot Springs stay is booked. Weather comes from Open-Meteo when this file is opened in a browser, including directly from disk. You need an internet connection for forecasts and map tiles.
+    </footer>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+    const OPTIONS = [
+      {
+        id: "coast",
+        name: "Santa Barbara & Paso Robles",
+        pick: true,
+        drive: "About 533 mi, 10 hr 50 min. Longest day is Wednesday, about 4 hr 30 min in two legs.",
+        museum: "Space Shuttle Endeavour at the California Science Center, Wednesday.",
+        evening: "The Knock on Thanksgiving (open that night) and Esperanza’s rooftop in Paso Robles on Friday.",
+        worry: "Wednesday is a full day: checkout, the shuttle, then afternoon traffic north to Santa Barbara. Book a 2:00 PM timed reservation and leave by 4:00 PM.",
+        rec: "Best if you want easier drives and evenings together."
+      },
+      {
+        id: "sd",
+        name: "San Diego",
+        pick: false,
+        drive: "About 658 mi, 13 hr 10 min. Longest day is Saturday, about 6 hr 5 min.",
+        museum: "USS Midway, Wednesday.",
+        evening: "Alexander’s on 30th in North Park, including a Thanksgiving prix fixe, then Loquita in Santa Barbara on Friday.",
+        worry: "Saturday is a 6-hour drive. Leave Santa Barbara by 7:30 AM.",
+        rec: "Best if Midway and the zoo matter more than an early Saturday start."
+      },
+      {
+        id: "vegas",
+        name: "Las Vegas",
+        pick: false,
+        drive: "About 850 mi, 17 hr 25 min. Longest day is Friday, about 7 hr 40 min.",
+        museum: "Monterey Bay Aquarium, Saturday.",
+        evening: "Catch at Aria on Wednesday and Thanksgiving, then Esperanza’s rooftop after Sensorio on Friday.",
+        worry: "Friday’s 7 hr 40 min drive is well over a 4–5 hour cap.",
+        rec: "Only if the wow for the girls matters more than a very long Friday."
+      }
+    ];
+
+    const RECOMMENDATION = "Choose Santa Barbara & Paso Robles for the easiest drives and the best evenings together. Choose San Diego if Midway and the zoo matter more than a 6-hour Saturday. Skip Las Vegas unless that wow matters more than Friday at the wheel.";
+
+    const WX_STOPS = [
+      { id: "dhs", name: "Desert Hot Springs", date: "2026-11-25", when: "Wednesday morning, departure", lat: 33.8992, lon: -116.3605 },
+      { id: "scictr", name: "Los Angeles (Science Center)", date: "2026-11-25", when: "Wednesday, Coast route museum", lat: 34.0159, lon: -118.2863 },
+      { id: "sd", name: "San Diego", date: "2026-11-25", when: "Wednesday–Thursday, San Diego route", lat: 32.7157, lon: -117.1611 },
+      { id: "vegas", name: "Las Vegas", date: "2026-11-26", when: "Wednesday–Thursday, Las Vegas route", lat: 36.1699, lon: -115.1398 },
+      { id: "sb", name: "Santa Barbara", date: "2026-11-26", when: "Thursday in town, Friday on two routes", lat: 34.4208, lon: -119.6982 },
+      { id: "paso", name: "Paso Robles", date: "2026-11-27", when: "Friday night / Saturday morning", lat: 35.6266, lon: -120.691 },
+      { id: "monterey", name: "Monterey", date: "2026-11-28", when: "Saturday, Las Vegas route museum", lat: 36.618, lon: -121.9015 },
+      { id: "dublin", name: "Dublin", date: "2026-11-28", when: "Saturday, arrival", lat: 37.7021, lon: -121.9358 }
+    ];
+
+    const GMAPS_DIR = (o, d) =>
+      `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(o)}&destination=${encodeURIComponent(d)}&travelmode=driving`;
+    const GMAPS_PLACE = (q) =>
+      `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
+
+    const itineraries = {
+      coast: {
+        intro: "Checkout at 11:00 AM, Space Shuttle Endeavour on the way west, two nights in walkable Santa Barbara, Julefest on Friday, then a short Saturday home from Paso Robles.",
+        days: [
+          {
+            title: "Wednesday, Nov 25 · Desert Hot Springs to the California Science Center, then Santa Barbara",
+            origin: "Desert Hot Springs, CA",
+            dest: "California Science Center, 700 Exposition Park Drive, Los Angeles, CA 90037",
+            dest2: "Santa Barbara, CA",
+            originLL: [-116.3605, 33.8992],
+            destLL: [-119.6982, 34.4208],
+            via: [[-118.2863, 34.0159], "California Science Center"],
+            facts: [
+              ["Drive", "121 mi, about 2 hr 30 min to the Science Center, then 99 mi, about 2 hours, to Santa Barbara"],
+              ["Leave by", "11:00 AM sharp, right after checkout. Wednesday traffic is heaviest from noon to 7:00 PM."],
+              ["Superchargers", "Optional. Charge in the morning if you want a buffer for the second leg."],
+              ["Main activity", "Space Shuttle Endeavour at the California Science Center — the trip’s museum, and the only one on this route. Exhibits are open 10:00 AM–5:00 PM; closed Thanksgiving, open Wednesday, Nov 25. General admission is free. The Samuel Oschin Air and Space Center, including Endeavour in the world’s only authentic shuttle stack in launch position, requires a timed reservation; book ahead at $4 per person (waived for members). Aim for a 2:00 PM entry, keep the visit to about two hours, and leave by 4:00 PM so you are not still in Los Angeles at closing. Parking is $20 in the Exposition Park visitor lot, entered at Figueroa Street and 39th Street. Then continue to Santa Barbara."]
+            ],
+            museumLink: { href: "https://californiasciencecenter.org/visit/get-reservations-tickets", label: "Science Center hours and Endeavour reservations" },
+            places: [
+              { label: "Science Center map", q: "California Science Center, 700 Exposition Park Drive, Los Angeles, CA 90037" },
+              { label: "Santa Barbara map", q: "Santa Barbara, CA" }
+            ],
+            evening: {
+              name: "Loquita",
+              detail: "Spanish tapas and cocktails on State Street, a short walk from a State Street stay. The girls can remain in their room nearby.",
+              hours: "Monday–Thursday 5:00 PM–close. Open Wednesday.",
+              price: "Moderate to upscale",
+              reservations: "Recommended",
+              map: "Loquita, 202 State St, Santa Barbara, CA 93101",
+              site: "https://loquitasb.com/"
+            },
+            stayTitle: "Santa Barbara, Wednesday to Friday, 2 nights · Not booked yet · Two separate bedrooms · Prices before taxes",
+            stays: [
+              { name: "Casa Riviera, 2 bedrooms 2 baths", detail: "$991, 5.0 from 22 reviews, Spanish-style apartment near State Street — the best match for a walkable evening.", href: "https://www.airbnb.com/rooms/1428573268112091622" },
+              { name: "Vintage Spanish duplex, 2 bedrooms 1 bath", detail: "$703, 4.82 from 316 reviews, a comfortable older apartment close to town.", href: "https://www.airbnb.com/rooms/834469" },
+              { name: "The Lillie Guesthouse, Summerland, 3 bedrooms 2 baths", detail: "$840, 4.87 from 93 reviews, ocean-view home, a short drive to State Street rather than a walk.", href: "https://www.airbnb.com/rooms/1095985159895103802" }
+            ]
+          },
+          {
+            title: "Thursday, Nov 26 · Thanksgiving in Santa Barbara",
+            origin: "Santa Barbara, CA",
+            dest: "The Knock, 36 State St, Santa Barbara, CA 93101",
+            originLL: [-119.6982, 34.4208],
+            destLL: [-119.6899, 34.4136],
+            local: true,
+            facts: [
+              ["Drive", "Local only. Holiday traffic is expected to be light."],
+              ["Main activity", "A walkable day in town: State Street, the Funk Zone, and a viewpoint above the water — stay off the sand and piers while the Central Coast flood and high-surf warnings last through Thursday noon."]
+            ],
+            places: [{ label: "The Knock map", q: "The Knock, 36 State St, Santa Barbara, CA 93101" }],
+            evening: {
+              name: "The Knock",
+              detail: "A quieter dinner for the two of you at Hotel Californian in the Funk Zone, a short walk from a State Street stay. The restaurant states it is open Thanksgiving Day.",
+              hours: "Tuesday–Saturday 5:00 PM–close, and open Thanksgiving, Nov 26.",
+              price: "Upscale",
+              reservations: "Recommended",
+              map: "The Knock, 36 State St, Santa Barbara, CA 93101",
+              site: "https://www.theknockkitchen.com/"
+            }
+          },
+          {
+            title: "Friday, Nov 27 · Solvang Julefest, then Paso Robles",
+            origin: "Santa Barbara, CA",
+            dest: "Solvang, CA",
+            dest2: "Paso Robles, CA",
+            originLL: [-119.6982, 34.4208],
+            destLL: [-120.691, 35.6266],
+            via: [[-120.1376, 34.5958], "Solvang"],
+            facts: [
+              ["Drive", "Santa Barbara to Solvang is short; then 122 mi, about 2 hr 35 min, to Paso Robles"],
+              ["Leave Solvang by", "Early evening if you want a relaxed arrival in Paso Robles"],
+              ["Superchargers", "Optional in Santa Barbara before you go"],
+              ["Main activity", "Solvang Julefest opening night. Nightly light shows 5:00–9:00 PM, bakeries, a walkable holiday village."]
+            ],
+            places: [
+              { label: "Solvang map", q: "Solvang, CA" },
+              { label: "Paso Robles map", q: "Paso Robles, CA" }
+            ],
+            evening: {
+              name: "Esperanza on the Rooftop",
+              detail: "Baja-inspired plates, cocktails, and a downtown Paso Robles view after you arrive. Walkable from a downtown Paso stay; a short drive from San Luis Obispo, Atascadero, or Morro Bay. The girls can stay in their room nearby.",
+              hours: "Friday 4:00 PM–11:00 PM (full food until 10:00 PM, drinks until 11:00 PM).",
+              price: "Moderate, about $30 and under on OpenTable",
+              reservations: "OpenTable takes Friday reservations through 8:00 PM; after that, walk in or use the waitlist.",
+              map: "Esperanza on the Rooftop, 944 Pine St, Paso Robles, CA 93446",
+              site: "https://www.esperanzarooftop.com/"
+            },
+            stayTitle: "Paso Robles area, Friday to Saturday, 1 night · Not booked yet · Two separate bedrooms",
+            stays: [
+              { name: "San Luis Obispo loft, 2 bedrooms 2 baths", detail: "$889, 4.81 from 43 reviews, walkable downtown SLO, a short drive to the rooftop.", href: "https://www.airbnb.com/rooms/23186823" },
+              { name: "Morro Bay townhouse, 2 bedrooms 1 bath", detail: "$490, 4.96 from 139 reviews, bay-view deck. Stay off the waterline. A short drive to Paso Robles.", href: "https://www.airbnb.com/rooms/835723701210958328" },
+              { name: "Atascadero house, 4 bedrooms 2 baths", detail: "$900, 4.63 from 30 reviews, a comfortable mid-century home about 15 minutes from Paso Robles.", href: "https://www.airbnb.com/rooms/920383238830356848" }
+            ]
+          },
+          {
+            title: "Saturday, Nov 28 · Paso Robles to Dublin",
+            origin: "Paso Robles, CA",
+            dest: "Dublin, CA",
+            originLL: [-120.691, 35.6266],
+            destLL: [-121.9358, 37.7021],
+            facts: [
+              ["Drive", "185 mi, about 3 hr 35 min"],
+              ["Leave by", "Before 11:00 AM; 9:00 AM is comfortable"],
+              ["Superchargers", "Optional: Gilroy. Paso Robles has Superchargers on Riverside Ave and Golden Hill Rd if you want a top-up first."],
+              ["Main activity", "Drive home. No second stop — this is the shortest Saturday of the three routes."]
+            ],
+            places: [{ label: "Dublin map", q: "Dublin, CA" }]
+          }
+        ]
+      },
+      sd: {
+        intro: "A real aircraft carrier on Wednesday, the zoo on Thanksgiving, Julefest on Friday, and a long early Saturday on US-101.",
+        days: [
+          {
+            title: "Wednesday, Nov 25 · Desert Hot Springs to the USS Midway",
+            origin: "Desert Hot Springs, CA",
+            dest: "USS Midway Museum, 910 N Harbor Dr, San Diego, CA 92101",
+            originLL: [-116.3605, 33.8992],
+            destLL: [-117.1751, 32.7137],
+            facts: [
+              ["Drive", "134 mi, about 2 hr 50 min"],
+              ["Leave by", "11:00 AM sharp — last admission is 4:00 PM"],
+              ["Superchargers", "Optional. This leg is short enough to skip."],
+              ["Main activity", "USS Midway Museum — the trip’s museum. Open 10 AM–5 PM, last admission 4 PM; closed Thanksgiving, open Wednesday. Adults 13+ $39 online, ages 4–12 $29. Buy online; no timed reservation. A 14-year-old is an adult ticket, an 11-year-old is youth. You climb a real carrier and walk the flight deck among jets. Arrive around 2:00 PM if you leave on time."]
+            ],
+            museumLink: { href: "https://www.midway.org/visit/buy-tickets", label: "Midway tickets and hours" },
+            places: [{ label: "USS Midway map", q: "USS Midway Museum, 910 N Harbor Dr, San Diego, CA 92101" }],
+            evening: {
+              name: "Alexander’s on 30th",
+              detail: "A neighborhood Italian restaurant in North Park, walkable from the North Park stay so the girls can remain in their room. After Midway, it is a short drive from the harbor.",
+              hours: "Wednesday dinner 5:00–9:00 PM.",
+              price: "Moderate, about $31–$50",
+              reservations: "Recommended",
+              map: "Alexander's on 30th, 3391 30th St, San Diego, CA 92104",
+              site: "https://www.opentable.com/alexanders-on-30th"
+            },
+            stayTitle: "San Diego, Wednesday to Friday, 2 nights · Not booked yet · Two separate bedrooms",
+            stays: [
+              { name: "North Park, 2 bedrooms 2 baths", detail: "$958 total, 4.78 from 40 reviews, near Balboa Park and the zoo, walkable to dinner on 30th Street.", href: "https://www.airbnb.com/rooms/1437052837095927547" },
+              { name: "Rancho Santa Fe cottage, 2 bedrooms 2 baths", detail: "$888 total, 4.94 from 157 reviews, a secluded, comfortable house on five citrus acres. Dinner is a drive, not a walk.", href: "https://www.airbnb.com/rooms/4387302" },
+              { name: "San Diego apartment, 2 bedrooms 2 baths", detail: "$585 total, 4.73 from 51 reviews, a comfortable 2-bedroom with an arcade. Less walkable to the dinner streets.", href: "https://www.airbnb.com/rooms/1279779803016771156" }
+            ]
+          },
+          {
+            title: "Thursday, Nov 26 · San Diego Zoo",
+            origin: "San Diego, CA",
+            dest: "San Diego Zoo, 2920 Zoo Dr, San Diego, CA 92101",
+            originLL: [-117.1611, 32.7157],
+            destLL: [-117.149, 32.7353],
+            local: true,
+            facts: [
+              ["Drive", "Local only. Holiday traffic is expected to be light."],
+              ["Main activity", "San Diego Zoo. Holiday guides list it as open Thanksgiving, 9:00 AM–5:00 PM; confirm hours on the zoo’s site the day before. Stay off the sand; the coastal flood and high-surf warnings still apply."]
+            ],
+            places: [{ label: "San Diego Zoo map", q: "San Diego Zoo, 2920 Zoo Dr, San Diego, CA 92101" }],
+            museumLink: { href: "https://zoo.sandiegozoo.org/", label: "San Diego Zoo" },
+            evening: {
+              name: "Alexander’s on 30th",
+              detail: "Thanksgiving prix fixe, walkable from the North Park stay. Vegetarian and kids’ options are listed. An 18% gratuity is added.",
+              hours: "Thanksgiving, Nov 26, with a reserved prix-fixe dinner. Book a time when you reserve.",
+              price: "Prix fixe listed about $28–$78 per person, depending on the course and guest",
+              reservations: "Highly recommended",
+              map: "Alexander's on 30th, 3391 30th St, San Diego, CA 92104",
+              site: "https://www.opentable.com/alexanders-on-30th"
+            }
+          },
+          {
+            title: "Friday, Nov 27 · San Diego to Santa Barbara, evening in Solvang",
+            origin: "San Diego, CA",
+            dest: "Santa Barbara, CA",
+            originLL: [-117.1611, 32.7157],
+            destLL: [-119.6982, 34.4208],
+            facts: [
+              ["Drive", "217 mi, about 4 hr 15 min"],
+              ["Leave by", "9:00–9:30 AM, before the 1:00–7:00 PM Friday rush"],
+              ["Superchargers", "Optional: Carlsbad on the way, or Santa Barbara (Anacapa St or State St) on arrival"],
+              ["Main activity", "Solvang Julefest opening night, 5:00–9:00 PM light shows, a walkable holiday village, then back to Santa Barbara."]
+            ],
+            places: [
+              { label: "Santa Barbara map", q: "Santa Barbara, CA" },
+              { label: "Solvang map", q: "Solvang, CA" }
+            ],
+            evening: {
+              name: "Loquita",
+              detail: "Spanish tapas and cocktails on State Street after you return from Solvang, a short walk from a State Street stay.",
+              hours: "Friday 4:00 PM–close.",
+              price: "Moderate to upscale",
+              reservations: "Recommended. Ask for a later table if you will still be in Solvang at 9:00 PM.",
+              map: "Loquita, 202 State St, Santa Barbara, CA 93101",
+              site: "https://loquitasb.com/"
+            },
+            stayTitle: "Santa Barbara or Summerland, Friday to Saturday, 1 night · Not booked yet",
+            stays: [
+              { name: "Casa Riviera, 2 bedrooms 2 baths", detail: "$991, 5.0 from 22 reviews, near State Street, walkable to Loquita.", href: "https://www.airbnb.com/rooms/1428573268112091622" },
+              { name: "Vintage Spanish duplex, 2 bedrooms 1 bath", detail: "$703, 4.82 from 316 reviews, a comfortable in-town apartment.", href: "https://www.airbnb.com/rooms/834469" },
+              { name: "The Lillie Guesthouse, Summerland, 3 bedrooms 2 baths", detail: "$840, 4.87 from 93 reviews, ocean-view home, a short drive into Santa Barbara.", href: "https://www.airbnb.com/rooms/1095985159895103802" }
+            ]
+          },
+          {
+            title: "Saturday, Nov 28 · Santa Barbara to Dublin",
+            origin: "Santa Barbara, CA",
+            dest: "Dublin, CA",
+            originLL: [-119.6982, 34.4208],
+            destLL: [-121.9358, 37.7021],
+            facts: [
+              ["Drive", "307 mi, about 6 hr 5 min — over a 4–5 hour cap"],
+              ["Leave by", "7:30 AM, or the last hours overlap Saturday’s noon–9:00 PM peak"],
+              ["Superchargers", "Paso Robles, then Gilroy or Salinas"],
+              ["Main activity", "Drive home. An early start is what keeps you ahead of holiday return traffic."]
+            ],
+            places: [{ label: "Dublin map", q: "Dublin, CA" }]
+          }
+        ]
+      },
+      vegas: {
+        intro: "Omega Mart on Thanksgiving, a long Friday to the Sensorio lights, and the aquarium on the way home Saturday.",
+        days: [
+          {
+            title: "Wednesday, Nov 25 · Desert Hot Springs to Las Vegas",
+            origin: "Desert Hot Springs, CA",
+            dest: "Las Vegas, NV",
+            originLL: [-116.3605, 33.8992],
+            destLL: [-115.1398, 36.1699],
+            facts: [
+              ["Drive", "237 mi, about 5 hr 25 min — a little over a 5-hour cap"],
+              ["Leave by", "11:00 AM sharp, right after checkout"],
+              ["Superchargers", "Barstow (Lenwood Rd or Tanger) and, if you need a second stop, Baker on Baker Blvd"],
+              ["Main activity", "The drive and an easy arrival. Keep the evening for dinner together; Thursday is the big activity."]
+            ],
+            places: [{ label: "Las Vegas Strip map", q: "Las Vegas Strip, NV" }],
+            evening: {
+              name: "Catch Las Vegas at Aria",
+              detail: "Seafood, sushi, and a dressy room, walkable from the MGM Signature and CityCenter stays so the girls can remain nearby.",
+              hours: "Daily 5:00–10:30 PM, including Wednesday.",
+              price: "Upscale",
+              reservations: "Required. Book on Catch’s site or SevenRooms, or call (877) 230-2742.",
+              map: "CATCH Las Vegas, ARIA, 3730 S Las Vegas Blvd, Las Vegas, NV 89158",
+              site: "https://www.catchrestaurants.com/location/catch-las-vegas/"
+            },
+            stayTitle: "Las Vegas, Wednesday to Friday, 2 nights · Not booked yet · Two separate bedrooms",
+            stays: [
+              { name: "MGM Signature, 2 bedrooms 3 baths", detail: "$973 total, 4.95 from 19 reviews, 1,424 sq ft two-suite condo with a Strip-view balcony, walkable to Aria.", href: "https://www.airbnb.com/rooms/809476338253615373" },
+              { name: "CityCenter tower, 2 bedrooms 2 baths", detail: "$749 total, 4.86 from 21 reviews, 32nd-floor suite with a balcony, walkable to dinner.", href: "https://www.airbnb.com/rooms/1341035074971111903" }
+            ]
+          },
+          {
+            title: "Thursday, Nov 26 · Omega Mart",
+            origin: "Las Vegas, NV",
+            dest: "Omega Mart, 3215 S Rancho Dr, Las Vegas, NV 89102",
+            originLL: [-115.1398, 36.1699],
+            destLL: [-115.187, 36.132],
+            local: true,
+            facts: [
+              ["Drive", "Local only. Holiday traffic is expected to be light."],
+              ["Main activity", "Omega Mart at Area15 — a surreal grocery store with hidden portals, a strong fit for 11 and 14. Hours vary; confirm before you go, especially on Thanksgiving."]
+            ],
+            places: [{ label: "Omega Mart map", q: "Omega Mart, 3215 S Rancho Dr, Las Vegas, NV 89102" }],
+            museumLink: { href: "https://meowwolf.com/visit/las-vegas", label: "Omega Mart visitor page" },
+            evening: {
+              name: "Catch Las Vegas at Aria",
+              detail: "The restaurant’s own page lists Thanksgiving hours and a full dinner menu plus seasonal specials.",
+              hours: "Thanksgiving, Nov 26, 5:00–10:30 PM.",
+              price: "Upscale. Thanksgiving specials include turkey at $53 and other à la carte dishes.",
+              reservations: "Required",
+              map: "CATCH Las Vegas, ARIA, 3730 S Las Vegas Blvd, Las Vegas, NV 89158",
+              site: "https://www.catchrestaurants.com/location/catch-las-vegas/"
+            }
+          },
+          {
+            title: "Friday, Nov 27 · Las Vegas to Paso Robles, then Sensorio",
+            origin: "Las Vegas, NV",
+            dest: "Paso Robles, CA",
+            originLL: [-115.1398, 36.1699],
+            destLL: [-120.691, 35.6266],
+            facts: [
+              ["Drive", "394 mi, about 7 hr 40 min via Barstow, Bakersfield, and Highway 46 — well over a 4–5 hour cap"],
+              ["Leave by", "7:00 AM, or you will miss a sunset arrival at Sensorio"],
+              ["Superchargers", "Barstow, Mojave, then Paso Robles on arrival (Riverside Ave or Golden Hill Rd)"],
+              ["Main activity", "Sensorio, 4:30–8:30 PM Friday (closed Thanksgiving). More than 100,000 glowing lights. Adults from about $65, children from about $30, plus fees."]
+            ],
+            places: [
+              { label: "Sensorio map", q: "Sensorio, 4380 Highway 46 East, Paso Robles, CA 93446" },
+              { label: "Paso Robles map", q: "Paso Robles, CA" }
+            ],
+            museumLink: { href: "https://sensoriopaso.com/", label: "Sensorio hours and tickets" },
+            evening: {
+              name: "Esperanza on the Rooftop",
+              detail: "A downtown Paso Robles rooftop after Sensorio. Walkable from a downtown stay; a short drive from the listings below.",
+              hours: "Friday 4:00 PM–11:00 PM (food until 10:00 PM).",
+              price: "Moderate, about $30 and under on OpenTable",
+              reservations: "OpenTable takes Friday reservations through 8:00 PM; after Sensorio, plan on a walk-in or the waitlist.",
+              map: "Esperanza on the Rooftop, 944 Pine St, Paso Robles, CA 93446",
+              site: "https://www.esperanzarooftop.com/"
+            },
+            stayTitle: "Paso Robles area, Friday to Saturday, 1 night · Not booked yet",
+            stays: [
+              { name: "San Luis Obispo loft, 2 bedrooms 2 baths", detail: "$889, 4.81 from 43 reviews, walkable downtown SLO.", href: "https://www.airbnb.com/rooms/23186823" },
+              { name: "Morro Bay townhouse, 2 bedrooms 1 bath", detail: "$490, 4.96 from 139 reviews, bay-view deck. Stay off the waterline.", href: "https://www.airbnb.com/rooms/835723701210958328" },
+              { name: "Atascadero house, 4 bedrooms 2 baths", detail: "$900, 4.63 from 30 reviews, about 15 minutes from Paso Robles.", href: "https://www.airbnb.com/rooms/920383238830356848" }
+            ]
+          },
+          {
+            title: "Saturday, Nov 28 · Monterey Bay Aquarium, then Dublin",
+            origin: "Paso Robles, CA",
+            dest: "Monterey Bay Aquarium, 886 Cannery Row, Monterey, CA 93940",
+            dest2: "Dublin, CA",
+            originLL: [-120.691, 35.6266],
+            destLL: [-121.9358, 37.7021],
+            via: [[-121.9015, 36.618], "Monterey Bay Aquarium"],
+            facts: [
+              ["Drive", "118 mi, about 2 hr 25 min to the aquarium, then 101 mi, about 2 hours, to Dublin"],
+              ["Leave by", "8:00 AM from Paso Robles so you can leave Monterey by about 11:30 AM, before the Saturday noon–9:00 PM rush"],
+              ["Superchargers", "Usually none needed if you charge in Paso Robles or Monterey"],
+              ["Main activity", "Monterey Bay Aquarium — the trip’s museum. Hours vary; Saturdays are often 9:00 AM–5:00 PM, last entry one hour before close — confirm on their schedule. Adults $65, ages 5–17 $50. Buy in advance on the aquarium’s site; tickets are non-refundable but can be exchanged until 4:00 PM that day. Keep the visit to about two and a half hours."]
+            ],
+            museumLink: { href: "https://www.montereybayaquarium.org/visit/admission-tickets", label: "Aquarium tickets" },
+            places: [
+              { label: "Aquarium map", q: "Monterey Bay Aquarium, 886 Cannery Row, Monterey, CA 93940" },
+              { label: "Dublin map", q: "Dublin, CA" }
+            ]
+          }
+        ]
+      }
+    };
+
+    function el(html) {
+      const t = document.createElement("template");
+      t.innerHTML = html.trim();
+      return t.content;
+    }
+
+    function renderDecision() {
+      const root = document.getElementById("decision-cards");
+      root.innerHTML = "";
+      OPTIONS.forEach((o) => {
+        const card = document.createElement("article");
+        card.className = "card" + (o.pick ? " pick" : "");
+        card.innerHTML = `<h3>${o.name}</h3>
+          <ul>
+            <li><span>Total drive</span>${o.drive}</li>
+            <li><span>The museum</span>${o.museum}</li>
+            <li><span>Evenings together</span>${o.evening}</li>
+            <li><span>The main worry</span>${o.worry}</li>
+          </ul>`;
+        root.appendChild(card);
+      });
+      document.getElementById("recommendation").innerHTML =
+        `<strong>Recommendation</strong>${RECOMMENDATION}`;
+    }
+
+    const ROUTES = {"coast-0":[[33.89921,-116.36044],[33.91644,-116.38722],[33.92504,-116.46901],[33.92486,-116.53655],[33.90544,-116.55925],[33.92287,-116.67564],[33.92217,-116.74532],[33.93143,-116.82359],[33.92596,-116.92007],[33.93206,-116.98691],[33.96579,-117.03078],[34.01108,-117.0701],[34.03528,-117.14554],[34.06192,-117.1859],[34.0666,-117.25191],[34.06534,-117.30458],[34.06896,-117.36942],[34.06659,-117.46229],[34.06745,-117.54556],[34.06956,-117.60856],[34.08741,-117.64607],[34.08192,-117.70043],[34.072,-117.76972],[34.06388,-117.81511],[34.06863,-117.8606],[34.07246,-117.92687],[34.06538,-117.99876],[34.06815,-118.02284],[34.07235,-118.077],[34.07172,-118.14506],[34.06168,-118.1692],[34.05495,-118.20168],[34.05333,-118.22288],[34.06082,-118.24677],[34.04864,-118.26556],[34.02894,-118.27449],[34.01531,-118.28278],[34.01902,-118.29155],[34.03018,-118.29155],[34.03737,-118.30178],[34.03511,-118.36848],[34.0302,-118.40857],[34.03478,-118.43742],[34.05597,-118.45216],[34.0895,-118.47531],[34.10304,-118.47715],[34.12523,-118.47629],[34.14728,-118.46994],[34.16094,-118.46961],[34.17128,-118.50502],[34.17171,-118.57262],[34.16459,-118.62343],[34.1508,-118.68937],[34.13865,-118.72961],[34.15306,-118.81663],[34.17804,-118.88008],[34.19417,-118.94834],[34.20325,-118.98028],[34.21513,-119.01181],[34.22012,-119.08074],[34.22734,-119.16687],[34.24961,-119.20531],[34.26315,-119.24581],[34.27077,-119.27408],[34.27755,-119.29991],[34.30327,-119.34561],[34.32131,-119.37088],[34.32865,-119.3967],[34.35113,-119.42546],[34.35647,-119.44095],[34.3732,-119.45839],[34.37617,-119.47698],[34.39037,-119.50404],[34.40397,-119.52972],[34.41564,-119.57624],[34.42111,-119.60409],[34.42235,-119.63095],[34.42316,-119.65662],[34.41951,-119.68795],[34.42074,-119.69827]],"coast-2":[[34.42074,-119.69827],[34.41363,-119.70117],[34.42526,-119.71993],[34.43695,-119.75169],[34.4418,-119.75961],[34.45055,-119.76154],[34.46086,-119.77045],[34.46895,-119.77271],[34.47022,-119.7776],[34.4738,-119.77415],[34.47677,-119.76921],[34.48028,-119.77175],[34.48354,-119.77567],[34.48484,-119.78114],[34.49001,-119.78334],[34.4871,-119.78899],[34.48909,-119.79347],[34.49561,-119.80058],[34.50366,-119.80412],[34.50506,-119.8142],[34.50897,-119.82157],[34.51584,-119.82836],[34.52798,-119.83706],[34.53251,-119.85368],[34.53845,-119.86333],[34.54508,-119.87821],[34.54736,-119.89585],[34.55192,-119.91048],[34.5592,-119.91739],[34.56155,-119.92602],[34.56764,-119.94313],[34.56937,-119.95297],[34.57272,-119.95968],[34.5752,-119.97111],[34.58258,-119.99122],[34.58723,-120.01354],[34.58784,-120.02652],[34.59402,-120.03698],[34.6102,-120.05449],[34.61057,-120.05925],[34.60667,-120.10357],[34.59606,-120.13412],[34.59585,-120.14592],[34.60867,-120.18094],[34.6322,-120.1874],[34.66885,-120.16948],[34.68543,-120.15666],[34.70889,-120.17394],[34.72191,-120.20916],[34.7418,-120.26956],[34.7681,-120.30484],[34.79828,-120.34014],[34.84498,-120.37827],[34.91173,-120.41791],[34.9836,-120.43238],[35.04143,-120.48861],[35.09329,-120.54275],[35.11224,-120.56661],[35.13065,-120.60871],[35.14256,-120.63976],[35.16419,-120.68704],[35.17479,-120.6968],[35.18802,-120.70102],[35.22953,-120.69099],[35.24308,-120.68303],[35.27749,-120.67028],[35.29182,-120.65497],[35.29657,-120.62985],[35.31671,-120.62128],[35.33341,-120.62421],[35.35094,-120.63307],[35.37232,-120.63995],[35.41316,-120.62654],[35.46203,-120.64813],[35.48953,-120.67223],[35.52106,-120.70401],[35.54255,-120.71389],[35.56736,-120.70107],[35.61362,-120.69066],[35.62669,-120.69101]],"vegas-3":[[35.62669,-120.69101],[35.63723,-120.68423],[35.66227,-120.69715],[35.71702,-120.69521],[35.75125,-120.6998],[35.79228,-120.73234],[35.84909,-120.76576],[35.86098,-120.80868],[35.90025,-120.8418],[35.96405,-120.88781],[36.01662,-120.92502],[36.09701,-121.02445],[36.1649,-121.05429],[36.20375,-121.13195],[36.19815,-121.15127],[36.25322,-121.1767],[36.29129,-121.19792],[36.3138,-121.23392],[36.36603,-121.28015],[36.42507,-121.32946],[36.45062,-121.36505],[36.48959,-121.4244],[36.52148,-121.44774],[36.56724,-121.51561],[36.62788,-121.58734],[36.66715,-121.62768],[36.6532,-121.63831],[36.63638,-121.66747],[36.59833,-121.69903],[36.58103,-121.71857],[36.56953,-121.75377],[36.56743,-121.7807],[36.57344,-121.81946],[36.58338,-121.8469],[36.58713,-121.86469],[36.59417,-121.86739],[36.59453,-121.8719],[36.59369,-121.88206],[36.59776,-121.89268],[36.60842,-121.89616],[36.61784,-121.90185],[36.61259,-121.9009],[36.60171,-121.89309],[36.60037,-121.87279],[36.60383,-121.85984],[36.60924,-121.85922],[36.61894,-121.84772],[36.6251,-121.84025],[36.6435,-121.82032],[36.65185,-121.81511],[36.67294,-121.81073],[36.68072,-121.80746],[36.71109,-121.79649],[36.72842,-121.78638],[36.75601,-121.7606],[36.7638,-121.74971],[36.76929,-121.74009],[36.7801,-121.70297],[36.78767,-121.68117],[36.78915,-121.66876],[36.78912,-121.66745],[36.79889,-121.6646],[36.80366,-121.65308],[36.81401,-121.64075],[36.82214,-121.6301],[36.83067,-121.62972],[36.84645,-121.63516],[36.8535,-121.63426],[36.85856,-121.62617],[36.86216,-121.6125],[36.85906,-121.59706],[36.86133,-121.58129],[36.87018,-121.57243],[36.87835,-121.56513],[36.8922,-121.5563],[36.91078,-121.55473],[36.91699,-121.54816],[36.93317,-121.5509],[36.94915,-121.55271],[36.97363,-121.55448],[36.98427,-121.55856],[37.01785,-121.56399],[37.10479,-121.6115],[37.16332,-121.66387],[37.19908,-121.70494],[37.24439,-121.77305],[37.29363,-121.80975],[37.33989,-121.84949],[37.36742,-121.84555],[37.43679,-121.88898],[37.49212,-121.91941],[37.53175,-121.94018],[37.54487,-121.92022],[37.55527,-121.91586],[37.56226,-121.90502],[37.57629,-121.87985],[37.59703,-121.87322],[37.6346,-121.88393],[37.69906,-121.92173],[37.7021,-121.93581]],"coast-1":[[34.42074,-119.69827],[34.42055,-119.69801],[34.42043,-119.69786],[34.42035,-119.69774],[34.42033,-119.69771],[34.42029,-119.69765],[34.42019,-119.69751],[34.42012,-119.69742],[34.42009,-119.69739],[34.41983,-119.69702],[34.4198,-119.69699],[34.41975,-119.69692],[34.4197,-119.69685],[34.41938,-119.69642],[34.41922,-119.69621],[34.41918,-119.69615],[34.41889,-119.69575],[34.41887,-119.69571],[34.41882,-119.69564],[34.41878,-119.69559],[34.41871,-119.69549],[34.41821,-119.69482],[34.41819,-119.69478],[34.41818,-119.69477],[34.41811,-119.69467],[34.41796,-119.69449],[34.41794,-119.69445],[34.41788,-119.69438],[34.41783,-119.69431],[34.41757,-119.69395],[34.41748,-119.69382],[34.41716,-119.69339],[34.41699,-119.69316],[34.41698,-119.69314],[34.41694,-119.69308],[34.41687,-119.69314],[34.41658,-119.69346],[34.41632,-119.69372],[34.41613,-119.69393],[34.41597,-119.6941],[34.41594,-119.69412],[34.41593,-119.69414],[34.41585,-119.69422],[34.4158,-119.69415],[34.41578,-119.69413],[34.41561,-119.69392],[34.41551,-119.6938],[34.41537,-119.69361],[34.41525,-119.69342],[34.41457,-119.69238],[34.4144,-119.69216],[34.41434,-119.69209],[34.41415,-119.69187],[34.41408,-119.69178],[34.41405,-119.69175],[34.41399,-119.69167],[34.41407,-119.69159],[34.4141,-119.69157],[34.4141,-119.69156],[34.41435,-119.6913],[34.41451,-119.69113],[34.41455,-119.6911],[34.41458,-119.69106],[34.41473,-119.6909],[34.41489,-119.69073],[34.41502,-119.69059],[34.41507,-119.69053],[34.41503,-119.69047],[34.41443,-119.68965],[34.41435,-119.68955],[34.41433,-119.68951],[34.41414,-119.68926],[34.41409,-119.68931],[34.41407,-119.68933],[34.41394,-119.68947],[34.41382,-119.6896],[34.41369,-119.68975],[34.41366,-119.68978],[34.41361,-119.68982],[34.41357,-119.68987]],"sd-0":[[33.89921,-116.36044],[33.90307,-116.36028],[33.92096,-116.40625],[33.92525,-116.44407],[33.92497,-116.50099],[33.92487,-116.53384],[33.90897,-116.54537],[33.91447,-116.60391],[33.92216,-116.65409],[33.92471,-116.69401],[33.92482,-116.73802],[33.91908,-116.79966],[33.93166,-116.82912],[33.92435,-116.88535],[33.92743,-116.96745],[33.91775,-116.9772],[33.90183,-116.98543],[33.89774,-116.98782],[33.89271,-116.98816],[33.88367,-116.99081],[33.87567,-116.99202],[33.87132,-116.99517],[33.86853,-117.00091],[33.8681,-117.005],[33.86548,-117.00831],[33.86142,-117.00837],[33.85668,-117.00936],[33.84951,-117.00623],[33.8428,-117.00363],[33.82997,-117.00364],[33.82087,-117.00416],[33.78825,-117.00688],[33.75755,-117.00661],[33.73459,-117.00674],[33.72094,-117.00665],[33.71195,-117.01258],[33.69947,-117.04012],[33.6961,-117.08495],[33.67654,-117.08462],[33.64294,-117.08398],[33.62281,-117.09733],[33.59821,-117.11844],[33.58226,-117.13294],[33.56096,-117.13869],[33.55049,-117.14105],[33.53945,-117.14472],[33.52975,-117.15336],[33.5232,-117.16213],[33.51402,-117.15766],[33.48259,-117.14164],[33.45172,-117.13551],[33.42663,-117.15036],[33.38952,-117.17474],[33.36447,-117.16128],[33.32715,-117.15928],[33.28836,-117.14956],[33.25573,-117.15741],[33.19749,-117.12604],[33.15573,-117.10426],[33.12476,-117.10429],[33.09969,-117.0899],[33.07516,-117.07058],[33.05068,-117.07315],[33.02342,-117.07908],[32.98787,-117.08301],[32.95468,-117.10192],[32.92864,-117.11403],[32.89378,-117.11573],[32.87015,-117.10796],[32.84174,-117.13311],[32.80776,-117.15334],[32.772,-117.1613],[32.75789,-117.16051],[32.75038,-117.15539],[32.73324,-117.15547],[32.72334,-117.15539],[32.71572,-117.15643],[32.71578,-117.16393],[32.71577,-117.16986],[32.71427,-117.17509]],"sd-1":[[32.7157,-117.1611],[32.7157,-117.16098],[32.7157,-117.16018],[32.71571,-117.15927],[32.71571,-117.15917],[32.71571,-117.15835],[32.71572,-117.15744],[32.71572,-117.15643],[32.71572,-117.15561],[32.71573,-117.15527],[32.71573,-117.15491],[32.71583,-117.1547],[32.71633,-117.15471],[32.71664,-117.15471],[32.71677,-117.15471],[32.71688,-117.15471],[32.71724,-117.15471],[32.71775,-117.15471],[32.71792,-117.15472],[32.71841,-117.15472],[32.71886,-117.15472],[32.71937,-117.15473],[32.71975,-117.15474],[32.72043,-117.15474],[32.72135,-117.15475],[32.72234,-117.15481],[32.72369,-117.15519],[32.72444,-117.15545],[32.72563,-117.15581],[32.72654,-117.15591],[32.72702,-117.15589],[32.72741,-117.15582],[32.72778,-117.15567],[32.72901,-117.15499],[32.72982,-117.15457],[32.73023,-117.15445],[32.73067,-117.15438],[32.73121,-117.15437],[32.73193,-117.15452],[32.7324,-117.1547],[32.73337,-117.15527],[32.73386,-117.15551],[32.73493,-117.15577],[32.73527,-117.15577],[32.73603,-117.15565],[32.73622,-117.15561],[32.73643,-117.15556],[32.73687,-117.15529],[32.73718,-117.1549],[32.73811,-117.15378],[32.73878,-117.15284],[32.73941,-117.1521],[32.74015,-117.15153],[32.74044,-117.15135],[32.74088,-117.15126],[32.74114,-117.15113],[32.74115,-117.15023],[32.74115,-117.14932],[32.74115,-117.14915],[32.74116,-117.14769],[32.74109,-117.14758],[32.7409,-117.14758],[32.74059,-117.14755],[32.74043,-117.14751],[32.74029,-117.14748],[32.74017,-117.14756],[32.73996,-117.14824],[32.73989,-117.14838],[32.73974,-117.1485],[32.73848,-117.14863],[32.7381,-117.14871],[32.73782,-117.14876],[32.73753,-117.14881],[32.73712,-117.14889],[32.73684,-117.14884],[32.73666,-117.14878],[32.7364,-117.14878],[32.73603,-117.14878],[32.73578,-117.1487],[32.73546,-117.14855]],"sd-2":[[32.7157,-117.1611],[32.72092,-117.16386],[32.73986,-117.17867],[32.7662,-117.20548],[32.82214,-117.22896],[32.86221,-117.23005],[32.91575,-117.23131],[32.97432,-117.25083],[33.01449,-117.2691],[33.06384,-117.29171],[33.14364,-117.33338],[33.19689,-117.36764],[33.22508,-117.39398],[33.29172,-117.45689],[33.35545,-117.52938],[33.42257,-117.60771],[33.45302,-117.64395],[33.47566,-117.67415],[33.51857,-117.66473],[33.55893,-117.67286],[33.6029,-117.68766],[33.6332,-117.72558],[33.67439,-117.75589],[33.71991,-117.79532],[33.7448,-117.84171],[33.76435,-117.86523],[33.79944,-117.89772],[33.83437,-117.93601],[33.86156,-117.98957],[33.88659,-118.03296],[33.91665,-118.07923],[33.96348,-118.11926],[34.00434,-118.15285],[34.01964,-118.17987],[34.03128,-118.21797],[34.05042,-118.21391],[34.07844,-118.21975],[34.10298,-118.25029],[34.14231,-118.27788],[34.15554,-118.29534],[34.15462,-118.31306],[34.1525,-118.33289],[34.15417,-118.34527],[34.15336,-118.36409],[34.15657,-118.40318],[34.15693,-118.44828],[34.16484,-118.47375],[34.17136,-118.52965],[34.16835,-118.58227],[34.16263,-118.62902],[34.1508,-118.68937],[34.13826,-118.72855],[34.14673,-118.79591],[34.17641,-118.86213],[34.18476,-118.92696],[34.20139,-118.97193],[34.20688,-118.99114],[34.21694,-119.0344],[34.22215,-119.12368],[34.23673,-119.177],[34.25594,-119.21688],[34.25941,-119.25133],[34.27195,-119.27721],[34.27777,-119.30142],[34.30418,-119.34641],[34.32086,-119.37001],[34.32503,-119.3934],[34.34615,-119.42159],[34.35634,-119.43621],[34.36831,-119.45299],[34.37636,-119.47189],[34.38198,-119.48268],[34.39935,-119.51347],[34.40694,-119.54739],[34.41811,-119.5899],[34.42094,-119.60784],[34.42258,-119.63571],[34.42312,-119.65976],[34.41901,-119.68932],[34.42074,-119.69827]],"sd-3":[[34.42074,-119.69827],[34.42404,-119.71813],[34.44139,-119.75753],[34.4583,-119.76934],[34.46968,-119.77574],[34.4757,-119.772],[34.48163,-119.77233],[34.48564,-119.78094],[34.48691,-119.78941],[34.49577,-119.80064],[34.50446,-119.81225],[34.51398,-119.82497],[34.53241,-119.84702],[34.54206,-119.86816],[34.54952,-119.90676],[34.56124,-119.91976],[34.56787,-119.9461],[34.57243,-119.96142],[34.58398,-119.99284],[34.58778,-120.02542],[34.60989,-120.05443],[34.63489,-120.08197],[34.66636,-120.11128],[34.67349,-120.12923],[34.68068,-120.153],[34.69015,-120.15844],[34.72355,-120.21281],[34.76857,-120.30523],[34.83864,-120.37244],[34.97907,-120.42996],[35.0857,-120.5319],[35.12223,-120.58621],[35.15112,-120.65477],[35.17793,-120.69803],[35.23443,-120.68627],[35.2809,-120.66891],[35.29709,-120.62886],[35.33136,-120.62272],[35.36882,-120.64103],[35.44964,-120.63923],[35.50744,-120.69516],[35.55271,-120.71343],[35.62484,-120.68618],[35.68272,-120.69673],[35.76097,-120.69878],[35.84403,-120.76012],[35.88358,-120.84131],[35.98751,-120.90409],[36.1122,-121.01988],[36.2045,-121.13716],[36.25189,-121.17626],[36.30134,-121.21949],[36.40675,-121.31824],[36.46038,-121.38101],[36.52298,-121.45961],[36.62586,-121.5841],[36.69364,-121.6619],[36.77854,-121.6695],[36.80092,-121.66193],[36.81495,-121.63941],[36.83054,-121.62967],[36.85212,-121.63522],[36.86256,-121.6175],[36.85952,-121.59376],[36.8726,-121.57153],[36.89167,-121.55643],[36.91521,-121.54927],[36.93679,-121.55243],[36.97593,-121.55534],[37.03228,-121.57189],[37.16159,-121.66184],[37.22814,-121.74457],[37.315,-121.82802],[37.38356,-121.86172],[37.49329,-121.92051],[37.5438,-121.92091],[37.56079,-121.9078],[37.5801,-121.87536],[37.6394,-121.88427],[37.7021,-121.93581]],"vegas-0":[[33.89921,-116.36044],[33.90361,-116.36004],[33.92346,-116.41687],[33.92504,-116.46918],[33.92493,-116.51998],[33.9327,-116.54517],[33.98984,-116.54902],[34.01636,-116.5806],[34.02826,-116.5861],[34.04072,-116.5871],[34.05419,-116.57282],[34.06855,-116.55266],[34.08053,-116.5351],[34.09513,-116.50935],[34.10692,-116.48566],[34.11377,-116.46855],[34.1193,-116.44633],[34.12063,-116.43031],[34.12289,-116.41574],[34.12803,-116.39685],[34.13494,-116.37886],[34.13496,-116.32819],[34.13497,-116.30968],[34.13507,-116.27671],[34.13521,-116.22739],[34.13515,-116.17834],[34.13512,-116.12386],[34.13547,-116.09139],[34.13545,-116.07142],[34.13566,-116.05152],[34.13637,-115.98398],[34.16567,-115.92732],[34.16548,-115.82143],[34.16561,-115.74133],[34.18854,-115.72576],[34.21549,-115.71971],[34.23858,-115.7228],[34.25713,-115.71886],[34.31638,-115.69873],[34.35326,-115.69031],[34.39894,-115.70067],[34.44377,-115.73502],[34.47263,-115.74187],[34.54962,-115.74549],[34.55522,-115.75633],[34.55809,-115.74899],[34.55986,-115.65946],[34.61992,-115.66459],[34.67867,-115.67672],[34.74109,-115.6605],[34.76952,-115.63103],[34.78779,-115.61271],[34.80435,-115.61144],[34.83354,-115.62406],[34.8889,-115.65011],[34.99984,-115.65487],[35.01814,-115.64235],[35.05888,-115.59497],[35.10572,-115.5471],[35.15379,-115.52336],[35.18785,-115.50277],[35.2133,-115.50703],[35.23263,-115.50624],[35.26074,-115.4987],[35.30886,-115.45557],[35.36345,-115.41596],[35.39815,-115.38739],[35.45117,-115.38871],[35.47438,-115.44714],[35.63413,-115.3845],[35.81034,-115.30645],[35.94298,-115.18446],[36.03344,-115.18063],[36.10463,-115.1805],[36.13145,-115.18019],[36.15593,-115.16084],[36.16741,-115.15934],[36.17544,-115.14441],[36.17071,-115.13978],[36.16971,-115.13993]],"vegas-1":[[36.16971,-115.13993],[36.16937,-115.13914],[36.16883,-115.13949],[36.16867,-115.13959],[36.16808,-115.13998],[36.16723,-115.14053],[36.16692,-115.14073],[36.16642,-115.14105],[36.16581,-115.14145],[36.16534,-115.14177],[36.16448,-115.14232],[36.16408,-115.14259],[36.16302,-115.14328],[36.16285,-115.14339],[36.16183,-115.14406],[36.16123,-115.14445],[36.16095,-115.14463],[36.1606,-115.14486],[36.15961,-115.14551],[36.15937,-115.14567],[36.15911,-115.14584],[36.15898,-115.14599],[36.1589,-115.14628],[36.15891,-115.14722],[36.15892,-115.14813],[36.15893,-115.14869],[36.15892,-115.14899],[36.15891,-115.14976],[36.15889,-115.15044],[36.15889,-115.1509],[36.1589,-115.1518],[36.1589,-115.1523],[36.1589,-115.15346],[36.15892,-115.15417],[36.15892,-115.155],[36.15892,-115.15599],[36.15896,-115.15755],[36.15906,-115.15848],[36.15911,-115.1589],[36.15916,-115.15981],[36.15915,-115.16132],[36.15808,-115.16133],[36.15739,-115.16136],[36.15627,-115.16158],[36.15558,-115.16183],[36.15483,-115.16217],[36.15369,-115.16284],[36.15323,-115.16322],[36.15243,-115.16397],[36.14986,-115.16628],[36.14849,-115.16749],[36.14683,-115.16898],[36.14422,-115.17128],[36.13714,-115.17756],[36.13584,-115.17861],[36.13359,-115.17987],[36.12879,-115.1812],[36.12723,-115.18139],[36.12666,-115.18158],[36.12639,-115.18188],[36.12635,-115.18316],[36.12639,-115.18466],[36.12637,-115.18552],[36.12638,-115.18578],[36.1264,-115.18638],[36.12656,-115.18923],[36.12659,-115.18998],[36.1266,-115.19022],[36.12714,-115.19022],[36.12803,-115.19023],[36.1286,-115.19016],[36.12936,-115.19015],[36.13023,-115.19017],[36.13075,-115.19017],[36.13126,-115.19019],[36.13146,-115.18982],[36.13143,-115.18903],[36.13141,-115.1885],[36.13208,-115.18794],[36.13216,-115.18699]],"vegas-2":[[36.16971,-115.13993],[36.16402,-115.14263],[36.15891,-115.14718],[36.15892,-115.15487],[36.15483,-115.16217],[36.13108,-115.18063],[36.10567,-115.18084],[36.04259,-115.18098],[35.94816,-115.18286],[35.81584,-115.30272],[35.61798,-115.38756],[35.51777,-115.43066],[35.46346,-115.4634],[35.47109,-115.50339],[35.47551,-115.57563],[35.41006,-115.77117],[35.30992,-116.00501],[35.25189,-116.09048],[35.19049,-116.15794],[35.09915,-116.28604],[35.08399,-116.37539],[35.03344,-116.47009],[34.92888,-116.72202],[34.90275,-116.88648],[34.90547,-116.98104],[34.8865,-117.00925],[34.88302,-117.06261],[34.88768,-117.09298],[34.91439,-117.10761],[34.91761,-117.1567],[34.91446,-117.23292],[34.92457,-117.32987],[34.94901,-117.4161],[34.99025,-117.49703],[34.99617,-117.5421],[35.00145,-117.58664],[35.01044,-117.64958],[35.00697,-117.70451],[35.00378,-117.79354],[35.01053,-117.89008],[35.01409,-117.94151],[35.01809,-117.99953],[35.0307,-118.09355],[35.07208,-118.11307],[35.10555,-118.15852],[35.11825,-118.22102],[35.10521,-118.25548],[35.09737,-118.30168],[35.10967,-118.32125],[35.11538,-118.37704],[35.12947,-118.4123],[35.14233,-118.46848],[35.16139,-118.47378],[35.17891,-118.48499],[35.18972,-118.50588],[35.21514,-118.55113],[35.22498,-118.56808],[35.23918,-118.57855],[35.24982,-118.60113],[35.26215,-118.62088],[35.26347,-118.6442],[35.27012,-118.68677],[35.27768,-118.71581],[35.30844,-118.77903],[35.34267,-118.86063],[35.35253,-118.91673],[35.35256,-118.97892],[35.35299,-119.04525],[35.3617,-119.05205],[35.37168,-119.06181],[35.36784,-119.0828],[35.36218,-119.0989],[35.35486,-119.17698],[35.35433,-119.24158],[35.35458,-119.25202],[35.35484,-119.33127],[35.4417,-119.45565],[35.60747,-119.64652],[35.61607,-119.6898],[35.61571,-119.74394],[35.61471,-119.92137],[35.62502,-119.98635],[35.65735,-120.0532],[35.69218,-120.12591],[35.71722,-120.17544],[35.74213,-120.21259],[35.73917,-120.27365],[35.70766,-120.31675],[35.67771,-120.34436],[35.66168,-120.41184],[35.6591,-120.49525],[35.65947,-120.54759],[35.65886,-120.60553],[35.64846,-120.6279],[35.64437,-120.6494],[35.64042,-120.65815],[35.63641,-120.66341],[35.63273,-120.67494],[35.6293,-120.68328],[35.62669,-120.69101]]};
+
+        function wxCodeText(code) {
+      const n = Number(code);
+      if (n === 0) return "Clear";
+      if (n <= 3) return "Partly cloudy";
+      if (n === 45 || n === 48) return "Fog";
+      if (n <= 57) return "Drizzle";
+      if (n <= 67) return "Rain";
+      if (n <= 77) return "Snow";
+      if (n <= 82) return "Rain showers";
+      if (n <= 86) return "Snow showers";
+      if (n <= 99) return "Thunderstorms";
+      return "Mixed conditions";
+    }
+
+    function formatPT(date = new Date()) {
+      return date.toLocaleString("en-US", {
+        timeZone: "America/Los_Angeles",
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        second: "2-digit"
+      }) + " PT";
+    }
+
+    function forecastGovUrl(stop) {
+      return `https://forecast.weather.gov/MapClick.php?lat=${stop.lat}&lon=${stop.lon}`;
+    }
+
+    function fetchTimeout(url, opts = {}, ms = 10000) {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), ms);
+      return fetch(url, { ...opts, signal: ctrl.signal }).finally(() => clearTimeout(t));
+    }
+
+    function cardEl(stop) {
+      return document.getElementById("wx-" + stop.id);
+    }
+
+    function renderWxPlaceholder(stop) {
+      const div = document.createElement("div");
+      div.className = "wcard";
+      div.id = "wx-" + stop.id;
+      div.innerHTML = `<h4>${stop.name}</h4>
+        <div class="when">${stop.when} · ${stop.date}</div>
+        <p class="pending">Getting the forecast…</p>`;
+      return div;
+    }
+
+    function renderWxSuccess(stop, data) {
+      const el = cardEl(stop);
+      if (!el) return;
+      const range = data.low != null ? `${data.high}° / ${data.low}° ${data.unit}` : `${data.high}° ${data.unit}`;
+      const alerts = (data.alerts || []).map((a) => `<div class="alert-flag">${a}</div>`).join("");
+      const alertNote = data.alertsUnavailable
+        ? `<p class="fallback"><a href="https://www.weather.gov/" target="_blank" rel="noopener">Alerts unavailable, check weather.gov</a></p>`
+        : "";
+      el.innerHTML = `<h4>${stop.name}</h4>
+        <div class="when">${stop.when} · ${stop.date}</div>
+        <p><strong>${range}</strong><br>${data.conditions}${data.wind ? `<br>${data.wind}` : ""}</p>
+        <p class="when">Source: ${data.source}</p>
+        ${alerts}
+        ${alertNote}`;
+    }
+
+    function renderWxError(stop) {
+      const el = cardEl(stop);
+      if (!el) return;
+      el.innerHTML = `<h4>${stop.name}</h4>
+        <div class="when">${stop.when} · ${stop.date}</div>
+        <p class="err">Couldn't load the forecast for this stop.</p>
+        <p class="fallback"><a href="${forecastGovUrl(stop)}" target="_blank" rel="noopener">Open the National Weather Service forecast for ${stop.name}</a></p>`;
+    }
+
+    async function openMeteoForStop(stop) {
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${stop.lat}&longitude=${stop.lon}&daily=temperature_2m_max,temperature_2m_min,weathercode,wind_speed_10m_max,wind_gusts_10m_max,precipitation_probability_max&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America/Los_Angeles&start_date=${stop.date}&end_date=${stop.date}`;
+      const r = await fetchTimeout(url, {}, 10000);
+      if (!r.ok) throw new Error("open-meteo " + r.status);
+      const d = await r.json();
+      if (!d.daily || !d.daily.temperature_2m_max || d.daily.temperature_2m_max[0] == null) {
+        throw new Error("open-meteo empty");
+      }
+      const pop = d.daily.precipitation_probability_max ? d.daily.precipitation_probability_max[0] : null;
+      const gust = d.daily.wind_gusts_10m_max ? d.daily.wind_gusts_10m_max[0] : null;
+      const wind = d.daily.wind_speed_10m_max ? d.daily.wind_speed_10m_max[0] : null;
+      let windText = "";
+      if (wind != null) windText = `Wind ${Math.round(wind)} mph`;
+      if (gust != null) windText += (windText ? `, gusts ${Math.round(gust)} mph` : `Gusts ${Math.round(gust)} mph`);
+      let conditions = wxCodeText(d.daily.weathercode[0]);
+      if (pop != null) conditions += `, ${pop}% chance of precip`;
+      return {
+        source: "Open-Meteo",
+        high: Math.round(d.daily.temperature_2m_max[0]),
+        low: Math.round(d.daily.temperature_2m_min[0]),
+        unit: "F",
+        wind: windText,
+        conditions,
+        alerts: [],
+        alertsUnavailable: false
+      };
+    }
+
+    async function nwsAlertsForStop(stop) {
+      const url = `https://api.weather.gov/alerts/active?point=${stop.lat},${stop.lon}`;
+      const r = await fetchTimeout(url, { headers: { Accept: "application/geo+json" } }, 8000);
+      if (!r.ok) throw new Error("alerts " + r.status);
+      const aj = await r.json();
+      return (aj.features || []).map((f) => {
+        const p = f.properties || {};
+        return p.event || p.headline || "Active alert";
+      });
+    }
+
+    async function fillStop(stop) {
+      try {
+        const data = await openMeteoForStop(stop);
+        try {
+          data.alerts = await nwsAlertsForStop(stop);
+        } catch (e) {
+          data.alertsUnavailable = true;
+        }
+        renderWxSuccess(stop, data);
+        return true;
+      } catch (e) {
+        renderWxError(stop);
+        return false;
+      }
+    }
+
+    async function loadWeather() {
+      const btn = document.getElementById("refresh-wx");
+      const stamp = document.getElementById("wx-updated");
+      const grid = document.getElementById("weather-grid");
+      btn.disabled = true;
+      stamp.textContent = "Updating…";
+      grid.innerHTML = "";
+      WX_STOPS.forEach((stop) => grid.appendChild(renderWxPlaceholder(stop)));
+      const results = await Promise.all(WX_STOPS.map((stop) => fillStop(stop)));
+      const ok = results.filter(Boolean).length;
+      stamp.textContent = ok ? ("Last updated " + formatPT()) : ("Couldn't update forecasts · " + formatPT());
+      btn.disabled = false;
+    }
+
+    const maps = {};
+
+    function mapId(optionId, dayIndex) {
+      return `map-${optionId}-${dayIndex}`;
+    }
+
+    function routeId(optionId, dayIndex) {
+      return `${optionId}-${dayIndex}`;
+    }
+
+    function drawPrecomputed(map, id) {
+      const pts = ROUTES[id];
+      if (!pts || !pts.length) return null;
+      const line = L.polyline(pts, { color: "#7a2e1f", weight: 4 }).addTo(map);
+      map._fitLayer = line;
+      map.fitBounds(line.getBounds(), { padding: [24, 24] });
+      return line;
+    }
+
+    async function tryOsrm(map, day, id) {
+      const pts = [day.originLL];
+      if (day.via) pts.push(day.via[0]);
+      pts.push(day.destLL);
+      const coord = pts.map((p) => `${p[0]},${p[1]}`).join(";");
+      const r = await fetchTimeout(`https://router.project-osrm.org/route/v1/driving/${coord}?overview=full&geometries=geojson`, {}, 5000);
+      if (!r.ok) throw new Error("osrm");
+      const j = await r.json();
+      const geo = j.routes && j.routes[0] && j.routes[0].geometry;
+      if (!geo) throw new Error("osrm empty");
+      const latlngs = geo.coordinates.map((c) => [c[1], c[0]]);
+      if (map._fitLayer) map.removeLayer(map._fitLayer);
+      const line = L.polyline(latlngs, { color: "#7a2e1f", weight: 4 }).addTo(map);
+      map._fitLayer = line;
+      map.fitBounds(line.getBounds(), { padding: [24, 24] });
+    }
+
+    function initMap(optionId, dayIndex, day) {
+      const id = mapId(optionId, dayIndex);
+      const node = document.getElementById(id);
+      if (!node) return;
+      if (!window.L) {
+        node.innerHTML = `<div class="map-fallback">The map couldn't load. Use the Google Maps link below.</div>`;
+        return;
+      }
+      if (maps[id]) {
+        setTimeout(() => {
+          maps[id].invalidateSize();
+          if (maps[id]._fitLayer) maps[id].fitBounds(maps[id]._fitLayer.getBounds(), { padding: [24, 24] });
+        }, 80);
+        return;
+      }
+      const map = L.map(id, { scrollWheelZoom: false });
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 18,
+        attribution: "&copy; OpenStreetMap"
+      }).addTo(map);
+      const rid = routeId(optionId, dayIndex);
+      const pre = drawPrecomputed(map, rid);
+      if (!pre) {
+        map.setView([day.originLL[1], day.originLL[0]], 7);
+        const b = L.latLngBounds([[day.originLL[1], day.originLL[0]], [day.destLL[1], day.destLL[0]]]);
+        map.fitBounds(b, { padding: [24, 24] });
+      }
+      L.marker([day.originLL[1], day.originLL[0]]).addTo(map).bindPopup("Start");
+      L.marker([day.destLL[1], day.destLL[0]]).addTo(map).bindPopup("End");
+      if (day.via) L.marker([day.via[0][1], day.via[0][0]]).addTo(map).bindPopup(day.via[1] || "Stop");
+      maps[id] = map;
+      tryOsrm(map, day, rid).catch(() => {});
+    }
+
+    function factRow(label, value) {
+      return `<dt>${label}</dt><dd>${value}</dd>`;
+    }
+
+    function renderDay(optionId, day, idx) {
+      const dirHref = GMAPS_DIR(day.origin, day.dest);
+      const mid = mapId(optionId, idx);
+      const evening = day.evening ? `
+        <div class="stay">
+          <h3>Evening for the two of you</h3>
+          <dl class="facts">
+            ${factRow("Where", `${day.evening.name}. ${day.evening.detail}`)}
+            ${factRow("Hours", day.evening.hours)}
+            ${factRow("Price", day.evening.price)}
+            ${factRow("Reservations", day.evening.reservations)}
+          </dl>
+          <div class="links">
+            <a href="${GMAPS_PLACE(day.evening.map)}" target="_blank" rel="noopener">Open ${day.evening.name} in Google Maps</a>
+            ${day.evening.site ? `<a href="${day.evening.site}" target="_blank" rel="noopener">${day.evening.name} site</a>` : ""}
+          </div>
+        </div>` : "";
+      const stays = day.stays ? `
+        <div class="stay">
+          <h3>Where to stay</h3>
+          <p>${day.stayTitle}</p>
+          ${day.stays.map((s) => `<p><a href="${s.href}" target="_blank" rel="noopener">${s.name}</a> — ${s.detail}</p>`).join("")}
+        </div>` : "";
+      const placeLinks = (day.places || []).map((p) =>
+        `<a href="${GMAPS_PLACE(p.q)}" target="_blank" rel="noopener">${p.label}</a>`
+      ).join("");
+      const extraDir = day.dest2 ? `<a href="${GMAPS_DIR(day.dest, day.dest2)}" target="_blank" rel="noopener">Open the second leg in Google Maps</a>` : "";
+      return `<section class="day">
+        <h3>${day.title}</h3>
+        <dl class="facts">${day.facts.map((f) => factRow(f[0], f[1])).join("")}</dl>
+        <div class="map" id="${mid}"></div>
+        <div class="links">
+          <a href="${dirHref}" target="_blank" rel="noopener">Open this day’s drive in Google Maps</a>
+          ${extraDir}
+          ${placeLinks}
+          ${day.museumLink ? `<a href="${day.museumLink.href}" target="_blank" rel="noopener">${day.museumLink.label}</a>` : ""}
+        </div>
+        ${evening}
+        ${stays}
+      </section>`;
+    }
+
+    function renderItineraries() {
+      const tabs = document.getElementById("tabs");
+      const root = document.getElementById("itineraries");
+      tabs.innerHTML = "";
+      OPTIONS.forEach((o, i) => {
+        const b = document.createElement("button");
+        b.className = "tab" + (i === 0 ? " on" : "");
+        b.type = "button";
+        b.textContent = o.name;
+        b.addEventListener("click", () => showOption(o.id));
+        tabs.appendChild(b);
+      });
+      root.innerHTML = OPTIONS.map((o) => {
+        const itin = itineraries[o.id];
+        return `<div class="option ${o.id === OPTIONS[0].id ? "" : "hidden"}" data-option="${o.id}">
+          <p>${itin.intro}</p>
+          ${itin.days.map((d, i) => renderDay(o.id, d, i)).join("")}
+        </div>`;
+      }).join("");
+      itineraries[OPTIONS[0].id].days.forEach((d, i) => initMap(OPTIONS[0].id, i, d));
+    }
+
+    function showOption(id) {
+      document.querySelectorAll(".option").forEach((n) => {
+        n.classList.toggle("hidden", n.getAttribute("data-option") !== id);
+      });
+      document.querySelectorAll(".tab").forEach((t, i) => {
+        t.classList.toggle("on", OPTIONS[i].id === id);
+      });
+      itineraries[id].days.forEach((d, i) => initMap(id, i, d));
+    }
+
+    renderDecision();
+    renderItineraries();
+    document.getElementById("refresh-wx").addEventListener("click", loadWeather);
+    loadWeather();
+  </script>
+</body>
+</html>
