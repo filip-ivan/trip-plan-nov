@@ -96,9 +96,11 @@
     button:disabled { opacity: 0.6; cursor: wait; }
     .updated { color: var(--muted); font-size: 13px; }
     .weather-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
-    .wcard { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+    .wcard { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 12px; overflow-wrap: anywhere; }
     .wcard h4 { margin: 0 0 4px; font-size: 1rem; }
     .wcard .when { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+    .wcard .temps { display: flex; flex-wrap: wrap; gap: 2px 14px; margin: 0 0 6px; font-weight: 700; }
+    .wcard .temps span { white-space: nowrap; }
     .alert-flag {
       background: var(--alert-bg);
       color: var(--alert);
@@ -139,6 +141,8 @@
       .map { height: 220px; }
       .toolbar { gap: 8px; }
       button, .tab { padding: 8px 12px; }
+      .weather-grid { grid-template-columns: 1fr; }
+      .wcard .temps { font-size: 0.95rem; }
     }
     .hidden { display: none; }
     footer { color: var(--muted); font-size: 13px; margin-top: 36px; }
@@ -772,17 +776,32 @@
       return div;
     }
 
+    function fToC(f) {
+      return Math.round((Number(f) - 32) * 5 / 9);
+    }
+
+    function formatTemp(f) {
+      if (f == null || Number.isNaN(Number(f))) return "";
+      const n = Math.round(Number(f));
+      return `${n}°F / ${fToC(n)}°C`;
+    }
+
     function renderWxSuccess(stop, data) {
       const el = cardEl(stop);
       if (!el) return;
-      const range = data.low != null ? `${data.high}° / ${data.low}° ${data.unit}` : `${data.high}° ${data.unit}`;
+      const high = formatTemp(data.high);
+      const low = data.low != null ? formatTemp(data.low) : "";
+      const range = low
+        ? `<span>High ${high}</span><span>Low ${low}</span>`
+        : `<span>${high}</span>`;
       const alerts = (data.alerts || []).map((a) => `<div class="alert-flag">${a}</div>`).join("");
       const alertNote = data.alertsUnavailable
         ? `<p class="fallback"><a href="https://www.weather.gov/" target="_blank" rel="noopener">Alerts unavailable, check weather.gov</a></p>`
         : "";
       el.innerHTML = `<h4>${stop.name}</h4>
         <div class="when">${stop.when} · ${stop.date}</div>
-        <p><strong>${range}</strong><br>${data.conditions}${data.wind ? `<br>${data.wind}` : ""}</p>
+        <p class="temps">${range}</p>
+        <p>${data.conditions}${data.wind ? `<br>${data.wind}` : ""}</p>
         <p class="when">Source: ${data.source}</p>
         ${alerts}
         ${alertNote}`;
