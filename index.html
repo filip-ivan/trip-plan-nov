@@ -72,6 +72,7 @@
     .card .place-item { margin: 0 0 2px; }
     .card .tide { color: var(--alert); font-size: 0.78rem; margin-top: 4px; }
     .card .stay-line a.book { font-weight: 600; white-space: nowrap; }
+    .card .map-link { font-weight: 600; font-size: 0.78rem; white-space: nowrap; }
     .card .alts, .card .card-foot { color: var(--muted); font-size: 0.78rem; }
     .card .alts a, .card .card-foot a { font-weight: 600; }
     .card .live { color: #8a4b00; }
@@ -388,99 +389,105 @@
     const OPTION_SLEEPS = {
       shortla: {
         leave: "Leave 11:30 AM after Sherman’s breakfast",
+        leaveMap: "Sherman's Deli & Bakery, Palm Springs, CA",
         wxStops: ["dhs", "griffith", "weho", "sb", "dublin"],
         sleeps: [
-          { night: "Wed", name: "AC Hotel Beverly Hills", rating: "8.8", year: "renovated 2025", feel: "clean modern rooms", href: "https://www.expedia.com/h27431944.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2&children=1_14,1_11", status: "pass", book: "Book" },
-          { night: "Thu", name: "La Cabane", rating: "4.6★", year: "", feel: "quiet three-bedroom", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2", status: "pass", book: "Book" }
+          { night: "Wed", name: "AC Hotel Beverly Hills", dest: "AC Hotel Beverly Hills, Los Angeles, CA", rating: "8.8", year: "renovated 2025", feel: "clean modern rooms", href: "https://www.expedia.com/h27431944.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2&children=1_14,1_11", status: "pass", book: "Book" },
+          { night: "Thu", name: "La Cabane", dest: "La Cabane, Santa Barbara, CA", rating: "4.6★", year: "", feel: "quiet three-bedroom", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2", status: "pass", book: "Book" }
         ],
         places: [
-          "Griffith Observatory — free hilltop views after dark",
-          "Harriet’s rooftop — walkable nightcap after the girls are in",
-          "Alice Keck Park — inland Thanksgiving garden walk, free",
-          "The Knock — open Thanksgiving wine bar"
+          { name: "Griffith Observatory", blurb: "free hilltop views after dark", dest: "Griffith Observatory, Los Angeles, CA" },
+          { name: "Harriet’s rooftop", blurb: "walkable nightcap after the girls are in", dest: "Harriet's Rooftop, West Hollywood, CA" },
+          { name: "Alice Keck Park", blurb: "inland Thanksgiving garden walk, free", dest: "Alice Keck Park Memorial Garden, Santa Barbara, CA" },
+          { name: "The Knock", blurb: "open Thanksgiving wine bar", dest: "The Knock, Santa Barbara, CA" }
         ],
         tide: "King tide through Thu noon: skip PCH and 101 at Rincon; use 126/150 via Ojai.",
         alts: [
-          { name: "Chaplin Airbnb", href: "https://www.airbnb.com/rooms/1524058962863203787?check_in=2026-11-25&check_out=2026-11-26&adults=2&children=2" }
+          { name: "Chaplin Airbnb", dest: "The Chaplin Boutique Hideaway, West Hollywood, CA", href: "https://www.airbnb.com/rooms/1524058962863203787?check_in=2026-11-25&check_out=2026-11-26&adults=2&children=2" }
         ]
       },
       shortsb: {
         leave: "Leave 11:30 AM after Sherman’s breakfast",
+        leaveMap: "Sherman's Deli & Bakery, Palm Springs, CA",
         wxStops: ["dhs", "sb", "dublin"],
         sleeps: [
-          { night: "Wed–Fri", name: "La Cabane", rating: "4.6★", year: "", feel: "quiet three-bedroom", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2", status: "pass", book: "Book" }
+          { night: "Wed–Fri", name: "La Cabane", dest: "La Cabane, Santa Barbara, CA", rating: "4.6★", year: "", feel: "quiet three-bedroom", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2", status: "pass", book: "Book" }
         ],
         places: [
-          "milk & honey — late State Street cocktails; book 8 PM",
-          "Alice Keck Park — inland Thanksgiving garden walk, free",
-          "The Knock — open Thanksgiving wine bar"
+          { name: "milk & honey", blurb: "late State Street cocktails; book 8 PM", dest: "milk & honey, Santa Barbara, CA" },
+          { name: "Alice Keck Park", blurb: "inland Thanksgiving garden walk, free", dest: "Alice Keck Park Memorial Garden, Santa Barbara, CA" },
+          { name: "The Knock", blurb: "open Thanksgiving wine bar", dest: "The Knock, Santa Barbara, CA" }
         ],
         tide: "King tide through Thu noon: skip PCH and 101 at Rincon; use 126/150 via Ojai.",
         alts: [
-          { name: "Hilton Garden Inn Goleta · 9.0", href: "https://www.expedia.com/h18109534.Hotel-Information?chkin=2026-11-25&chkout=2026-11-27&adults=2&children=1_14,1_11" },
-          { name: "Midtown cottage · 4.74★ · 1 bath", href: "https://www.airbnb.com/rooms/660783391832138039?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2" }
+          { name: "Hilton Garden Inn Goleta · 9.0", dest: "Hilton Garden Inn Santa Barbara Goleta, Goleta, CA", href: "https://www.expedia.com/h18109534.Hotel-Information?chkin=2026-11-25&chkout=2026-11-27&adults=2&children=1_14,1_11" },
+          { name: "Midtown cottage · 4.74★ · 1 bath", dest: "Midtown cottage, Ventura, CA", href: "https://www.airbnb.com/rooms/660783391832138039?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2" }
         ]
       },
       shortventura: {
         leave: "Leave 11:30 AM after Sherman’s breakfast",
+        leaveMap: "Sherman's Deli & Bakery, Palm Springs, CA",
         wxStops: ["dhs", "ventura", "sb", "dublin"],
         sleeps: [
-          { night: "Wed–Fri", name: "Midtown cottage", rating: "4.74★", year: "", feel: "roomy midtown cottage", note: "1 bath, tight for four", href: "https://www.airbnb.com/rooms/660783391832138039?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2", status: "pass", book: "Book" }
+          { night: "Wed–Fri", name: "Midtown cottage", dest: "Midtown cottage, Ventura, CA", rating: "4.74★", year: "", feel: "roomy midtown cottage", note: "1 bath, tight for four", href: "https://www.airbnb.com/rooms/660783391832138039?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2", status: "pass", book: "Book" }
         ],
         places: [
-          "The Twist on Main — downtown wine and music; confirm",
-          "Alice Keck Park — inland Thanksgiving garden walk, free",
-          "The Knock — open Thanksgiving wine bar"
+          { name: "The Twist on Main", blurb: "downtown wine and music; confirm", dest: "The Twist on Main, Ventura, CA" },
+          { name: "Alice Keck Park", blurb: "inland Thanksgiving garden walk, free", dest: "Alice Keck Park Memorial Garden, Santa Barbara, CA" },
+          { name: "The Knock", blurb: "open Thanksgiving wine bar", dest: "The Knock, Santa Barbara, CA" }
         ],
         tide: "King tide through Thu noon: skip Ventura beaches, PCH, and 101 at Rincon; use 126/150 via Ojai.",
         alts: [
-          { name: "Hilton Garden Inn Goleta · 9.0", href: "https://www.expedia.com/h18109534.Hotel-Information?chkin=2026-11-25&chkout=2026-11-27&adults=2&children=1_14,1_11" }
+          { name: "Hilton Garden Inn Goleta · 9.0", dest: "Hilton Garden Inn Santa Barbara Goleta, Goleta, CA", href: "https://www.expedia.com/h18109534.Hotel-Information?chkin=2026-11-25&chkout=2026-11-27&adults=2&children=1_14,1_11" }
         ]
       },
       santamonica: {
         leave: "Leave 11:30 AM after Sherman’s breakfast",
+        leaveMap: "Sherman's Deli & Bakery, Palm Springs, CA",
         wxStops: ["dhs", "santamonica", "sb", "dublin"],
         sleeps: [
-          { night: "Wed", name: "The Ambrose", rating: "9.2", year: "renovated 2015", feel: "quiet boutique inn", href: "https://www.expedia.com/h890565.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2&children=1_14,1_11", status: "pass", book: "Book" },
-          { night: "Thu", name: "La Cabane", rating: "4.6★", year: "", feel: "quiet three-bedroom", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2", status: "pass", book: "Book" }
+          { night: "Wed", name: "The Ambrose", dest: "The Ambrose, Santa Monica, CA", rating: "9.2", year: "renovated 2015", feel: "quiet boutique inn", href: "https://www.expedia.com/h890565.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2&children=1_14,1_11", status: "pass", book: "Book" },
+          { night: "Thu", name: "La Cabane", dest: "La Cabane, Santa Barbara, CA", rating: "4.6★", year: "", feel: "quiet three-bedroom", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2", status: "pass", book: "Book" }
         ],
         places: [
-          "Venice canals — residential walk if you arrive by 3:30",
-          "Élephante — rooftop restaurant after the girls are in",
-          "The Set — verified Thanksgiving feast; stay off the sand"
+          { name: "Venice canals", blurb: "residential walk if you arrive by 3:30", dest: "Venice Canals, Venice, CA" },
+          { name: "Élephante", blurb: "rooftop restaurant after the girls are in", dest: "Élephante, Santa Monica, CA" },
+          { name: "The Set", blurb: "verified Thanksgiving feast; stay off the sand", dest: "The Set, Hilton Santa Barbara Beachfront, Santa Barbara, CA" }
         ],
         tide: "King tide through Thu noon: skip PCH Malibu and 101 at Rincon; use 126/150 via Ojai.",
         alts: []
       },
       pasadena: {
         leave: "Leave 11:30 AM after Sherman’s breakfast",
+        leaveMap: "Sherman's Deli & Bakery, Palm Springs, CA",
         wxStops: ["dhs", "pasadena", "ojai", "sb", "dublin"],
         sleeps: [
-          { night: "Wed", name: "Courtyard Pasadena Old Town", rating: "8.8", year: "renovated 2024", feel: "fresh Old Town", href: "https://www.expedia.com/h518440.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2&children=1_14,1_11", status: "pass", book: "Book" },
-          { night: "Thu", name: "La Cabane", rating: "4.6★", year: "", feel: "quiet three-bedroom", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2", status: "pass", book: "Book" }
+          { night: "Wed", name: "Courtyard Pasadena Old Town", dest: "Courtyard Pasadena Old Town, Pasadena, CA", rating: "8.8", year: "renovated 2024", feel: "fresh Old Town", href: "https://www.expedia.com/h518440.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2&children=1_14,1_11", status: "pass", book: "Book" },
+          { night: "Thu", name: "La Cabane", dest: "La Cabane, Santa Barbara, CA", rating: "4.6★", year: "", feel: "quiet three-bedroom", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2", status: "pass", book: "Book" }
         ],
         places: [
-          "The Huntington — gardens and galleries if you arrive by 4:15",
-          "1886 Bar — bungalow cocktails after the girls are in",
-          "Libbey Park — Ojai stroll; Bart’s Books is closed today",
-          "Arnoldi’s — verified Thanksgiving; 14 counts adult"
+          { name: "The Huntington", blurb: "gardens and galleries if you arrive by 4:15", dest: "The Huntington Library, San Marino, CA" },
+          { name: "1886 Bar", blurb: "bungalow cocktails after the girls are in", dest: "1886 Bar at The Raymond, Pasadena, CA" },
+          { name: "Libbey Park", blurb: "Ojai stroll; Bart’s Books is closed today", dest: "Libbey Park, Ojai, CA" },
+          { name: "Arnoldi’s", blurb: "verified Thanksgiving; 14 counts adult", dest: "Arnoldi's, Santa Barbara, CA" }
         ],
         tide: "King tide through Thu noon: this route already uses Ojai/150; skip 101 at Rincon and PCH.",
         alts: [
-          { name: "Residence Inn 2BR · 8.8 · flag Booking 7.9", href: "https://www.expedia.com/h13578977.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2&children=1_14,1_11" }
+          { name: "Residence Inn 2BR · 8.8 · flag Booking 7.9", dest: "Residence Inn Pasadena Old Town, Pasadena, CA", href: "https://www.expedia.com/h13578977.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2&children=1_14,1_11" }
         ]
       },
       dtla: {
         leave: "Leave 11:30 AM after Sherman’s breakfast",
+        leaveMap: "Sherman's Deli & Bakery, Palm Springs, CA",
         wxStops: ["dhs", "dtla", "ventura", "sb", "dublin"],
         sleeps: [
-          { night: "Wed", name: "Hotel Figueroa", rating: "9.0", year: "renovated 2018", feel: "stylish historic hotel", note: "two Queen rooms — girls share a queen", href: "https://www.expedia.com/h8805682.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2", status: "pass", book: "Book" },
-          { night: "Thu", name: "La Cabane", rating: "4.6★", year: "", feel: "quiet three-bedroom", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2", status: "pass", book: "Book" }
+          { night: "Wed", name: "Hotel Figueroa", dest: "Hotel Figueroa, Los Angeles, CA", rating: "9.0", year: "renovated 2018", feel: "stylish historic hotel", note: "two Queen rooms — girls share a queen", href: "https://www.expedia.com/h8805682.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2", status: "pass", book: "Book" },
+          { night: "Thu", name: "La Cabane", dest: "La Cabane, Santa Barbara, CA", rating: "4.6★", year: "", feel: "quiet three-bedroom", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2", status: "pass", book: "Book" }
         ],
         places: [
-          "The Broad — free modern art if you arrive by 3:30",
-          "Perch — 16th-floor rooftop after the girls are in",
-          "Black Angus — inland Thanksgiving turkey, verified"
+          { name: "The Broad", blurb: "free modern art if you arrive by 3:30", dest: "The Broad, Los Angeles, CA" },
+          { name: "Perch", blurb: "16th-floor rooftop after the girls are in", dest: "Perch, Los Angeles, CA" },
+          { name: "Black Angus", blurb: "inland Thanksgiving turkey, verified", dest: "Black Angus Steakhouse, 4718 Telephone Rd, Ventura, CA" }
         ],
         tide: "King tide through Thu noon: skip PCH and 101 at Rincon; use 126/150 via Ojai.",
         alts: []
@@ -1239,23 +1246,38 @@
       return SHORT_OPTIONS.concat(VARIANT_OPTIONS);
     }
 
+    function gmapsNav(dest) {
+      return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(dest)}`;
+    }
+
+    function mapLink(dest) {
+      if (!dest) return "";
+      return ` <a class="map-link" href="${gmapsNav(dest)}" target="_blank" rel="noopener">Map</a>`;
+    }
+
     function stayBits(s) {
       const year = s.year ? ` · ${s.year}` : "";
       const note = s.note ? ` · ${s.note}` : "";
       const live = s.status === "live-check" ? " live" : "";
       const label = s.book || (s.status === "live-check" ? "Check price" : "Book");
-      return `${s.night}: ${s.name} · ${s.rating}${year} · ${s.feel}${note} · <a class="book${live}" href="${s.href}" target="_blank" rel="noopener">${label}</a>`;
+      return `${s.night}: ${s.name}${mapLink(s.dest)} · ${s.rating}${year} · ${s.feel}${note} · <a class="book${live}" href="${s.href}" target="_blank" rel="noopener">${label}</a>`;
     }
 
     function optionCardHTML(o) {
       const meta = OPTION_SLEEPS[o.id];
+      const leave = meta.leaveMap
+        ? meta.leave.replace("Sherman’s breakfast", `Sherman’s breakfast${mapLink(meta.leaveMap)}`)
+        : meta.leave;
       const stays = (meta.sleeps || []).map((s) => `<p class="stay-line">${stayBits(s)}</p>`).join("");
-      const places = (meta.places || []).map((p) => `<p class="place-item">${p}</p>`).join("");
+      const places = (meta.places || []).map((p) => {
+        if (typeof p === "string") return `<p class="place-item">${p}</p>`;
+        return `<p class="place-item">${p.name}${mapLink(p.dest)} — ${p.blurb}</p>`;
+      }).join("");
       const tide = meta.tide ? `<p class="tide">${meta.tide}</p>` : "";
-      const altLinks = (meta.alts || []).map((a) => `<a href="${a.href}" target="_blank" rel="noopener">${a.name}</a>`).join(" · ");
+      const altLinks = (meta.alts || []).map((a) => `<a href="${a.href}" target="_blank" rel="noopener">${a.name}</a>${mapLink(a.dest)}`).join(" · ");
       const alts = altLinks ? `<p class="alts">Also: ${altLinks}</p>` : "";
       return `<h3>${o.name} <span class="total">${o.total}</span></h3>
-          <p class="leave">${meta.leave}</p>
+          <p class="leave">${leave}</p>
           ${stays}
           ${places}
           ${tide}
