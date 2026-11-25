@@ -67,8 +67,10 @@
     .card.pick { outline: 2px solid var(--accent); }
     .card h3 { margin: 0; font-size: 1.02rem; line-height: 1.25; display: flex; flex-wrap: wrap; gap: 0 8px; align-items: baseline; justify-content: space-between; }
     .card h3 .total { font-size: 0.88rem; font-weight: 600; color: var(--ink); margin: 0; }
-    .card .leave, .card .stay-line, .card .alts, .card .card-foot { margin: 0 0 4px; font-size: 0.84rem; line-height: 1.35; }
+    .card .leave, .card .stay-line, .card .alts, .card .card-foot, .card .place-item, .card .tide { margin: 0 0 4px; font-size: 0.84rem; line-height: 1.35; }
     .card .leave { color: var(--muted); margin-top: 6px; }
+    .card .place-item { margin: 0 0 2px; }
+    .card .tide { color: var(--alert); font-size: 0.78rem; margin-top: 4px; }
     .card .stay-line a.book { font-weight: 600; white-space: nowrap; }
     .card .alts, .card .card-foot { color: var(--muted); font-size: 0.78rem; }
     .card .alts a, .card .card-foot a { font-weight: 600; }
@@ -82,6 +84,19 @@
       box-shadow: var(--shadow);
     }
     details.opt-details:not([open]) { display: none; }
+    .day-block { margin: 10px 0 14px; }
+    .day-block h3 { margin: 0 0 6px; font-size: 1.02rem; }
+    .day-block ul { margin: 0; padding: 0; list-style: none; }
+    .day-block li { margin: 0 0 4px; font-size: 0.92rem; line-height: 1.4; }
+    .day-block li span {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: inline-block;
+      min-width: 7.5em;
+    }
     .opt-details > summary {
       cursor: pointer;
       font-weight: 600;
@@ -222,7 +237,7 @@
 <body>
     <div class="wrap">
     <header class="hero compact-hero">
-      <p class="page-head">Ways home · Wed 25–Fri 27 Nov · family of four · under $2,000 · rates as of 8:24–9:40 AM PT Nov 25</p>
+      <p class="page-head">Ways home · leave 11:30 AM Wed · family of four · under $2,000 · rates as of 8:24–9:40 AM PT Nov 25</p>
     </header>
     <div class="cards option-cards" id="option-cards"></div>
     <div id="option-details"></div>
@@ -240,15 +255,15 @@
         id: "shortla",
         name: "West Hollywood, then Santa Barbara",
         pick: true,
-        drive: "About 530 mi. Wednesday is 126 mi; plan 3.5–4.5 hours in Thanksgiving-eve traffic, arriving in West Hollywood about 4:30–6:30 PM. Thursday to Santa Barbara is about two hours. Friday home is 307 mi; plan 5.5–6.5 hours in return traffic (about 4 hr 45 min off-peak).",
+        drive: "About 530 mi. Wednesday is 126 mi; leaving 11:30 AM, plan 3–4.5 hours in Thanksgiving-eve traffic, arriving in West Hollywood about 2:30–4:00 PM, or 4:30 if the noon crunch is heavy. Thursday to Santa Barbara is about two hours; leave after noon or use 126/150 via Ojai to skip 101 at Rincon. Friday home is 307 mi; plan 5.5–6.5 hours.",
         museum: "Griffith Observatory after dark on Wednesday (open until 10:00 PM, closed Thanksgiving).",
         evening: "Harriet’s rooftop after Griffith on Wednesday (book 9:00 PM). The Knock on Thanksgiving in Santa Barbara (open Thanksgiving, book 5:00 PM).",
         worry: "One extra move on Thursday morning, and Friday is a 5.5–6.5 hour drive. Leave Santa Barbara by mid-morning, or by 2:00 PM if you stop in Solvang for lunch.",
-        rec: "The better short Wednesday, and the recommended under-$2,000 trip.",
-        total: "About $1,630–$2,000 if food stays modest",
-        altTotal: "Primary lodging is the AC Hotel Beverly Hills (8.8, renovated 2025, about $500–$530 all-in, checked live ~9:40 AM PT Nov 25: $216/room including taxes, 3 left, valet $60, plus an LA hotel-worker admin fee whose amount was not shown) and the Summerland cottage ($500). Chamberlain’s two-Queen suite ($470 plus about $58 in fees and $70 valet) is over budget for two rooms and is not on the card. La Playa Inn (9.6, renovated 2023) remains a hotel alternative. The high end can press $2,000 unless food stays modest.",
+        rec: "The better short Wednesday: Griffith still fits after an 11:30 AM start, and the trip stays under $2,000 if food is modest.",
+        total: "About $1,660–$2,000 if food stays modest",
+        altTotal: "Primary lodging is the AC Hotel Beverly Hills (8.8, renovated 2025, about $500–$530 all-in, checked live ~9:40 AM PT Nov 25: $216/room including taxes, 3 left, valet $60, plus an LA hotel-worker admin fee whose amount was not shown) and La Cabane ($523), inland for the king-tide window. Chamberlain’s two-Queen suite ($470 plus about $58 in fees and $70 valet) is over budget for two rooms and is not on the card. La Playa Inn (9.6, renovated 2023) remains a hotel alternative. The high end can press $2,000 unless food stays modest.",
         costLines: [
-          ["Lodging (primary)", "About $1,000–$1,030, checked live on Expedia ~9:40 AM PT Nov 25. Wednesday: AC Hotel Beverly Hills, Room 2 Queen Beds, $216 per room including taxes, 3 left; two rooms $432, plus valet $60 for one car, plus an LA hotel-worker admin fee (amount not shown): about $500–$530 all-in. Thursday: Summerland cottage $500 all-in, or La Cabane $523."],
+          ["Lodging (primary)", "About $1,023–$1,053, checked live on Expedia ~9:40 AM PT Nov 25. Wednesday: AC Hotel Beverly Hills, Room 2 Queen Beds, $216 per room including taxes, 3 left; two rooms $432, plus valet $60 for one car, plus an LA hotel-worker admin fee (amount not shown): about $500–$530 all-in. Thursday: La Cabane $523 all-in, inland, away from the king-tide advisory. The Summerland cottage sits in a low-lying coastal town under the advisory through Thursday noon — skip it for this trip."],
           ["Lodging (alternative)", "Chaplin Airbnb $462. Chamberlain was checked live ~9:40 AM PT: a 2-Queen suite is $470 including taxes, plus about $58 in resort and destination fees and $70 valet — two rooms would break the $2,000 cap, so it is not used on the card. La Playa Inn about $860–$1,000, parking included. Pairing a West Hollywood hotel with La Playa can break $2,000 unless food stays modest."],
           ["Food for 4", "About $550–$900, including Sherman’s, Mel’s, Harriet’s, The Copper (not The Prado’s $340–$390 feast), The Knock, and a Friday lunch in Solvang or at Casa de Fruta, with tax and tip. Skip Pastas on Friday if you need margin."],
           ["Activities", "Griffith is free; official parking is $10 a space per hour, about $20–$40, or use a rideshare."],
@@ -260,11 +275,11 @@
         id: "shortsb",
         name: "Santa Barbara, two nights",
         pick: false,
-        drive: "About 520 mi. Wednesday is the long day: 212 mi, plan 6–7 hours in Thanksgiving-eve traffic, arriving about 7:00–8:00 PM — over a 4–5 hour cap. Friday home is 307 mi; plan 5.5–6.5 hours.",
+        drive: "About 520 mi. Wednesday is the long day: 212 mi; leaving 11:30 AM, plan 5.5–7 hours in Thanksgiving-eve traffic, arriving about 5:00–6:30 PM — still over a 4–5 hour cap, so Wednesday’s highlight is the evening. Use 126/150 via Ojai to skip 101 at Rincon. Friday home is 307 mi; plan 5.5–6.5 hours.",
         museum: "A long drive and a late dinner on Wednesday. No museum stop — Endeavour does not fit.",
         evening: "milk & honey on Wednesday (open until 10:00 PM; book 8:00 PM). The Knock on Thanksgiving (open Thanksgiving, book 5:00 PM).",
-        worry: "Wednesday is a 6–7 hour drive. You unpack only once.",
-        rec: "Best if you want one base and will accept a long Wednesday for a walkable Thanksgiving in town.",
+        worry: "Wednesday is still a 5.5–7 hour drive, so the day’s highlight is the evening. You unpack only once.",
+        rec: "Best if you want one inland base and will accept a long Wednesday for a walkable Thanksgiving in town.",
         total: "About $1,500–$1,860",
         altTotal: "The Midtown Ventura cottage is about $1,350–$1,710 for the whole trip, but it has one bath, tight for four. Best Western Plus South Coast Inn is flagged (Booking cleanliness 8.4, dated-room complaints) and is not shown as a nice-hotel pick. Hilton Garden Inn Goleta (9.0) is the nicer Goleta hotel, but lodging of about $1,400–$1,610 would likely break the cap.",
         costLines: [
@@ -280,16 +295,16 @@
         id: "shortventura",
         name: "Ventura, two nights",
         pick: false,
-        drive: "About 510 mi. Wednesday is about 176 mi; off-peak this is about 3 hours, but leaving at 1:00 PM on Thanksgiving eve, plan 5–6 hours, arriving about 6:00–7:00 PM — usually earlier than a Santa Barbara push. Friday home is 333 mi; plan 6–7 hours (about 5 hours off-peak).",
+        drive: "About 510 mi. Wednesday is about 176 mi; leaving 11:30 AM, plan 4.5–6 hours, arriving in midtown Ventura about 4:00–5:30 PM — usually earlier than a Santa Barbara push. A short inland downtown walk may fit if you arrive before dusk; otherwise Wednesday’s highlight is the evening. Friday home is 333 mi; plan 6–7 hours.",
         museum: "An earlier Wednesday than the Santa Barbara two-night route, then a downtown evening. Thursday is a short hop into Santa Barbara.",
         evening: "The Twist on Main in downtown Ventura on Wednesday (wine, cocktails, and live music; listed Wed 4:00–10:00 PM — confirm Nov 25). W2O rooftop at Watermark on Thanksgiving (usual Thu 5:00–11:00 PM — call to confirm Nov 26), after a day in Santa Barbara.",
-        worry: "The Thursday rooftop is not yet confirmed for Thanksgiving — call Watermark. Friday is a slightly longer drive home than from Santa Barbara.",
-        rec: "A hotel-first Ventura base that still gets you into Santa Barbara on Thursday, if food stays modest. The Midtown cottage is cheaper if you want more margin.",
-        total: "About $1,670–$2,000 if food stays modest",
-        altTotal: "Crowne Plaza Ventura Beach is about $1,060 all-in for two nights, checked live ~9:40 AM PT Nov 25: Standard 2 Queen $498 plus Ocean View 2 Queen $542 plus $20 self-parking. Only 1 standard room was left; the second room is ocean view. High-end food (~$900) can push the trip about $40 over $2,000. The Midtown cottage is $731 for two nights (4.74★), one bath tight for four, and brings the whole trip to about $1,350–$1,710.",
+        worry: "One bathroom at the Midtown cottage is tight for four. The Thursday rooftop is not yet confirmed for Thanksgiving — call Watermark. Friday is a slightly longer drive home than from Santa Barbara.",
+        rec: "An inland Ventura base during the king-tide warning, with a Thursday hop into Santa Barbara. The Midtown cottage keeps this comfortably under $2,000.",
+        total: "About $1,350–$1,710",
+        altTotal: "Primary lodging is the inland Midtown cottage, $731 for two nights (4.74★), one bath tight for four. Crowne Plaza Ventura Beach (about $1,060 all-in, checked live ~9:40 AM PT) is beachfront under a Coastal Flood Warning and a Ventura County evacuation warning through Thursday noon — skip it for this stay. Hilton Garden Inn Goleta (9.0) may break the cap.",
         costLines: [
-          ["Lodging (primary)", "About $1,060, checked live on Expedia ~9:40 AM PT Nov 25. Crowne Plaza Ventura Beach, two nights: Standard Room 2 Queen Beds $498 including taxes (only 1 left) plus Ocean View 2 Queen $542 including taxes, plus self-parking $10/day for two days ($20): about $1,060 all-in. No resort fee found. Stay off the sand and piers through Thursday noon."],
-          ["Lodging (alternative)", "Midtown cottage, Ventura, $731 for 2 nights, prices include all fees, 3 bedrooms 1 bath — the priced fallback, about $1,350–$1,710 for the whole trip. One bathroom for four is tight. Best Western Plus South Coast Inn is flagged and not used as a nice-hotel pick. Hilton Garden Inn Goleta (9.0) may break the cap."],
+          ["Lodging (primary)", "Midtown cottage, Ventura, $731 for 2 nights, prices include all fees, 3 bedrooms 1 bath, 4.74★. Inland, away from the Ventura beach flood warning. One bathroom for four is tight."],
+          ["Lodging (alternative)", "Crowne Plaza Ventura Beach is about $1,060 all-in, checked live ~9:40 AM PT Nov 25, but it is beachfront under a Coastal Flood Warning and a Ventura County evacuation warning through Thursday noon — skip it for this stay. Hilton Garden Inn Goleta (9.0) may break the cap. Best Western Plus South Coast Inn is flagged and not used as a nice-hotel pick."],
           ["Food for 4", "About $550–$900, including Sherman’s, a downtown or harbor dinner in Ventura, The Twist on Main, The Copper, The Knock, and a Friday lunch, with tax and tip."],
           ["Activities", "Thursday in Santa Barbara is the day’s main outing. Stay off the sand and piers through Thursday noon."],
           ["Driving", "About 510 mi, Supercharging about $64–$78."],
@@ -304,18 +319,18 @@
     const VARIANT_OPTIONS = [
       {
         id: "santamonica",
-        name: "Santa Monica, then Summerland",
-        pick: true,
-        drive: "About 535 mi. Wednesday is about 140 mi; leaving around 11:00 AM, plan 3–4 hours, arriving in Santa Monica about 2:00–3:30 PM, or by 4:00 if the noon crunch has started. Thursday to Summerland is about 90 mi, usually around two hours, and Thanksgiving traffic is often lighter. Friday home is about 310 mi; plan 5.5–6.5 hours.",
+        name: "Santa Monica, then Santa Barbara",
+        pick: false,
+        drive: "About 535 mi. Wednesday is about 140 mi; leaving 11:30 AM, plan 3–4.5 hours, arriving in Santa Monica about 2:30–4:00 PM. Venice still fits if you arrive by about 3:30; if not, Wednesday’s highlight is the evening. Skip PCH. Thursday to Santa Barbara is about 90 mi; leave after noon or use 126/150 via Ojai. Friday home is about 310 mi; plan 5.5–6.5 hours.",
         museum: "Venice canals and Abbot Kinney in the afternoon — a wander, not a museum. Skip the pier if the surf is rough; use Palisades Park for sunset instead.",
         evening: "Élephante rooftop in Santa Monica on Wednesday (usual hours 10:00 AM–midnight; confirm Nov 25 and book). Calabra at Proper is the backup. Thanksgiving at The Set (verified 3:00–10:00 PM), then Loquita in the Funk Zone if it is open (call to confirm).",
-        worry: "This route is over budget even with modest food. Pack before breakfast and leave at checkout.",
-        rec: "A relaxed Wednesday, but The Ambrose plus the Summerland cottage puts the trip over the $2,000 cap.",
-        total: "About $2,040–$2,140 — over budget by ~$40–$140",
-        altTotal: "The Ambrose plus the Summerland cottage is about $1,392 lodging, checked live ~9:40 AM PT Nov 25. Even with modest food (about $570–$630), Supercharging, and light activity parking, the trip comes in around $2,040–$2,140 — over budget by about $40–$140. High-end food would run higher. Shore Hotel was unavailable (minimum stay). Holiday Inn Express Carpinteria Thursday ($862) or La Cabane ($523) would not bring it under the cap. Santa Monica Proper and The Georgian came in over budget.",
+        worry: "This route is over budget even with modest food. Venice fits only if you arrive by about 3:30 PM; otherwise Wednesday’s highlight is Élephante. Pack before breakfast and leave at 11:30 AM.",
+        rec: "A relaxed Wednesday if Venice fits, but The Ambrose plus La Cabane puts the trip over the $2,000 cap.",
+        total: "About $2,060–$2,160 — over budget by ~$60–$160",
+        altTotal: "The Ambrose plus inland La Cabane is about $1,415 lodging (Ambrose $892, checked live ~9:40 AM PT Nov 25, plus La Cabane $523). Even with modest food (about $570–$630), the trip comes in around $2,060–$2,160 — over budget by about $60–$160. The Summerland cottage was dropped for the king-tide advisory on the southeastern Santa Barbara coast through Thursday noon. Shore Hotel was unavailable (minimum stay). Holiday Inn Express Carpinteria is coastal and would cost more. Santa Monica Proper and The Georgian came in over budget.",
         costLines: [
-          ["Lodging (primary)", "About $1,392, checked live on Expedia ~9:40 AM PT Nov 25. Wednesday: The Ambrose, Traditional Double 2 Queen Beds, $385 per room including taxes, 2 left, non-refundable; two rooms $770, plus a resort fee of $33.41 per room ($66.82) and self-parking $55 for one car: about $892 all-in. Thursday: Summerland cottage, $500 all-in, rechecked 8:24 AM PT Nov 25. Shore Hotel was unavailable (minimum stay)."],
-          ["Lodging (alternative)", "La Cabane is $523 Thursday, a little more than the cottage. Holiday Inn Express Carpinteria, checked live ~9:00 AM PT: two rooms $862, breakfast and parking included, which would put lodging even higher. Shore Hotel had no rooms for 11/25–26 (minimum stay). Santa Monica Proper and The Georgian came in over budget."],
+          ["Lodging (primary)", "About $1,415, checked live on Expedia ~9:40 AM PT Nov 25. Wednesday: The Ambrose, Traditional Double 2 Queen Beds, $385 per room including taxes, 2 left, non-refundable; two rooms $770, plus a resort fee of $33.41 per room ($66.82) and self-parking $55 for one car: about $892 all-in. Thursday: La Cabane, $523 all-in, inland, rechecked 8:24 AM PT Nov 25. The Summerland cottage was dropped for the king-tide advisory. Shore Hotel was unavailable (minimum stay)."],
+          ["Lodging (alternative)", "The Summerland cottage ($500) and Holiday Inn Express Carpinteria (two rooms $862) are in or next to the coastal advisory area through Thursday noon — skip them for this trip. Shore Hotel had no rooms for 11/25–26 (minimum stay). Santa Monica Proper and The Georgian came in over budget."],
           ["Food for 4", "About $570–$800, including Sherman’s breakfast, a Venice lunch, The Set’s family-style Thanksgiving (about $160 for four, plus tax, tip, and drinks), Élephante for two, and a Friday lunch, with tax and tip. Flavor of India in Santa Barbara (listed 11:00 AM–9:30 PM on Thanksgiving) is a cheaper backup than The Set."],
           ["Activities", "Venice canals and Abbot Kinney are free. Palisades Park is free. Paid lots near the beach or Venice can run about $10–$30; use hotel parking when you can, and leave nothing visible."],
           ["Driving", "About 535 mi, Supercharging about $67–$83."],
@@ -326,16 +341,16 @@
         id: "pasadena",
         name: "Pasadena, then Santa Barbara",
         pick: false,
-        drive: "About 545 mi if you detour through Ojai on Thursday, or about 525 mi if you drive Pasadena to Santa Barbara direct. Wednesday is about 120 mi; leaving around 11:00 AM, plan 2.5–3.5 hours, arriving in Pasadena about 1:30–3:00 PM. Friday home from Santa Barbara is 307 mi; plan 5.5–6.5 hours.",
+        drive: "About 545 mi if you detour through Ojai on Thursday, or about 525 mi if you drive Pasadena to Santa Barbara direct. Wednesday is about 120 mi; leaving 11:30 AM, plan 2.5–4 hours, arriving in Pasadena about 2:00–3:30 PM, or close to 4:00 if traffic is heavy. The Huntington still fits if you check in by 4:15 PM; if not, Wednesday’s highlight is the evening. Friday home from Santa Barbara is 307 mi; plan 5.5–6.5 hours.",
         museum: "The Huntington in San Marino on Wednesday (open 10:00 AM–5:00 PM, closed Thanksgiving; peak-season reservations required, and check-in closes at 4:15 PM).",
         evening: "1886 Bar at The Raymond on Wednesday (usual late-afternoon hours; confirm Nov 25). Thanksgiving lunch at Arnoldi’s (verified 1:00–6:00 PM), then a Funk Zone wine bar — Les Marchands or similar — if it is open (call to confirm).",
-        worry: "You must reach The Huntington before the 4:15 PM check-in cutoff. Hyatt Place or La Playa on Thursday would break the $2,000 cap. Pack before breakfast and leave at checkout.",
-        rec: "The garden-and-gallery Wednesday, with enough lodging margin if you use La Cabane Thursday and keep food modest.",
+        worry: "Leave at 11:30 AM so you can still reach The Huntington before the 4:15 PM check-in cutoff. If traffic runs long, skip it and make 1886 Bar the Wednesday highlight. Bart’s Books is closed Thanksgiving; use Libbey Park for the Ojai stroll. Hyatt Place or La Playa on Thursday would break the cap.",
+        rec: "The garden-and-gallery Wednesday, if you arrive by 4:15 PM, with enough lodging margin if you keep food modest.",
         total: "About $1,870–$2,000, if food stays modest",
         altTotal: "Under $2,000 with Courtyard Pasadena Old Town (8.8, renovated 2024, about $554 all-in) and La Cabane at $523, if food stays around $620–$750. The Residence Inn 2-bedroom suite (Expedia 8.8, about $613) is flagged: Booking.com cleanliness is 7.9, below 8.5. Hyatt Place was dropped (Expedia 8.4). La Playa Thursday would break the cap. The Langham came in over budget.",
         costLines: [
           ["Lodging (primary)", "About $1,077, checked live on Expedia ~9:00 AM PT Nov 25. Wednesday: Courtyard Pasadena Old Town, Room 2 Queen Beds, $257 per room including taxes, 5 left; two rooms $514, plus self-parking $40/day for one car, no resort fee found: about $554 all-in. Thursday: La Cabane, $523 all-in, rechecked 8:24 AM PT Nov 25."],
-          ["Lodging (alternative)", "Residence Inn Old Town, a true 2-bedroom suite, $573 including taxes, breakfast included, 1 left, plus self-parking $40: about $613 all-in Wednesday. Flagged: Booking.com cleanliness is 7.9 even though Expedia is 8.8 and TripAdvisor cleanliness is 4.5. With La Cabane that is about $1,136 lodging. Summerland cottage is $500 Thursday. Hyatt Place was dropped (Expedia 8.4). La Playa Thursday would break the cap. The Langham came in over budget."],
+          ["Lodging (alternative)", "Residence Inn Old Town, a true 2-bedroom suite, $573 including taxes, breakfast included, 1 left, plus self-parking $40: about $613 all-in Wednesday. Flagged: Booking.com cleanliness is 7.9 even though Expedia is 8.8 and TripAdvisor cleanliness is 4.5. With La Cabane that is about $1,136 lodging. The Summerland cottage is skipped during the king-tide advisory. Hyatt Place was dropped (Expedia 8.4). La Playa Thursday would break the cap. The Langham came in over budget."],
           ["Food for 4", "About $620–$850, including Sherman’s breakfast, a quick Pasadena lunch, Arnoldi’s Thanksgiving ($75 per adult and $35 for children 12 and under — the 14-year-old is an adult here: about $260 plus tax and tip), drinks at 1886 and a Funk Zone bar, and a Friday lunch."],
           ["Activities", "The Huntington, peak-season prices in effect Nov 20–29: adults $34, students 12–18 $28, youth 4–11 $15 — about $111 for this family. Book reserved tickets. Parking on site is free; lots can fill. The Desert Conservatory is closed Nov 25. Caltech’s campus is a free backup walk if tickets are gone or you arrive after 4:15 PM."],
           ["Driving", "About 525–545 mi, Supercharging about $66–$85."],
@@ -344,22 +359,22 @@
       },
       {
         id: "dtla",
-        name: "Downtown LA, then Ventura",
+        name: "Downtown LA, then Santa Barbara",
         pick: false,
-        drive: "About 530 mi. Wednesday is about 125 mi; leaving around 11:00 AM, plan 2.5–3.5 hours, arriving downtown about 1:30–3:00 PM — you want that early end if you are going to The Broad (closes 5:00 PM). Thursday to Ventura is about 75 mi, usually 1.5–2 hours, and Thanksgiving traffic is often lighter. Friday home is 333 mi; plan 6–7 hours.",
+        drive: "About 530 mi. Wednesday is about 125 mi; leaving 11:30 AM, plan 2.5–4 hours, arriving downtown about 2:00–3:30 PM. The Broad (closes 5:00 PM) still fits if you arrive by about 3:30; if not, Wednesday’s highlight is the evening. Thursday via inland Ventura to Santa Barbara; skip 101 at Rincon. Friday home is 333 mi; plan 6–7 hours.",
         museum: "The Broad on Wednesday (open 11:00 AM–5:00 PM, closed Thanksgiving; free timed tickets). Grand Central Market is lunch, not a second museum.",
         evening: "Perch rooftop on Wednesday (the 16th floor usually opens at 5:00 PM; confirm Nov 25 and book). Thanksgiving at Black Angus in Ventura (verified 11:00 AM–9:00 PM), then a downtown Ventura cocktail bar if it is open (call to confirm); W2O at Watermark is the backup, also call.",
-        worry: "The Broad closes at 5:00 PM, so a slow 10 or 101 crossing can erase the museum visit. Figueroa has no two-bed rooms: book two 1-Queen rooms, and the girls share a queen. Crowne Plaza had only one standard 2-Queen left; the second room is ocean view.",
-        rec: "The free-museum Wednesday, with lodging margin still under $2,000 after the 9:40 AM hotel check.",
-        total: "About $1,660–$1,910",
-        altTotal: "Under $2,000 with Hotel Figueroa (about $553 all-in for two 1-Queen rooms, resort fee and valet included; girls share a queen) and Crowne Plaza Ventura Beach Thursday (about $571: Standard 2 Queen $266 plus Ocean View 2 Queen $295 plus $10 self-parking). Combined lodging about $1,124, checked live ~9:40 AM PT Nov 25. La Cabane Thursday ($523) is a little cheaper. Holiday Inn Express Carpinteria ($862) can press or break the cap at the high end of food.",
+        worry: "The Broad closes at 5:00 PM, so a slow 10 crossing can erase the museum visit; if you arrive after about 3:30 PM, make Perch the Wednesday highlight. Figueroa has no two-bed rooms: book two 1-Queen rooms, and the girls share a queen.",
+        rec: "The free-museum Wednesday if you arrive in time, with lodging margin under $2,000 at inland La Cabane Thursday.",
+        total: "About $1,610–$1,860",
+        altTotal: "Under $2,000 with Hotel Figueroa (about $553 all-in for two 1-Queen rooms, resort fee and valet included; girls share a queen) and inland La Cabane Thursday ($523). Combined lodging about $1,076, with Figueroa checked live ~9:40 AM PT Nov 25. Crowne Plaza Ventura Beach is beachfront under a Coastal Flood Warning through Thursday noon — skip it for this trip. Holiday Inn Express Carpinteria ($862) can press or break the cap at the high end of food.",
         costLines: [
-          ["Lodging (primary)", "About $1,124, checked live on Expedia ~9:40 AM PT Nov 25. Wednesday: Hotel Figueroa had no two-bed rooms. Book two 1-Queen rooms (the girls share a queen), $202 per room including taxes, plus a resort fee of $40.67 per room ($81.34) and valet $68 for one car: about $553 all-in. Search each room as two guests so the Queen rooms appear. Thursday: Crowne Plaza Ventura Beach, Standard 2 Queen $266 including taxes (only 1 left) plus Ocean View 2 Queen $295 including taxes (count not shown), plus self-parking $10: about $571 all-in."],
-          ["Lodging (alternative)", "La Cabane is $523 Thursday, all-in, and still keeps the trip under $2,000 (lodging about $1,076). Holiday Inn Express Carpinteria is $862 for two rooms, breakfast and parking included (Expedia 9.0, renovated), and can press or break the cap at the high end of food. La Playa (9.6, renovated 2023) is about $860–$1,000."],
+          ["Lodging (primary)", "About $1,076. Wednesday: Hotel Figueroa, checked live ~9:40 AM PT Nov 25, had no two-bed rooms. Book two 1-Queen rooms (the girls share a queen), $202 per room including taxes, plus a resort fee of $40.67 per room ($81.34) and valet $68 for one car: about $553 all-in. Search each room as two guests so the Queen rooms appear. Thursday: La Cabane, $523 all-in, inland, rechecked 8:24 AM PT Nov 25. Crowne Plaza Ventura Beach is beachfront under a Coastal Flood Warning through Thursday noon — skip it."],
+          ["Lodging (alternative)", "Holiday Inn Express Carpinteria ($862) and La Playa Inn sit on the low-lying coast under the advisory through Thursday noon — skip them for this trip. Crowne Plaza Ventura Beach is beachfront during the warning and is not used."],
           ["Food for 4", "About $470–$700, including Sherman’s breakfast, Grand Central Market, Black Angus Thanksgiving (about $103 before tax and tip if three pay the adult price), Perch for two, and a Friday lunch. Casa Bella Prime downtown, 2:00–8:00 PM Thanksgiving, is a nicer backup — call (805) 340-1118; the price was not posted."],
           ["Activities", "The Broad is free; reserve timed tickets at thebroad.org/tickets. Grand Central Market is free to enter."],
           ["Driving", "About 530 mi, Supercharging about $66–$83."],
-          ["Parking", "Figueroa valet, $68 for one car, and Crowne Plaza self-parking, $10, are in the lodging estimate. Leave nothing visible in the car, especially overnight downtown or near the beach."]
+          ["Parking", "Figueroa valet, $68 for one car, is in the lodging estimate. Confirm off-street parking at La Cabane. Leave nothing visible in the car, especially overnight downtown."]
         ]
       }
     ];
@@ -372,74 +387,245 @@
 
     const OPTION_SLEEPS = {
       shortla: {
-        leave: "Leave 1:00 PM after Sherman’s lunch",
+        leave: "Leave 11:30 AM after Sherman’s breakfast",
         wxStops: ["dhs", "griffith", "weho", "sb", "dublin"],
         sleeps: [
           { night: "Wed", name: "AC Hotel Beverly Hills", rating: "8.8", year: "renovated 2025", feel: "clean modern rooms", href: "https://www.expedia.com/h27431944.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2&children=1_14,1_11", status: "pass", book: "Book" },
-          { night: "Thu", name: "Summerland cottage", rating: "5.0★", year: "", feel: "bright coastal cottage", href: "https://www.airbnb.com/rooms/1737750748850997183?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2", status: "pass", book: "Book" }
+          { night: "Thu", name: "La Cabane", rating: "4.6★", year: "", feel: "quiet three-bedroom", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2", status: "pass", book: "Book" }
         ],
+        places: [
+          "Griffith Observatory — free hilltop views after dark",
+          "Harriet’s rooftop — walkable nightcap after the girls are in",
+          "Alice Keck Park — inland Thanksgiving garden walk, free",
+          "The Knock — open Thanksgiving wine bar"
+        ],
+        tide: "King tide through Thu noon: skip PCH and 101 at Rincon; use 126/150 via Ojai.",
         alts: [
-          { name: "Chaplin Airbnb", href: "https://www.airbnb.com/rooms/1524058962863203787?check_in=2026-11-25&check_out=2026-11-26&adults=2&children=2" },
-          { name: "La Cabane", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2" },
-          { name: "La Playa Inn · 9.6 · renovated 2023", href: "https://www.expedia.com/h27343.Hotel-Information?chkin=2026-11-26&chkout=2026-11-27&adults=2&children=1_14,1_11" }
+          { name: "Chaplin Airbnb", href: "https://www.airbnb.com/rooms/1524058962863203787?check_in=2026-11-25&check_out=2026-11-26&adults=2&children=2" }
         ]
       },
       shortsb: {
-        leave: "Leave 1:00 PM after Sherman’s lunch",
+        leave: "Leave 11:30 AM after Sherman’s breakfast",
         wxStops: ["dhs", "sb", "dublin"],
         sleeps: [
           { night: "Wed–Fri", name: "La Cabane", rating: "4.6★", year: "", feel: "quiet three-bedroom", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2", status: "pass", book: "Book" }
         ],
+        places: [
+          "milk & honey — late State Street cocktails; book 8 PM",
+          "Alice Keck Park — inland Thanksgiving garden walk, free",
+          "The Knock — open Thanksgiving wine bar"
+        ],
+        tide: "King tide through Thu noon: skip PCH and 101 at Rincon; use 126/150 via Ojai.",
         alts: [
           { name: "Hilton Garden Inn Goleta · 9.0", href: "https://www.expedia.com/h18109534.Hotel-Information?chkin=2026-11-25&chkout=2026-11-27&adults=2&children=1_14,1_11" },
           { name: "Midtown cottage · 4.74★ · 1 bath", href: "https://www.airbnb.com/rooms/660783391832138039?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2" }
         ]
       },
       shortventura: {
-        leave: "Leave 1:00 PM after Sherman’s lunch",
+        leave: "Leave 11:30 AM after Sherman’s breakfast",
         wxStops: ["dhs", "ventura", "sb", "dublin"],
         sleeps: [
-          { night: "Wed–Fri", name: "Crowne Plaza Ventura Beach", rating: "8.8", year: "", feel: "beachfront hotel stay", note: "only 1 standard left; second ocean view", href: "https://www.expedia.com/h20485.Hotel-Information?chkin=2026-11-25&chkout=2026-11-27&adults=2&children=1_14,1_11", status: "pass", book: "Book" }
+          { night: "Wed–Fri", name: "Midtown cottage", rating: "4.74★", year: "", feel: "roomy midtown cottage", note: "1 bath, tight for four", href: "https://www.airbnb.com/rooms/660783391832138039?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2", status: "pass", book: "Book" }
         ],
+        places: [
+          "The Twist on Main — downtown wine and music; confirm",
+          "Alice Keck Park — inland Thanksgiving garden walk, free",
+          "The Knock — open Thanksgiving wine bar"
+        ],
+        tide: "King tide through Thu noon: skip Ventura beaches, PCH, and 101 at Rincon; use 126/150 via Ojai.",
         alts: [
-          { name: "Midtown cottage · 4.74★ · $731 · 1 bath", href: "https://www.airbnb.com/rooms/660783391832138039?check_in=2026-11-25&check_out=2026-11-27&adults=2&children=2" }
+          { name: "Hilton Garden Inn Goleta · 9.0", href: "https://www.expedia.com/h18109534.Hotel-Information?chkin=2026-11-25&chkout=2026-11-27&adults=2&children=1_14,1_11" }
         ]
       },
       santamonica: {
-        leave: "Leave ~11:00 AM",
-        wxStops: ["dhs", "santamonica", "summerland", "sb", "dublin"],
+        leave: "Leave 11:30 AM after Sherman’s breakfast",
+        wxStops: ["dhs", "santamonica", "sb", "dublin"],
         sleeps: [
           { night: "Wed", name: "The Ambrose", rating: "9.2", year: "renovated 2015", feel: "quiet boutique inn", href: "https://www.expedia.com/h890565.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2&children=1_14,1_11", status: "pass", book: "Book" },
-          { night: "Thu", name: "Summerland cottage", rating: "5.0★", year: "", feel: "bright coastal cottage", href: "https://www.airbnb.com/rooms/1737750748850997183?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2", status: "pass", book: "Book" }
+          { night: "Thu", name: "La Cabane", rating: "4.6★", year: "", feel: "quiet three-bedroom", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2", status: "pass", book: "Book" }
         ],
-        alts: [
-          { name: "La Cabane", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2" }
-        ]
+        places: [
+          "Venice canals — residential walk if you arrive by 3:30",
+          "Élephante — rooftop restaurant after the girls are in",
+          "The Set — verified Thanksgiving feast; stay off the sand"
+        ],
+        tide: "King tide through Thu noon: skip PCH Malibu and 101 at Rincon; use 126/150 via Ojai.",
+        alts: []
       },
       pasadena: {
-        leave: "Leave ~11:00 AM",
+        leave: "Leave 11:30 AM after Sherman’s breakfast",
         wxStops: ["dhs", "pasadena", "ojai", "sb", "dublin"],
         sleeps: [
           { night: "Wed", name: "Courtyard Pasadena Old Town", rating: "8.8", year: "renovated 2024", feel: "fresh Old Town", href: "https://www.expedia.com/h518440.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2&children=1_14,1_11", status: "pass", book: "Book" },
           { night: "Thu", name: "La Cabane", rating: "4.6★", year: "", feel: "quiet three-bedroom", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2", status: "pass", book: "Book" }
         ],
+        places: [
+          "The Huntington — gardens and galleries if you arrive by 4:15",
+          "1886 Bar — bungalow cocktails after the girls are in",
+          "Libbey Park — Ojai stroll; Bart’s Books is closed today",
+          "Arnoldi’s — verified Thanksgiving; 14 counts adult"
+        ],
+        tide: "King tide through Thu noon: this route already uses Ojai/150; skip 101 at Rincon and PCH.",
         alts: [
-          { name: "Residence Inn 2BR · 8.8 · flag Booking 7.9", href: "https://www.expedia.com/h13578977.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2&children=1_14,1_11" },
-          { name: "Summerland cottage · 5.0★", href: "https://www.airbnb.com/rooms/1737750748850997183?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2" }
+          { name: "Residence Inn 2BR · 8.8 · flag Booking 7.9", href: "https://www.expedia.com/h13578977.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2&children=1_14,1_11" }
         ]
       },
       dtla: {
-        leave: "Leave ~11:00 AM",
-        wxStops: ["dhs", "dtla", "ventura", "dublin"],
+        leave: "Leave 11:30 AM after Sherman’s breakfast",
+        wxStops: ["dhs", "dtla", "ventura", "sb", "dublin"],
         sleeps: [
           { night: "Wed", name: "Hotel Figueroa", rating: "9.0", year: "renovated 2018", feel: "stylish historic hotel", note: "two Queen rooms — girls share a queen", href: "https://www.expedia.com/h8805682.Hotel-Information?chkin=2026-11-25&chkout=2026-11-26&adults=2", status: "pass", book: "Book" },
-          { night: "Thu", name: "Crowne Plaza Ventura Beach", rating: "8.8", year: "", feel: "beachfront hotel stay", note: "only 1 standard left; second ocean view", href: "https://www.expedia.com/h20485.Hotel-Information?chkin=2026-11-26&chkout=2026-11-27&adults=2&children=1_14,1_11", status: "pass", book: "Book" }
+          { night: "Thu", name: "La Cabane", rating: "4.6★", year: "", feel: "quiet three-bedroom", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2", status: "pass", book: "Book" }
         ],
-        alts: [
-          { name: "La Cabane · 4.6★ · $523", href: "https://www.airbnb.com/rooms/1186646628635729985?check_in=2026-11-26&check_out=2026-11-27&adults=2&children=2" },
-          { name: "HIE Carpinteria · 9.0 · $862", href: "https://www.expedia.com/h461836.Hotel-Information?chkin=2026-11-26&chkout=2026-11-27&adults=2&children=1_14,1_11" }
-        ]
+        places: [
+          "The Broad — free modern art if you arrive by 3:30",
+          "Perch — 16th-floor rooftop after the girls are in",
+          "Black Angus — inland Thanksgiving turkey, verified"
+        ],
+        tide: "King tide through Thu noon: skip PCH and 101 at Rincon; use 126/150 via Ojai.",
+        alts: []
       }
+    };
+
+    const DETAIL_DAYS = {
+      shortla: [
+        {
+          title: "Wednesday, Nov 25 · to West Hollywood",
+          drive: "Leave 11:30 AM after Sherman’s breakfast. 126 mi, 3–4.5 hr; arrive about 2:30–4:00 PM (4:30 if traffic is heavy).",
+          activity: "Griffith Observatory — free hilltop views after dark; open noon–10 PM, sunset 4:46 PM.",
+          evening: "Dinner at Mel’s — casual diner booths; then Harriet’s rooftop — walkable nightcap after the girls are in (book 9 PM).",
+          safety: "Use official Griffith parking or a rideshare; leave nothing in the car."
+        },
+        {
+          title: "Thursday, Nov 26 · to Santa Barbara",
+          drive: "About 2 hr. Leave after noon, or take 126/150 via Ojai to skip 101 at Rincon and PCH.",
+          activity: "Alice Keck Park — free inland garden walk for the girls, 8 AM to sunset.",
+          evening: "Thanksgiving at The Copper — relaxed State Street feast; then The Knock — open Thanksgiving wine bar (book 5 PM).",
+          safety: "Stay off beaches and 101 at Rincon through noon; confirm off-street parking at La Cabane."
+        },
+        {
+          title: "Friday, Nov 27 · home to Dublin",
+          drive: "Leave by 9:30–10:00 AM. 307 mi; plan 5.5–6.5 hr (about 4 hr 45 min off-peak).",
+          activity: "Optional lunch in Solvang — one sit-down stop; skip Julefest or you’ll get home late.",
+          evening: "Eat on the road or at home; no planned night out.",
+          safety: "The flood warning has expired; still skip any flooded 101 shoulders, and don’t drive around barricades."
+        }
+      ],
+      shortsb: [
+        {
+          title: "Wednesday, Nov 25 · to Santa Barbara",
+          drive: "Leave 11:30 AM after Sherman’s breakfast. 212 mi, 5.5–7 hr; arrive about 5:00–6:30 PM. Use 126/150 via Ojai to skip 101 at Rincon.",
+          activity: "A long drive — you arrive after dark, so Wednesday’s highlight is the evening.",
+          evening: "Dinner at Finney’s — casual burgers and tacos; then milk & honey — late State Street cocktails (book 8 PM).",
+          safety: "Skip PCH and 101 at Rincon; confirm off-street parking at La Cabane; leave nothing visible."
+        },
+        {
+          title: "Thursday, Nov 26 · in Santa Barbara",
+          drive: "In town. A short hop to the garden, State Street, and The Knock.",
+          activity: "Alice Keck Park — free inland garden walk for the girls, 8 AM to sunset.",
+          evening: "Thanksgiving at The Copper — relaxed State Street feast; then The Knock — open Thanksgiving wine bar (book 5 PM).",
+          safety: "Stay off beaches, piers, and 101 at Rincon through noon."
+        },
+        {
+          title: "Friday, Nov 27 · home to Dublin",
+          drive: "Leave by 9:30–10:00 AM. 307 mi; plan 5.5–6.5 hr.",
+          activity: "Optional lunch in Solvang — one sit-down stop; skip Julefest or you’ll get home late.",
+          evening: "Eat on the road or at home; no planned night out.",
+          safety: "The flood warning has expired; still skip any flooded 101 shoulders, and don’t drive around barricades."
+        }
+      ],
+      shortventura: [
+        {
+          title: "Wednesday, Nov 25 · to midtown Ventura",
+          drive: "Leave 11:30 AM after Sherman’s breakfast. 176 mi, 4.5–6 hr; arrive about 4:00–5:30 PM.",
+          activity: "A short inland downtown walk if you arrive before dusk; otherwise Wednesday’s highlight is the evening. Skip the pier and beach.",
+          evening: "Dinner downtown, away from the water; then The Twist on Main — wine and live music (confirm tonight).",
+          safety: "Ventura beaches are under a flood warning through Thursday noon; use the midtown cottage, not the beachfront hotel. Leave nothing in the car."
+        },
+        {
+          title: "Thursday, Nov 26 · into Santa Barbara",
+          drive: "About 30–40 min each way. Use 126/150 via Ojai; skip 101 at Rincon.",
+          activity: "Alice Keck Park — free inland garden walk for the girls, 8 AM to sunset.",
+          evening: "Thanksgiving at The Copper — relaxed State Street feast; then The Knock — open Thanksgiving wine bar. W2O at Watermark is a backup; call to confirm.",
+          safety: "Stay off Ventura and Santa Barbara beaches through noon; one bath at the cottage is tight for four."
+        },
+        {
+          title: "Friday, Nov 27 · home to Dublin",
+          drive: "Leave by 9:00–9:30 AM. 333 mi; plan 6–7 hr.",
+          activity: "Optional lunch in Solvang — one sit-down stop; skip Julefest on this route.",
+          evening: "Eat on the road or at home; no planned night out.",
+          safety: "The flood warning has expired; still skip any flooded 101 shoulders, and don’t drive around barricades."
+        }
+      ],
+      santamonica: [
+        {
+          title: "Wednesday, Nov 25 · to Santa Monica",
+          drive: "Leave 11:30 AM after Sherman’s breakfast. 140 mi, 3–4.5 hr; arrive about 2:30–4:00 PM. Skip PCH through Malibu.",
+          activity: "Venice canals and Abbot Kinney — quiet residential walk, if you arrive by about 3:30 PM; if not, Wednesday’s highlight is the evening. Skip the pier and Palisades Park.",
+          evening: "Family dinner at C&O Trattoria — casual Italian near the canals (confirm tonight); then Élephante — rooftop restaurant after the girls are in (confirm and book).",
+          safety: "Use The Ambrose’s self-park, not a beach lot; leave nothing in the car."
+        },
+        {
+          title: "Thursday, Nov 26 · to Santa Barbara",
+          drive: "About 90 mi, usually around 2 hr. Leave after noon, or take 126/150 via Ojai to skip 101 at Rincon.",
+          activity: "No second museum — a Thanksgiving meal day, inland after you arrive.",
+          evening: "The Set — verified Thanksgiving feast 3–10 PM (beachfront hotel, but the warning ends at noon; stay off the sand). Then Loquita — Funk Zone nightcap; call to confirm. Flavor of India (11 AM–9:30 PM) is the inland backup.",
+          safety: "Stay off beaches and 101 at Rincon through noon; confirm off-street parking at La Cabane."
+        },
+        {
+          title: "Friday, Nov 27 · home to Dublin",
+          drive: "Leave by 9:00–9:30 AM. About 310 mi; plan 5.5–6.5 hr.",
+          activity: "Optional lunch at Paula’s Pancake House in Solvang — one sit-down stop.",
+          evening: "Eat on the road or at home; no planned night out.",
+          safety: "The flood warning has expired; still skip any flooded 101 shoulders, and don’t drive around barricades."
+        }
+      ],
+      pasadena: [
+        {
+          title: "Wednesday, Nov 25 · to Pasadena",
+          drive: "Leave 11:30 AM after Sherman’s breakfast. 120 mi, 2.5–4 hr; arrive about 2:00–3:30 PM (close to 4:00 if traffic is heavy).",
+          activity: "The Huntington — reserved gardens and galleries, if you check in by 4:15 PM (closes 5 PM, closed Thanksgiving). If traffic runs long, Wednesday’s highlight is the evening.",
+          evening: "Quick lunch at Pie ’n Burger if you have time; then 1886 Bar at The Raymond — bungalow cocktails after the girls are in (confirm tonight).",
+          safety: "Huntington parking is free; use the Courtyard lot overnight and leave nothing visible."
+        },
+        {
+          title: "Thursday, Nov 26 · via Ojai to Santa Barbara",
+          drive: "Leave mid-morning. About 85 mi to Ojai, then 40 mi on; use 150, not 101 at Rincon.",
+          activity: "Libbey Park and a short Ojai stroll — Bart’s Books is closed Thanksgiving. Then on to Santa Barbara.",
+          evening: "Arnoldi’s — verified Thanksgiving 1–6 PM (the 14-year-old counts as an adult); then Les Marchands or a Funk Zone bar, call to confirm.",
+          safety: "This inland cut already avoids the flooded coast; stay off beaches once you reach Santa Barbara, and confirm parking at La Cabane."
+        },
+        {
+          title: "Friday, Nov 27 · home to Dublin",
+          drive: "Leave by 9:30–10:00 AM. 307 mi; plan 5.5–6.5 hr.",
+          activity: "Optional lunch at Industrial Eats in Buellton — one sit-down stop.",
+          evening: "Eat on the road or at home; no planned night out.",
+          safety: "The flood warning has expired; still skip any flooded 101 shoulders, and don’t drive around barricades."
+        }
+      ],
+      dtla: [
+        {
+          title: "Wednesday, Nov 25 · to downtown LA",
+          drive: "Leave 11:30 AM after Sherman’s breakfast. 125 mi, 2.5–4 hr; arrive about 2:00–3:30 PM.",
+          activity: "The Broad — free modern art, timed tickets, if you arrive by about 3:30 PM (closes 5 PM). If not, Wednesday’s highlight is the evening. Grand Central Market for a quick lunch.",
+          evening: "Perch — 16th-floor rooftop after the girls are in (opens 5 PM; confirm and book). Two 1-Queen rooms at Figueroa; the girls share a queen.",
+          safety: "Use the hotel entrance and valet; downtown is mixed after dark — take a short ride to Perch if you would rather not walk every block."
+        },
+        {
+          title: "Thursday, Nov 26 · inland Ventura, overnight Santa Barbara",
+          drive: "Leave after noon, or use inland connectors; skip PCH and 101 at Rincon. Thanksgiving lunch in inland Ventura, then on to La Cabane.",
+          activity: "No second museum. A short inland Ventura stroll away from the beach, if you want a walk before the meal.",
+          evening: "Black Angus — verified inland Thanksgiving turkey, 11 AM–9 PM (the 14-year-old is an adult). Then a walkable Santa Barbara nightcap after the girls are in; call Loquita or Les Marchands to confirm.",
+          safety: "Skip Ventura beaches and the beachfront hotel through noon; confirm off-street parking at La Cabane."
+        },
+        {
+          title: "Friday, Nov 27 · home to Dublin",
+          drive: "Leave by 9:00–9:30 AM. 333 mi; plan 6–7 hr.",
+          activity: "Optional lunch at Pea Soup Andersen’s in Buellton — one sit-down stop.",
+          evening: "Eat on the road or at home; no planned night out.",
+          safety: "The flood warning has expired; still skip any flooded 101 shoulders, and don’t drive around barricades."
+        }
+      ]
     };
 
     const WX_STOPS = [
@@ -463,7 +649,7 @@
 
     const itineraries = {
       shortla: {
-        intro: "Lunch at Sherman’s, leave Desert Hot Springs around 1:00 PM, and spend Wednesday night near West Hollywood so Griffith and Harriet’s still fit. Thursday is a short drive to Santa Barbara for Thanksgiving and The Knock. Friday you take 101 home. This is the under-$2,000 trip that keeps the most variety.",
+        intro: "Breakfast at Sherman’s, leave Desert Hot Springs at 11:30 AM, and spend Wednesday night near West Hollywood so Griffith (open noon–10:00 PM, sunset 4:46 PM) and Harriet’s still fit. Thursday is a short drive to Santa Barbara for Thanksgiving and The Knock. Friday you take 101 home. This is the under-$2,000 trip that keeps the most variety.",
         days: [
           {
             title: "Wednesday, Nov 25 · Desert Hot Springs to West Hollywood",
@@ -474,7 +660,7 @@
             destLL: [-118.385, 34.0909],
             facts: [
               ["Drive", "126 mi. Off-peak this is about 2 hr 15 min; leaving at 1:00 PM on Thanksgiving eve, plan 3.5–4.5 hours. Expect to arrive about 4:30–6:30 PM."],
-              ["Leave around", "1:00 PM, after lunch at Sherman’s."],
+              ["Leave around", "11:30 AM, after breakfast at Sherman’s (about 8:30–10:30 AM) and the 11:00 AM checkout."],
               ["Superchargers", "Optional. You can often make this leg without a stop if you start with a comfortable charge."],
               ["Main activity", "Griffith Observatory in the evening. The building is open noon–10:00 PM on Wednesday, Nov 25, and closed Thanksgiving. Sunset is at 4:46 PM. Free telescope viewing usually begins around 7:00 PM when the sky is clear; the line is cut off at 9:30 PM. Admission is free. Official parking is $10 a space per hour (about $20–$40), or use a rideshare. It is about 8.5 mi, or 20–30 minutes, from West Hollywood."]
             ],
@@ -492,7 +678,7 @@
               site: "https://www.1hotels.com/west-hollywood/taste/harriets-rooftop"
             },
             meals: [
-              { kind: "Lunch, 11:00 AM–1:00 PM, near Palm Springs", name: "Sherman’s Deli & Bakery", detail: "The planned family lunch before a 1:00 PM departure — cinnamon-bread French toast, corned beef on rye, and a long sandwich board.", hours: "Official hours are daily 8:00 AM–9:00 PM. Call (760) 325-1199 before you go.", map: "Sherman's Deli & Bakery, 401 E Tahquitz Canyon Way, Palm Springs, CA 92262", site: "https://shermansdeli.com/" },
+              { kind: "Breakfast, about 8:30–10:30 AM, near Palm Springs", name: "Sherman’s Deli & Bakery", detail: "The planned family breakfast before checkout and an 11:30 AM departure — cinnamon-bread French toast, corned beef on rye, and a long sandwich board.", hours: "Official hours are daily 8:00 AM–9:00 PM. Call (760) 325-1199 before you go.", map: "Sherman's Deli & Bakery, 401 E Tahquitz Canyon Way, Palm Springs, CA 92262", site: "https://shermansdeli.com/" },
               { kind: "Family dinner, about 6:30 PM, West Hollywood", name: "Mel’s Drive-In", detail: "A classic Sunset Boulevard diner — milkshakes, burgers, and booths — at 8585 Sunset Boulevard. Eat together around 6:30 PM after you check in, or later if the drive runs long; the kitchen is open until midnight. Then all four of you go to Griffith around 7:30 PM for the telescopes.", hours: "Official hours Wednesday 7:00 AM–midnight. Open Wednesday, Nov 25.", map: "Mel's Drive-In, 8585 Sunset Boulevard, West Hollywood, CA 90069", site: "https://melsdrive-in.com/restaurant/mels-west-hollywood/" }
             ],
             stayTitle: "West Hollywood / Beverly, Wednesday to Thursday, 1 night · Not booked yet · Two rooms or two bedrooms. AC Hotel checked live on Expedia ~9:40 AM PT Nov 25. The Heart of West Hollywood Airbnb is no longer available. Two rooms are estimated at 2× the one-room Expedia card total, plus parking and fees. Booking-site prices can exclude resort fees and charges paid at the hotel; all-in estimate shown.",
@@ -561,7 +747,7 @@
         ]
       },
       shortsb: {
-        intro: "Lunch at Sherman’s, a 1:00 PM departure, and a long Thanksgiving-eve drive to Santa Barbara. You unpack once, have a late Wednesday dinner, and spend Thanksgiving in town before a Friday drive home on 101. Simpler than two hotel moves, at the cost of a 6–7 hour Wednesday.",
+        intro: "Breakfast at Sherman’s, an 11:30 AM departure, and a long Thanksgiving-eve drive to inland Santa Barbara. You will arrive after dark, so Wednesday’s highlight is dinner and milk & honey. You unpack once, spend Thanksgiving in town (Alice Keck Park with the girls, then The Knock), and drive home on Friday. Use 126/150 via Ojai to skip 101 at Rincon. Simpler than two hotel moves, at the cost of a 6–7 hour Wednesday.",
         days: [
           {
             title: "Wednesday, Nov 25 · Desert Hot Springs to Santa Barbara",
@@ -572,7 +758,7 @@
             destLL: [-119.6982, 34.4208],
             facts: [
               ["Drive", "212 mi. Off-peak this is about 4 hr 15 min; leaving at 1:00 PM on Thanksgiving eve, plan on 6–7 hours. Expect to arrive about 7:00–8:00 PM, later if there is a crash or a stall."],
-              ["Leave around", "1:00 PM, after lunch at Sherman’s."],
+              ["Leave around", "11:30 AM, after breakfast at Sherman’s (about 8:30–10:30 AM) and the 11:00 AM checkout."],
               ["Superchargers", "Optional. Charge in the morning if you want a buffer, or stop once on the way if the drive runs long."],
               ["Main activity", "This is a drive-and-dinner day. Space Shuttle Endeavour does not fit: the California Science Center closes at 5:00 PM, and a 1:00 PM departure in this traffic would get you there at closing, or after."]
             ],
@@ -589,7 +775,7 @@
               site: "https://milknhoneytapas.com/"
             },
             meals: [
-              { kind: "Lunch, 11:00 AM–1:00 PM, near Palm Springs", name: "Sherman’s Deli & Bakery", detail: "The planned family lunch before a 1:00 PM departure.", hours: "Official hours are daily 8:00 AM–9:00 PM. Call (760) 325-1199 before you go.", map: "Sherman's Deli & Bakery, 401 E Tahquitz Canyon Way, Palm Springs, CA 92262", site: "https://shermansdeli.com/" },
+              { kind: "Breakfast, about 8:30–10:30 AM, near Palm Springs", name: "Sherman’s Deli & Bakery", detail: "The planned family breakfast before checkout and an 11:30 AM departure.", hours: "Official hours are daily 8:00 AM–9:00 PM. Call (760) 325-1199 before you go.", map: "Sherman's Deli & Bakery, 401 E Tahquitz Canyon Way, Palm Springs, CA 92262", site: "https://shermansdeli.com/" },
               { kind: "Family dinner, about 8:00 PM, downtown Santa Barbara", name: "Finney’s Crafthouse", detail: "Burgers, tacos, and scratch plates at 35 State Street in the Funk Zone. Official hours Wednesday 11:00 AM–10:00 PM, so an 8:00 PM arrival still works. Feed the girls here, then the two of you go to milk & honey; or eat together here if the drive runs long.", hours: "Official hours Wednesday 11:00 AM–10:00 PM. Open Wednesday, Nov 25. (805) 845-3100.", map: "Finney's Crafthouse, 35 State Street, Santa Barbara, CA 93101", site: "https://finneyscrafthouse.com/locations/santa-barbara/" }
             ],
             stayTitle: "Santa Barbara area, Wednesday to Friday, 2 nights · Not booked yet. Lodging rechecked 8:24 AM PT Nov 25. Two rooms estimated at 2× the one-room Expedia card total, plus fees.",
@@ -651,7 +837,7 @@
         ]
       },
       shortventura: {
-        intro: "The lowest-cost short trip: lunch at Sherman’s, a 1:00 PM departure, and a base in Ventura for two nights — usually an earlier Wednesday arrival than Santa Barbara. Thursday you drive 30–40 minutes into Santa Barbara for Thanksgiving and The Knock, then Friday you take 101 home.",
+        intro: "The lowest-cost short trip: breakfast at Sherman’s, an 11:30 AM departure, and an inland midtown Ventura cottage for two nights — usually an earlier Wednesday arrival than Santa Barbara. Skip the beachfront hotel during the flood warning. Thursday you drive 30–40 minutes into Santa Barbara for Thanksgiving and The Knock, then Friday you take 101 home.",
         days: [
           {
             title: "Wednesday, Nov 25 · Desert Hot Springs to Ventura",
@@ -662,7 +848,7 @@
             destLL: [-119.2945, 34.2804],
             facts: [
               ["Drive", "About 176 mi. Off-peak this is about 3 hours; leaving at 1:00 PM on Thanksgiving eve, plan 5–6 hours, because you still have to cross the Los Angeles basin. Expect to arrive about 6:00–7:00 PM, earlier than a Santa Barbara push."],
-              ["Leave around", "1:00 PM, after lunch at Sherman’s."],
+              ["Leave around", "11:30 AM, after breakfast at Sherman’s (about 8:30–10:30 AM) and the 11:00 AM checkout."],
               ["Superchargers", "Optional. Stop once if the drive runs long."],
               ["Main activity", "Arrive, settle in, and take a downtown or harbor evening. Stay off the sand and piers; the Central Coast flood and high-surf warnings last through Thursday noon."]
             ],
@@ -679,7 +865,7 @@
               site: "https://thetwistonmain.com/"
             },
             meals: [
-              { kind: "Lunch, 11:00 AM–1:00 PM, near Palm Springs", name: "Sherman’s Deli & Bakery", detail: "The planned family lunch before a 1:00 PM departure.", hours: "Official hours are daily 8:00 AM–9:00 PM. Call (760) 325-1199 before you go.", map: "Sherman's Deli & Bakery, 401 E Tahquitz Canyon Way, Palm Springs, CA 92262", site: "https://shermansdeli.com/" },
+              { kind: "Breakfast, about 8:30–10:30 AM, near Palm Springs", name: "Sherman’s Deli & Bakery", detail: "The planned family breakfast before checkout and an 11:30 AM departure.", hours: "Official hours are daily 8:00 AM–9:00 PM. Call (760) 325-1199 before you go.", map: "Sherman's Deli & Bakery, 401 E Tahquitz Canyon Way, Palm Springs, CA 92262", site: "https://shermansdeli.com/" },
               { kind: "Family dinner, downtown or the harbor, about 6:30–7:00 PM", name: "Lure Fish House", detail: "A casual, reliable family dinner at Ventura Harbor — fish, tacos, and a kids’ menu — so the girls are fed before The Twist on Main. Confirm Wednesday, Nov 25 hours on their site before you go.", hours: "Confirm Wednesday, Nov 25 hours on lurefishhouse.com before you go. If it is closed or slammed, pick another downtown or harbor restaurant and call ahead.", map: "Lure Fish House, 60 S Seaward Ave, Ventura, CA 93001", site: "https://www.lurefishhouse.com/" }
             ],
             stayTitle: "Ventura, Wednesday to Friday, 2 nights · Not booked yet · Two rooms. Crowne Plaza checked live on Expedia ~9:40 AM PT Nov 25. Only 1 standard 2-Queen was left; the second room is ocean view. Booking-site prices can exclude resort fees and charges paid at the hotel; all-in estimate shown.",
@@ -742,7 +928,7 @@
       },
 
       santamonica: {
-        intro: "Pack first, breakfast at Sherman’s, checkout at 11:00 AM, and leave right away — before INRIX’s noon–7:00 PM worst window. You should be in Santa Monica mid-afternoon for the Venice canals and Abbot Kinney, then a rooftop at Élephante (not Harriet’s). Thursday you move up the coast to Summerland for a different Thanksgiving — The Set, not The Copper — and a Funk Zone evening at Loquita if it is open. Friday you take 101 home.",
+        intro: "Pack first, breakfast at Sherman’s, checkout at 11:00 AM, and leave at 11:30 AM. You can still catch the Venice canals if you arrive by about 3:30 PM; if traffic runs long, Wednesday’s highlight is Élephante. Skip the pier, Palisades Park, and PCH. Then a rooftop at Élephante (not Harriet’s). Thursday you move up the coast to Summerland for a different Thanksgiving — The Set, not The Copper — and a Funk Zone evening at Loquita if it is open. Friday you take 101 home.",
         days: [
           {
             title: "Wednesday, Nov 25 · Desert Hot Springs to Santa Monica",
@@ -753,7 +939,7 @@
             destLL: [-118.4912, 34.0195],
             facts: [
               ["Drive", "About 140 mi. Off-peak this is a little over two hours. Leaving around 11:00 AM, just before INRIX’s noon–7:00 PM worst window, plan 3–4 hours. Expect to arrive about 2:00–3:30 PM, or by 4:00 PM if the noon crunch has started."],
-              ["Leave around", "11:00 AM, right after checkout. Pack before breakfast at Sherman’s (about 8:30–10:00 AM)."],
+              ["Leave around", "11:30 AM. Pack and eat breakfast at Sherman’s (about 8:30–10:30 AM) before the 11:00 AM checkout, then depart at 11:30."],
               ["Superchargers", "Optional. You can often make this leg without a stop if you start with a comfortable charge."],
               ["Main activity", "Venice canals and Abbot Kinney — a walk and a browse, not a museum. The canals are a residential neighborhood; stay on the public paths. If the surf is rough, skip Santa Monica Pier and watch sunset from Palisades Park (Ocean Avenue), off the sand. Sunset is at 4:46 PM."]
             ],
@@ -772,7 +958,7 @@
               site: "https://www.elephanterestaurants.com/location/elephante-hours/"
             },
             meals: [
-              { kind: "Breakfast, about 8:30–10:00 AM, near Palm Springs", name: "Sherman’s Deli & Bakery", detail: "Eat after you have packed, and before the 11:00 AM checkout, so you can leave right at checkout.", hours: "Official hours are daily 8:00 AM–9:00 PM. Call (760) 325-1199 before you go.", map: "Sherman's Deli & Bakery, 401 E Tahquitz Canyon Way, Palm Springs, CA 92262", site: "https://shermansdeli.com/" },
+              { kind: "Breakfast, about 8:30–10:30 AM, near Palm Springs", name: "Sherman’s Deli & Bakery", detail: "Eat after you have packed, and before the 11:00 AM checkout, so you can leave at 11:30 AM.", hours: "Official hours are daily 8:00 AM–9:00 PM. Call (760) 325-1199 before you go.", map: "Sherman's Deli & Bakery, 401 E Tahquitz Canyon Way, Palm Springs, CA 92262", site: "https://shermansdeli.com/" },
               { kind: "Lunch or early dinner, Venice", name: "C&O Trattoria", detail: "Casual Italian on Windward Avenue, a short walk from the canals and a short hop from Abbot Kinney — family plates before the two of you go to Élephante. Backup: Tacos Por Favor, 1408 Olympic Blvd, Santa Monica; call to confirm Nov 25.", hours: "Confirm Wednesday, Nov 25, at (310) 823-9491 before you count on it.", map: "C&O Trattoria, 31 Windward Ave, Venice, CA 90291", site: "https://cotrattoria.com/" }
             ],
             stayTitle: "Santa Monica, Wednesday to Thursday, 1 night · Not booked yet · Two rooms. The Ambrose checked live on Expedia ~9:40 AM PT Nov 25. Shore Hotel was unavailable (minimum stay). Booking-site prices can exclude resort fees and charges paid at the hotel; all-in estimate shown.",
@@ -841,7 +1027,7 @@
         ]
       },
       pasadena: {
-        intro: "Pack first, breakfast at Sherman’s, checkout at 11:00 AM, and leave right away. You should be in Pasadena early enough for a quick lunch and The Huntington (check-in closes at 4:15 PM; peak-season reservations required). Wednesday evening is 1886 Bar at The Raymond, not Harriet’s. Thursday you cut over to Ojai for a town stroll, then Santa Barbara for Arnoldi’s — not The Copper — and a Funk Zone wine bar that is not The Knock.",
+        intro: "Pack first, breakfast at Sherman’s, checkout at 11:00 AM, and leave at 11:30 AM. You can still make The Huntington if you check in by 4:15 PM (peak-season reservations required). Wednesday evening is 1886 Bar at The Raymond, not Harriet’s. Thursday you cut over to Ojai for a town stroll, then Santa Barbara for Arnoldi’s — not The Copper — and a Funk Zone wine bar that is not The Knock.",
         days: [
           {
             title: "Wednesday, Nov 25 · Desert Hot Springs to Pasadena",
@@ -852,7 +1038,7 @@
             destLL: [-118.1445, 34.1478],
             facts: [
               ["Drive", "About 120 mi, usually on I-10 and I-210. Off-peak this is about two hours. Leaving around 11:00 AM, plan 2.5–3.5 hours. Expect to arrive about 1:30–3:00 PM — enough time for a quick lunch and The Huntington if tickets are booked. Check-in at The Huntington closes at 4:15 PM."],
-              ["Leave around", "11:00 AM, right after checkout. Pack before breakfast at Sherman’s (about 8:30–10:00 AM)."],
+              ["Leave around", "11:30 AM. Pack and eat breakfast at Sherman’s (about 8:30–10:30 AM) before the 11:00 AM checkout, then depart at 11:30."],
               ["Superchargers", "Optional."],
               ["Main activity", "The Huntington Library, Art Museum, and Botanical Gardens in San Marino. Open 10:00 AM–5:00 PM Wednesday–Monday; closed Thanksgiving, Nov 26. Thanksgiving week (Nov 20–29) is a peak season, so reservations are required. Peak prices: adults $34, students 12–18 $28, youth 4–11 $15 — about $111 for this family. Parking is free; lots can fill. The Desert Conservatory is closed Nov 25. If tickets are gone or you arrive after 4:15 PM, walk Old Pasadena or the Caltech campus instead — one main activity, not two museums."]
             ],
@@ -871,7 +1057,7 @@
               site: "https://theraymond1886.com/1886-bar/"
             },
             meals: [
-              { kind: "Breakfast, about 8:30–10:00 AM, near Palm Springs", name: "Sherman’s Deli & Bakery", detail: "Eat after you have packed, and before the 11:00 AM checkout, so you can leave right at checkout.", hours: "Official hours are daily 8:00 AM–9:00 PM. Call (760) 325-1199 before you go.", map: "Sherman's Deli & Bakery, 401 E Tahquitz Canyon Way, Palm Springs, CA 92262", site: "https://shermansdeli.com/" },
+              { kind: "Breakfast, about 8:30–10:30 AM, near Palm Springs", name: "Sherman’s Deli & Bakery", detail: "Eat after you have packed, and before the 11:00 AM checkout, so you can leave at 11:30 AM.", hours: "Official hours are daily 8:00 AM–9:00 PM. Call (760) 325-1199 before you go.", map: "Sherman's Deli & Bakery, 401 E Tahquitz Canyon Way, Palm Springs, CA 92262", site: "https://shermansdeli.com/" },
               { kind: "Quick lunch, before The Huntington", name: "Pie ’n Burger", detail: "A Pasadena classic on East California Boulevard, on the way toward San Marino — burgers and pies, kept short so you reach The Huntington before the 4:15 PM check-in cutoff. Backup: a counter in Old Town if this line is long; confirm Nov 25 hours at (626) 795-1123.", hours: "Confirm Wednesday, Nov 25, at (626) 795-1123 before you count on it.", map: "Pie 'n Burger, 913 E California Blvd, Pasadena, CA 91106", site: "https://pienburger.com/" }
             ],
             stayTitle: "Pasadena / Old Town, Wednesday to Thursday, 1 night · Not booked yet · Two rooms or a 2-bedroom suite. Checked live on Expedia ~9:00 AM PT Nov 25. Booking-site prices can exclude resort fees and charges paid at the hotel; all-in estimate shown.",
@@ -942,7 +1128,7 @@
         ]
       },
       dtla: {
-        intro: "Pack first, breakfast at Sherman’s, checkout at 11:00 AM, and leave right away. You want a mid-afternoon arrival downtown so The Broad still fits (open 11:00 AM–5:00 PM, closed Thanksgiving; free timed tickets). Lunch is Grand Central Market, and the evening is Perch, not Harriet’s. Thursday you take 101 to Ventura for a different Thanksgiving — Black Angus, not The Copper — and a downtown nightcap that is not The Knock.",
+        intro: "Pack first, breakfast at Sherman’s, checkout at 11:00 AM, and leave at 11:30 AM. The Broad still fits (open 11:00 AM–5:00 PM, closed Thanksgiving; free timed tickets) if you arrive by about 3:30 PM; if not, Wednesday’s highlight is Perch. Lunch is Grand Central Market, and the evening is Perch, not Harriet’s. Thursday you take 101 to Ventura for a different Thanksgiving — Black Angus, not The Copper — and a downtown nightcap that is not The Knock.",
         days: [
           {
             title: "Wednesday, Nov 25 · Desert Hot Springs to Downtown LA",
@@ -953,7 +1139,7 @@
             destLL: [-118.2516, 34.0544],
             facts: [
               ["Drive", "About 125 mi, usually on I-10. Off-peak this is about two hours. Leaving around 11:00 AM, plan 2.5–3.5 hours. Expect to arrive about 1:30–3:00 PM. The Broad closes at 5:00 PM, so the early end of that window matters."],
-              ["Leave around", "11:00 AM, right after checkout. Pack before breakfast at Sherman’s (about 8:30–10:00 AM)."],
+              ["Leave around", "11:30 AM. Pack and eat breakfast at Sherman’s (about 8:30–10:30 AM) before the 11:00 AM checkout, then depart at 11:30."],
               ["Superchargers", "Optional."],
               ["Main activity", "The Broad, 221 S Grand Avenue. Open Wednesday 11:00 AM–5:00 PM; closed Thanksgiving. General admission is free; reserve timed tickets at thebroad.org/tickets. Plan to be there by 3:00 PM so the visit is not a sprint. If traffic runs late, skip the museum rather than arrive at closing: walk the Arts District or The Last Bookstore instead. Grand Central Market is lunch, not a second museum."]
             ],
@@ -972,7 +1158,7 @@
               site: "https://www.perchla.com/"
             },
             meals: [
-              { kind: "Breakfast, about 8:30–10:00 AM, near Palm Springs", name: "Sherman’s Deli & Bakery", detail: "Eat after you have packed, and before the 11:00 AM checkout, so you can leave right at checkout.", hours: "Official hours are daily 8:00 AM–9:00 PM. Call (760) 325-1199 before you go.", map: "Sherman's Deli & Bakery, 401 E Tahquitz Canyon Way, Palm Springs, CA 92262", site: "https://shermansdeli.com/" },
+              { kind: "Breakfast, about 8:30–10:30 AM, near Palm Springs", name: "Sherman’s Deli & Bakery", detail: "Eat after you have packed, and before the 11:00 AM checkout, so you can leave at 11:30 AM.", hours: "Official hours are daily 8:00 AM–9:00 PM. Call (760) 325-1199 before you go.", map: "Sherman's Deli & Bakery, 401 E Tahquitz Canyon Way, Palm Springs, CA 92262", site: "https://shermansdeli.com/" },
               { kind: "Lunch, downtown", name: "Grand Central Market", detail: "A historic food hall at 317 S Broadway — tacos, noodles, deli counters, and plenty of tables. Eat on arrival, then walk or hop over to The Broad. Individual stall hours vary. Backup if the market is thinner than usual: Philippe the Original, 1001 N Alameda St; confirm Nov 25 hours.", hours: "The market’s usual hours are 8:00 AM–9:00 PM; stall hours differ. Confirm Wednesday, Nov 25, on grandcentralmarket.com or at the stalls you care about.", map: "Grand Central Market, 317 S Broadway, Los Angeles, CA 90013", site: "https://grandcentralmarket.com/visit-the-market/" }
             ],
             stayTitle: "Downtown Los Angeles, Wednesday to Thursday, 1 night · Not booked yet · Two 1-Queen rooms (the girls share a queen). Hotel Figueroa checked live on Expedia ~9:40 AM PT Nov 25; no two-bed rooms were listed. Booking-site prices can exclude resort fees and charges paid at the hotel; all-in estimate shown.",
@@ -1064,11 +1250,15 @@
     function optionCardHTML(o) {
       const meta = OPTION_SLEEPS[o.id];
       const stays = (meta.sleeps || []).map((s) => `<p class="stay-line">${stayBits(s)}</p>`).join("");
+      const places = (meta.places || []).map((p) => `<p class="place-item">${p}</p>`).join("");
+      const tide = meta.tide ? `<p class="tide">${meta.tide}</p>` : "";
       const altLinks = (meta.alts || []).map((a) => `<a href="${a.href}" target="_blank" rel="noopener">${a.name}</a>`).join(" · ");
       const alts = altLinks ? `<p class="alts">Also: ${altLinks}</p>` : "";
       return `<h3>${o.name} <span class="total">${o.total}</span></h3>
           <p class="leave">${meta.leave}</p>
           ${stays}
+          ${places}
+          ${tide}
           ${alts}
           <p class="card-foot"><a class="details-link" href="#opt-${o.id}">Details</a></p>`;
     }
@@ -1432,47 +1622,27 @@
       </section>`;
     }
 
-    function openOptionDetails(id) {
-      const itin = itineraries[id];
-      if (!itin) return;
-      itin.days.forEach((d, i) => {
-        initMap(id, i, d);
-        const m = maps[mapId(id, i)];
-        if (m) setTimeout(() => m.invalidateSize(), 150);
-      });
+    function renderDetailDays(id) {
+      return (DETAIL_DAYS[id] || []).map((d) => `
+        <div class="day-block">
+          <h3>${d.title}</h3>
+          <ul>
+            <li><span>Drive</span> ${d.drive}</li>
+            <li><span>Daytime</span> ${d.activity}</li>
+            <li><span>Dinner + bar</span> ${d.evening}</li>
+            <li><span>Parking / safety</span> ${d.safety}</li>
+          </ul>
+        </div>`).join("");
     }
 
     function renderItineraries() {
       const root = document.getElementById("option-details");
       root.innerHTML = allOptions().map((o) => {
-        const itin = itineraries[o.id];
-        const meta = OPTION_SLEEPS[o.id];
-        const stops = (meta.wxStops || []).join(",");
-        const beach = `<div class="warn"><strong>Stay off the beaches</strong> A coastal flood warning and high surf are in effect on the Central Coast through Thursday noon, with king tides and dangerous rip currents. Stay off the sand and piers.</div>`;
         return `<details class="opt-details" id="opt-${o.id}">
           <summary>${o.name} · ${o.total}</summary>
-          <p>${itin.intro}</p>
-          <p class="leave">${meta.leave}. ${o.rec}</p>
-          ${beach}
-          ${renderCostBox(o)}
-          ${itin.days.map((d, i) => renderDay(o.id, d, i)).join("")}
-          <div class="wx-block">
-            <div class="toolbar">
-              <button class="primary refresh-wx" type="button">Refresh weather</button>
-              <span class="updated wx-updated">Loading forecast…</span>
-            </div>
-            <div class="opt-wx weather-grid" data-stops="${stops}"></div>
-          </div>
+          ${renderDetailDays(o.id)}
         </details>`;
       }).join("");
-      root.querySelectorAll("details.opt-details").forEach((d) => {
-        d.addEventListener("toggle", () => {
-          if (d.open) openOptionDetails(d.id.replace(/^opt-/, ""));
-        });
-      });
-      root.querySelectorAll(".refresh-wx").forEach((btn) => {
-        btn.addEventListener("click", loadWeather);
-      });
     }
 
     renderDecision();
